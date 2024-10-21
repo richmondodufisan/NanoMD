@@ -1,45 +1,11 @@
 Warning: program compiled against libxml 210 using older 209
-LAMMPS (3 Mar 2020)
-  using 1 OpenMP thread(s) per MPI task
-Reading data file ...
-  orthogonal box = (0 0 0) to (50 25 25)
-  2 by 2 by 2 MPI processor grid
-  reading atoms ...
-  1458 atoms
-  read_data CPU = 0.0444731 secs
-73 atoms in group hot_atoms
-73 atoms in group cold_atoms
-736 atoms in group middle_atoms
-Reading potential file Si.tersoff.mod with DATE: 2013-07-26
-Neighbor list info ...
-  update every 1 steps, delay 10 steps, check yes
-  max neighbors/atom: 2000, page size: 100000
-  master list distance cutoff = 5.3
-  ghost atom cutoff = 5.3
-  binsize = 2.65, bins = 19 10 10
-  1 neighbor lists, perpetual/occasional/extra = 1 0 0
-  (1) pair tersoff/mod, perpetual
-      attributes: full, newton on
-      pair build: full/bin/atomonly
-      stencil: full/bin/3d
-      bin: standard
-Setting up Verlet run ...
-  Unit style    : metal
-  Current step  : 0
-  Time step     : 0.001
-Per MPI rank memory allocation (min/avg/max) = 6.209 | 6.21 | 6.211 Mbytes
-Step Temp E_pair E_mol TotEng Press 
-       0    64.241592   -6260.7755            0   -6248.6767   -17050.353 
-ERROR: Lost atoms: original 1458 current 1456 (src/thermo.cpp:438)
-Last command: run 1000000  # Run for a long enough time to reach steady-state
+ERROR on proc 0: Cannot open input script Si_Bulk_Hot_Cold_ase.lammps (src/lammps.cpp:440)
+Last command: (unknown)
 --------------------------------------------------------------------------
-Primary job  terminated normally, but 1 process returned
-a non-zero exit code. Per user-direction, the job has been aborted.
---------------------------------------------------------------------------
---------------------------------------------------------------------------
-mpirun detected that one or more processes exited with non-zero status, thus causing
-the job to be terminated. The first process to do so was:
+MPI_ABORT was invoked on rank 0 in communicator MPI_COMM_WORLD
+with errorcode 1.
 
-  Process name: [[64601,1],1]
-  Exit code:    1
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
 --------------------------------------------------------------------------
