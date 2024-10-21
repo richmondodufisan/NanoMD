@@ -11,15 +11,15 @@ atom_style atomic               # Simple atomic style (no bonds or angles, that 
 # 2) System definition
 # Read the atomic structure from the xyz file
 # The box dimensions (50 x 20 x 20) are defined by you in the xyz file
-read_data Silicon_supercell_500x250x250.data  # Replace with the path to your xyz file
+read_data Silicon_supercell_50x25x25.data  # Replace with the path to your xyz file
 
 # Define atomic mass of Silicon
 mass 1 28.0855  # Atomic mass of silicon
 
 # Define the hot, cold, and middle regions based on the 50 x 20 x 20 box
-region hot_region block 0 50 0 250 0 250 units box   # Leftmost 5 Å in x direction (hot region)
-region cold_region block 450 500 0 250 0 250 units box # Rightmost 5 Å in x direction (cold region)
-region middle_region block 50 450 0 250 0 250 units box # Middle section (everything in between)
+region hot_region block 0 5 0 25 0 25 units box   # Leftmost 5 Å in x direction (hot region)
+region cold_region block 45 50 0 25 0 25 units box # Rightmost 5 Å in x direction (cold region)
+region middle_region block 5 45 0 25 0 25 units box # Middle section (everything in between)
 
 # Group the atoms in these regions
 group hot_atoms region hot_region
