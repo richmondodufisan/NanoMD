@@ -1,0 +1,101 @@
+# 1) Initialization
+units metal                     # Using metal units
+dimension 3                     # 3D simulation
+boundary f p p                  # Periodic boundary conditions in y & z, fixed in x
+atom_style atomic               # Simple atomic style (no bonds or angles, that info should be included in interatomic potential file)
+
+
+
+
+
+# 2) System definition
+# Read the atomic structure from the xyz file
+# The box dimensions (50 x 20 x 20) are defined by you in the xyz file
+read_data Silicon_supercell_500x250x250.data  # Replace with the path to your xyz file
+
+# Define atomic mass of Silicon
+mass 1 28.0855  # Atomic mass of silicon
+
+# Define the hot, cold, and middle regions based on the 50 x 20 x 20 box
+region hot_region block 0 50 0 250 0 250 units box   # Leftmost 5 Å in x direction (hot region)
+region cold_region block 450 500 0 250 0 250 units box # Rightmost 5 Å in x direction (cold region)
+region middle_region block 50 450 0 250 0 250 units box # Middle section (everything in between)
+
+# Group the atoms in these regions
+group hot_atoms region hot_region
+group cold_atoms region cold_region
+group middle_atoms region middle_region
+
+
+
+
+
+
+
+# 3) Simulation settings
+# Set the interatomic potential (modified Tersoff potential for silicon)
+pair_style tersoff/mod
+pair_coeff * * Si.tersoff.mod Si  # Apply the Tersoff potential to silicon
+
+# Set initial velocities
+velocity hot_atoms create 1000 12345 mom yes rot yes dist gaussian  # High temperature (1000 K) for hot region
+velocity cold_atoms create 300 67890 mom yes rot yes dist gaussian  # Low temperature (300 K) for cold region
+
+fix 1 hot_atoms nvt temp 1000.0 1000.0 0.5  # Apply thermostat to hot region, NVT ensemble
+fix 2 cold_atoms nvt temp 300.0 300.0 0.5  # Apply thermostat to cold region, NVT ensemble
+fix 3 middle_atoms nve  # Apply NVE to the middle region (no thermostat), NVE ensemble
+
+
+
+
+
+
+
+
+# 4) Compute and output the temperature profile at final timestep
+
+# Bin atoms along the x-direction into chunks of width 5.0
+compute myChunk all chunk/atom bin/1d x lower 5.0
+
+# Compute the temperature profile
+fix temp_profile all ave/chunk 1 1000000 1000000 myChunk temp file temp_profile.txt
+
+
+
+
+
+
+
+# 5) Compute the heat flux
+# Define necessary computes for heat flux
+compute ke all ke/atom                  # Kinetic energy per atom
+compute pe all pe/atom                  # Potential energy per atom
+compute stress all stress/atom NULL     # Stress per atom (required for heat flux calculation)
+
+# Compute the total heat flux using kinetic, potential, and stress terms
+compute heat_flux all heat/flux ke pe stress
+
+# Define the heat flux in the x-direction
+variable J equal c_heat_flux[1]         # Heat flux component in the x-direction
+
+# Output the heat flux value to a file at the end of the run
+fix heat_flux_output all print 100 "Heat flux in x-direction: ${J}" file heat_flux_output.txt screen no
+
+
+
+
+
+
+
+# 6) Dump the trajectory for visualization
+# Output a trajectory file every 1000 timesteps for visualization in VMD
+dump 1 all atom 1000 dump.lammpstrj
+
+
+
+
+
+
+# 7) Run the simulation
+timestep 0.001
+run 100000000  # Run for a long enough time to reach steady-state
