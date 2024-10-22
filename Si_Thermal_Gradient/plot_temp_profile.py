@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load the data from the text file, skipping the first 4 lines
-data = np.loadtxt('temp_profile.txt', skiprows=4)
+data = np.loadtxt('Data/200X50X50/temp.txt', skiprows=4)
 
 # Extract the second and fourth columns
 x_position = data[:, 1]  # second column

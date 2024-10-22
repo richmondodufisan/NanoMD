@@ -17,9 +17,9 @@ read_data Silicon_supercell_200x50x50.data  # Replace with the path to your xyz 
 mass 1 28.0855  # Atomic mass of silicon
 
 # Define the hot, cold, and middle regions based on the 50 x 20 x 20 box
-region hot_region block 0 50 0 50 0 50 units box   # Leftmost 5 Å in x direction (hot region)
-region cold_region block 150 200 0 50 0 50 units box # Rightmost 5 Å in x direction (cold region)
-region middle_region block 50 150 0 50 0 50 units box # Middle section (everything in between)
+region hot_region block 0 10 0 50 0 50 units box   # Leftmost 5 Å in x direction (hot region)
+region cold_region block 190 200 0 50 0 50 units box # Rightmost 5 Å in x direction (cold region)
+region middle_region block 10 190 0 50 0 50 units box # Middle section (everything in between)
 
 # Group the atoms in these regions
 group hot_atoms region hot_region
@@ -98,4 +98,4 @@ dump 1 all atom 1000 dump.lammpstrj
 
 # 7) Run the simulation
 timestep 0.001
-run 100000000  # Run for a long enough time to reach steady-state
+run 1000000  # Run for a long enough time to reach steady-state
