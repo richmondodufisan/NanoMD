@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm *log* *txt *Zone*
+rm *log* *txt *Zone* dump*
