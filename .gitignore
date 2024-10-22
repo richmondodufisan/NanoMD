@@ -3,3 +3,6 @@
 *Zone.Identifier*
 *.txt
 *.pdf
+*log*
+*data
+*xyz
