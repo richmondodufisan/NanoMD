@@ -55,7 +55,7 @@ fix 3 middle_atoms nve  # Apply NVE to the middle region (no thermostat), NVE en
 # 4) Compute and output the temperature profile at final timestep
 
 # Bin atoms along the x-direction into chunks of width 5.0
-compute myChunk all chunk/atom bin/1d x lower 5.0
+compute myChunk all chunk/atom bin/1d x lower 25.0
 
 # Compute the temperature profile
 fix temp_profile all ave/chunk 1 1000000 1000000 myChunk temp file temp_profile.txt
