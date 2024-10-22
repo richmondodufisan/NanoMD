@@ -27,6 +27,6 @@ def plot_heat_flux(time, heat_flux):
     plt.show()
 
 # Main code
-filename = 'Data/200X50X50/heat_flux_output_middle.txt'  # Replace with the path to your file
+filename = './Data/200X50X50/seed_1/heat_flux_output_middle.txt'  # Replace with the path to your file
 time, heat_flux = read_heat_flux_data(filename)
 plot_heat_flux(time, heat_flux)

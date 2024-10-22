@@ -17,9 +17,9 @@ read_data Silicon_supercell_200x50x50.data  # Replace with the path to your xyz 
 mass 1 28.0855  # Atomic mass of silicon
 
 # Define the hot, cold, and middle regions based on the 50 x 20 x 20 box
-region hot_region block 0 10 0 50 0 50 units box   # Leftmost 5 Å in x direction (hot region)
-region cold_region block 190 200 0 50 0 50 units box # Rightmost 5 Å in x direction (cold region)
-region middle_region block 10 190 0 50 0 50 units box # Middle section (everything in between)
+region hot_region block 0 20 0 50 0 50 units box   # Leftmost 5 Å in x direction (hot region)
+region cold_region block 180 200 0 50 0 50 units box # Rightmost 5 Å in x direction (cold region)
+region middle_region block 20 180 0 50 0 50 units box # Middle section (everything in between)
 
 # Group the atoms in these regions
 group hot_atoms region hot_region
@@ -55,7 +55,7 @@ fix 3 middle_atoms nve  # Apply NVE to the middle region (no thermostat), NVE en
 # 4) Compute and output the temperature profile at final timestep
 
 # Bin atoms along the x-direction into chunks of width 5.0
-compute myChunk all chunk/atom bin/1d x lower 25.0
+compute myChunk all chunk/atom bin/1d x lower 20.0
 
 # Compute the temperature profile
 fix temp_profile all ave/chunk 1 1000000 1000000 myChunk temp file temp_profile.txt
@@ -98,4 +98,4 @@ dump 1 all atom 1000 dump.lammpstrj
 
 # 7) Run the simulation
 timestep 0.001
-run 1000000  # Run for a long enough time to reach steady-state
+run 10000000  # Run for a long enough time to reach steady-state
