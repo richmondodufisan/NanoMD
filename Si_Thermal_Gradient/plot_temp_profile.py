@@ -2,13 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load the data from the text file, skipping the first 4 lines
-data = np.loadtxt('Data/200X50X50/temp.txt', skiprows=4)
+data = np.loadtxt('Data/200X50X50/seed_1/temp.txt', skiprows=4)
 
 # Extract the second and fourth columns
 x_position = data[:, 1]  # second column
 temperature = data[:, 3]  # fourth column
 
 # Perform linear regression to fit a straight line (y = mx + b)
+
+x_position = x_position[4:-4]
+temperature = temperature[4:-4]
 slope, intercept = np.polyfit(x_position, temperature, 1)
 
 # Create the best-fit line

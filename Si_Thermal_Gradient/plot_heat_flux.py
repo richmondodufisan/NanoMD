@@ -74,8 +74,11 @@ def plot_heat_flux(time, heat_flux, smoothed_time, smoothed_flux):
 filename = './Data/200X50X50/seed_1/heat_flux_output_middle.txt'  # Replace with the path to your file
 time, heat_flux = read_heat_flux_data(filename)
 
+time = time[:-35000]
+heat_flux = heat_flux[:-35000]
+
 # Set the bin size in nanoseconds (e.g., 10,000 nanoseconds)
-bin_size_ns = 10000
+bin_size_ns = 50000
 
 # Smooth the data based on the bin size
 smoothed_time, smoothed_flux = smooth_heat_flux(time, heat_flux, bin_size_ns)
@@ -84,5 +87,5 @@ smoothed_time, smoothed_flux = smooth_heat_flux(time, heat_flux, bin_size_ns)
 plot_heat_flux(time, heat_flux, smoothed_time, smoothed_flux)
 
 # Print the steady state heat flux as the last value from the smoothed data
-steady_state_heat_flux = smoothed_flux[-2]
+steady_state_heat_flux = smoothed_flux[-5]
 print(f"Steady state heat flux: {steady_state_heat_flux}")
