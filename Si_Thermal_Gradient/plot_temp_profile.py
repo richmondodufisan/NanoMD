@@ -10,8 +10,8 @@ temperature = data[:, 3]  # fourth column
 
 # Perform linear regression to fit a straight line (y = mx + b)
 
-x_position = x_position[4:-4]
-temperature = temperature[4:-4]
+x_position = x_position[8:-8]
+temperature = temperature[8:-8]
 slope, intercept = np.polyfit(x_position, temperature, 1)
 
 # Create the best-fit line
