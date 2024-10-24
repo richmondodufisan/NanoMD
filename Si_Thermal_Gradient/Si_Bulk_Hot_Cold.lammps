@@ -38,8 +38,8 @@ pair_style tersoff/mod
 pair_coeff * * Si.tersoff.mod Si  # Apply the Tersoff potential to silicon from https://www.ctcms.nist.gov/potentials/system/Si/
 
 # Set initial velocities
-velocity hot_atoms create 1000.0 12345 mom yes rot yes dist gaussian  # High temperature (100,000 K) for hot region
-velocity cold_atoms create 300.0 67890 mom yes rot yes dist gaussian  # Low (room) temperature (300 K) for cold region
+velocity hot_atoms create 1000 12345 mom yes rot yes dist gaussian  # High temperature for hot region
+velocity cold_atoms create 300 67890 mom yes rot yes dist gaussian  # Low (room) temperature for cold region
 
 
 
