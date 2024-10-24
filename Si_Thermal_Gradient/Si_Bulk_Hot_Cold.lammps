@@ -11,15 +11,15 @@ atom_style atomic               # Simple atomic style (no bonds or angles, that 
 # 2) System definition
 # Read the atomic structure from the xyz file
 # The box dimensions are defined by you in the xyz file
-read_data Silicon_supercell_400x100x100.data  # Replace with the path to your xyz file
+read_data Silicon_supercell_200x50x50.data  # Replace with the path to your xyz file
 
 # Define atomic mass of Silicon
 mass 1 28.0855  # Atomic mass of silicon
 
-# Define the hot, cold, and middle regions based on the 50 x 20 x 20 box
-region hot_region block 0 80 0 100 0 100 units box   # Leftmost 5 Å in x direction (hot region)
-region cold_region block 80 320 0 100 0 100 units box # Rightmost 5 Å in x direction (cold region)
-region middle_region block 320 400 0 500 0 500 units box # Middle section (everything in between)
+# Define the hot, cold, and middle regions based on the simulation box
+region hot_region block 0 40 0 50 0 50 units box   # Leftmost region x direction (hot region)
+region cold_region block 160 200 0 50 0 50 units box # Rightmost region in x direction (cold region)
+region middle_region block 40 160 0 50 0 50 units box # Middle section (everything in between)
 
 # Group the atoms in these regions
 group hot_atoms region hot_region
@@ -38,10 +38,14 @@ pair_style tersoff/mod
 pair_coeff * * Si.tersoff.mod Si  # Apply the Tersoff potential to silicon
 
 # Set initial velocities
-velocity hot_atoms create 1000 12345 mom yes rot yes dist gaussian  # High temperature (1000 K) for hot region
-velocity cold_atoms create 300 67890 mom yes rot yes dist gaussian  # Low temperature (300 K) for cold region
+velocity hot_atoms create 100000 12345 mom yes rot yes dist gaussian  # High temperature (100,000 K) for hot region
+velocity cold_atoms create 300 67890 mom yes rot yes dist gaussian  # Low (room) temperature (300 K) for cold region
 
-fix 1 hot_atoms nvt temp 1000.0 1000.0 0.5  # Apply thermostat to hot region, NVT ensemble
+velocity cold_atoms create 300 67890 mom yes rot yes dist gaussian  # Low (room) temperature (300 K) for middle region- initial condition
+
+
+
+fix 1 hot_atoms nvt temp 100000.0 100000.0 0.5  # Apply thermostat to hot region, NVT ensemble
 fix 2 cold_atoms nvt temp 300.0 300.0 0.5  # Apply thermostat to cold region, NVT ensemble
 fix 3 middle_atoms nve  # Apply NVE to the middle region (no thermostat), NVE ensemble
 
@@ -55,7 +59,7 @@ fix 3 middle_atoms nve  # Apply NVE to the middle region (no thermostat), NVE en
 # 4) Compute and output the temperature profile at final timestep
 
 # Bin atoms along the x-direction into chunks of width 10.0
-compute myChunk all chunk/atom bin/1d x lower 10.0
+compute myChunk all chunk/atom bin/1d x lower 5.0
 
 # Compute the temperature profile
 fix temp_profile all ave/chunk 1 1000000 1000000 myChunk temp file temp_profile.txt
