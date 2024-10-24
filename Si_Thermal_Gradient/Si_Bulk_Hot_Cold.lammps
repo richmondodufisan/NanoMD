@@ -35,15 +35,15 @@ group middle_atoms region middle_region
 # 3) Simulation settings
 # Set the interatomic potential (modified Tersoff potential for silicon)
 pair_style tersoff/mod
-pair_coeff * * Si.tersoff.mod Si  # Apply the Tersoff potential to silicon
+pair_coeff * * Si.tersoff.mod Si  # Apply the Tersoff potential to silicon from https://www.ctcms.nist.gov/potentials/system/Si/
 
 # Set initial velocities
-velocity hot_atoms create 10000 12345 mom yes rot yes dist gaussian  # High temperature (100,000 K) for hot region
-velocity cold_atoms create 300 67890 mom yes rot yes dist gaussian  # Low (room) temperature (300 K) for cold region
+velocity hot_atoms create 1000.0 12345 mom yes rot yes dist gaussian  # High temperature (100,000 K) for hot region
+velocity cold_atoms create 300.0 67890 mom yes rot yes dist gaussian  # Low (room) temperature (300 K) for cold region
 
 
 
-fix 1 hot_atoms nvt temp 10000.0 10000.0 0.1  # Apply thermostat to hot region, NVT ensemble
+fix 1 hot_atoms nvt temp 1000.0 10000.0 0.1  # Apply thermostat to hot region, NVT ensemble
 fix 2 cold_atoms nvt temp 300.0 300.0 0.1  # Apply thermostat to cold region, NVT ensemble
 fix 3 middle_atoms nve  # Apply NVE to the middle region (no thermostat), NVE ensemble
 
@@ -87,9 +87,18 @@ fix heat_flux_output_middle all print 100 "Heat flux in x-direction for middle r
 
 
 
+# 6) Compute total energy of middle atoms (kinetic + potential)
+variable total_energy_middle atom c_ke_middle + c_pe_middle
+
+# Output the total energy of middle atoms to a different text file
+fix energy_output_middle all print 100 "Total energy of middle atoms: ${total_energy_middle}" file energy_output_middle.txt screen no
 
 
-# 6) Dump the trajectory for visualization
+
+
+
+
+# 7) Dump the trajectory for visualization
 # Output a trajectory file every 1000 timesteps for visualization in VMD
 dump 1 all atom 1000 dump.lammpstrj
 
@@ -98,6 +107,6 @@ dump 1 all atom 1000 dump.lammpstrj
 
 
 
-# 7) Run the simulation
+# 8) Run the simulation
 timestep 0.001
 run 5000000  # Run for a long enough time to reach steady-state
