@@ -43,7 +43,7 @@ velocity cold_atoms create 300 67890 mom yes rot yes dist gaussian  # Low (room)
 
 
 
-fix 1 hot_atoms nvt temp 1000.0 10000.0 0.1  # Apply thermostat to hot region, NVT ensemble
+fix 1 hot_atoms nvt temp 1000.0 1000.0 0.1  # Apply thermostat to hot region, NVT ensemble
 fix 2 cold_atoms nvt temp 300.0 300.0 0.1  # Apply thermostat to cold region, NVT ensemble
 fix 3 middle_atoms nve  # Apply NVE to the middle region (no thermostat), NVE ensemble
 
