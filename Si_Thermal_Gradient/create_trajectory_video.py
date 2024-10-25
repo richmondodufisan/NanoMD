@@ -43,4 +43,4 @@ def create_video(traj_file, output_file, particle_color='blue', particle_radius=
     anim.save(output_file, fps=20, extra_args=['-vcodec', 'libx264'])
 
 # Usage
-create_video("dump.lammpstrj", "output_video.mp4", particle_color='red', particle_radius=1.0)
+create_video("dump.lammpstrj", "output_video.mp4", particle_color='blue', particle_radius=1.0)
