@@ -7,14 +7,14 @@ def read_heat_flux_data(filename):
     heat_flux = []
     with open(filename, 'r') as file:
         for i, line in enumerate(file):
-            if "Heat flux in x-direction for middle region:" in line:
-                # Extract the heat flux value
-                flux_value = float(line.split(":")[1].strip())
-                # The time is based on 100 nanoseconds increments
-                time_value = i * 100  # each entry represents 100 nanoseconds
-                time.append(time_value)
-                heat_flux.append(flux_value)
+            # Assume each line contains only the heat flux value
+            flux_value = float(line.strip())
+            # The time is based on 100 nanoseconds increments
+            time_value = i * 100  # each entry represents 100 nanoseconds
+            time.append(time_value)
+            heat_flux.append(flux_value)
     return time, heat_flux
+
 
 # Function to smooth the heat flux data by chunking into bins and averaging
 def smooth_heat_flux(time, heat_flux, bin_size_ns):
