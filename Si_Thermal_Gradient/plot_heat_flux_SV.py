@@ -37,6 +37,7 @@ def plot_heat_flux(time, heat_flux, smoothed_flux_savgol):
     plt.title('Heat Flux in x-direction over Time (Savitzky-Golay Smoothing)')
     plt.grid(True)
     plt.legend()
+    plt.savefig('flux_v_time.png')
     plt.show()
 
 # Main code

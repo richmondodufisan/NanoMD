@@ -27,6 +27,8 @@ plt.title('X Position vs Temperature with Best Fit Line')
 plt.legend()
 plt.grid(True)
 
+plt.savefig('temp_profile.png')
+
 # Show the plot
 plt.show()
 

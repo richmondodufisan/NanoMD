@@ -13,17 +13,27 @@ def create_video(traj_file, output_file, particle_color='blue', particle_radius=
     # Set up the figure and 3D axis for the animation
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.set_box_aspect([1, 1, 1])  # Equal aspect ratio for x, y, z
 
-    # Define function to update the plot for each frame
+    # Get global limits for consistent scaling
+    all_positions = [atom.get_positions() for atom in atoms]
+    x_min = min(pos[:, 0].min() for pos in all_positions)
+    x_max = max(pos[:, 0].max() for pos in all_positions)
+    y_min = min(pos[:, 1].min() for pos in all_positions)
+    y_max = max(pos[:, 1].max() for pos in all_positions)
+    z_min = min(pos[:, 2].min() for pos in all_positions)
+    z_max = max(pos[:, 2].max() for pos in all_positions)
+
     def update(frame):
         ax.cla()  # Clear the axis
         positions = atoms[frame].get_positions()
         ax.scatter(positions[:, 0], positions[:, 1], positions[:, 2],
                    color=particle_color, s=particle_radius)
-        ax.set_xlim([positions[:, 0].min(), positions[:, 0].max()])
-        ax.set_ylim([positions[:, 1].min(), positions[:, 1].max()])
-        ax.set_zlim([positions[:, 2].min(), positions[:, 2].max()])
+        
+        # Set consistent limits for x, y, z axes
+        ax.set_xlim(x_min, x_max)
+        ax.set_ylim(y_min, y_max)
+        ax.set_zlim(z_min, z_max)
+        ax.set_box_aspect([x_max - x_min, y_max - y_min, z_max - z_min])  # Aspect ratio
         ax.set_title(f"Frame {frame * 100 + 1}")
 
     # Create the animation
