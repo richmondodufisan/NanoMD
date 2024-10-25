@@ -52,14 +52,24 @@ poly_order = 3
 smoothed_ke_savgol = savitzky_golay_smooth(kinetic_energy, window_size, poly_order)
 smoothed_pe_savgol = savitzky_golay_smooth(potential_energy, window_size, poly_order)
 
+# Calculate total energy (kinetic + potential)
+total_energy = np.array(kinetic_energy) + np.array(potential_energy)
+smoothed_total_energy = smoothed_ke_savgol + smoothed_pe_savgol
+
 # Plot the original and smoothed kinetic energy data
 plot_data(time, kinetic_energy, smoothed_ke_savgol, "Kinetic Energy")
 
 # Plot the original and smoothed potential energy data
 plot_data(time, potential_energy, smoothed_pe_savgol, "Potential Energy")
 
-# Print the steady-state kinetic and potential energy as the last values from the smoothed data
+# Plot the total energy (kinetic + potential) and its smoothed version
+plot_data(time, total_energy, smoothed_total_energy, "Total Energy")
+
+# Print the steady-state kinetic, potential, and total energy as the last values from the smoothed data
 steady_state_ke_savgol = smoothed_ke_savgol[-1]
 steady_state_pe_savgol = smoothed_pe_savgol[-1]
+steady_state_total_savgol = smoothed_total_energy[-1]
+
 print(f"Steady state kinetic energy (Savitzky-Golay): {steady_state_ke_savgol}")
 print(f"Steady state potential energy (Savitzky-Golay): {steady_state_pe_savgol}")
+print(f"Steady state total energy (Savitzky-Golay): {steady_state_total_savgol}")
