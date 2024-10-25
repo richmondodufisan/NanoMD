@@ -30,7 +30,7 @@ pair_coeff 2 2 0.5 3.0
 # 4) Visualization
 thermo 10
 thermo_style custom step temp pe ke etotal press
-
+dump initial_dump all xyz 1 initial_positions.xyz  # Dump initial positions
 
 
 
