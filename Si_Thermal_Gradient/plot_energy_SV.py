@@ -41,7 +41,7 @@ def plot_data(time, original_data, smoothed_data, data_label):
     plt.show()
 
 # Main code
-filename = './Data/200X50X50/seed_1/energy_output.txt'  # Replace with the path to your file
+filename = './Data/200X50X50/seed_1/energy_output_middle.txt'  # Replace with the path to your file
 time, kinetic_energy, potential_energy = read_energy_data(filename)
 
 # Set parameters for Savitzky-Golay filter
