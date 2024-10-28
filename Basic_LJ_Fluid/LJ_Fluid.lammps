@@ -43,7 +43,8 @@ minimize 1.0e-4 1.0e-6 1000 10000
 # Part 2: Molecular Dynamics
 # 4) Visualization
 thermo 50
-dump mydmp all atom 100 dump.lammpstrj
+dump 1 all custom 100 dump.lammpstrj id type x y z
+
 
 
 
