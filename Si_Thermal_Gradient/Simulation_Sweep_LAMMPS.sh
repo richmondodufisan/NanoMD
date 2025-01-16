@@ -52,8 +52,13 @@ for scale in $(seq $min_scale $step $max_scale); do
   # Adjust the run time based on the scale (longer for larger boxes)
   run_time=$(printf "%.0f" $(echo "5000000 * $scale" | bc))
   sed -i "s/run [0-9]*/run ${run_time}/" $scaled_lammps_script
-
   
+  # Modify output file names to include scaling factor
+  sed -i "s/temp_profile.txt/temp_profile_${scale}.txt/" $scaled_lammps_script
+  sed -i "s/heat_flux_output_middle.txt/heat_flux_output_middle_${scale}.txt/" $scaled_lammps_script
+  sed -i "s/energy_output_middle.txt/energy_output_middle_${scale}.txt/" $scaled_lammps_script
+  sed -i "s/dump.lammpstrj/dump_${scale}.lammpstrj/" $scaled_lammps_script
+
   # Save the new LAMMPS script to the list
   lammps_scripts+=($scaled_lammps_script)
 done
