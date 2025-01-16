@@ -50,8 +50,9 @@ for scale in $(seq $min_scale $step $max_scale); do
   sed -i "s/region middle_region block .* .* .* .* .* .*/region middle_region block $(echo "40 * $scale" | bc) $(echo "160 * $scale" | bc) 0 $scaled_y 0 $scaled_z units box/" $scaled_lammps_script
   
   # Adjust the run time based on the scale (longer for larger boxes)
-  run_time=$(echo "5000000 * $scale" | bc)
+  run_time=$(printf "%.0f" $(echo "5000000 * $scale" | bc))
   sed -i "s/run [0-9]*/run ${run_time}/" $scaled_lammps_script
+
   
   # Save the new LAMMPS script to the list
   lammps_scripts+=($scaled_lammps_script)
