@@ -57,8 +57,8 @@ for scale in $(seq $min_scale $step $max_scale); do
   lammps_scripts+=($scaled_lammps_script)
 done
 
-# Write the LAMMPS scripts to the text file
-echo "${lammps_scripts[@]}" > SiliconSimulations.txt
+# Write the LAMMPS scripts to the text file, each on a new line
+printf "%s\n" "${lammps_scripts[@]}" > SiliconSimulations.txt
 
 # Update the SLURM job array range in the Batch_LAMMPS_Array.sh script
 num_scripts=${#lammps_scripts[@]}
