@@ -1,7 +1,10 @@
 from heat_flux_calculations import read_heat_flux_data, savitzky_golay_smooth, get_steady_state_flux
+import temperature_calculations
+
 import matplotlib.pyplot as plt
 import numpy as np
-import temperature_calculations  # Import the helper file
+
+import pdb
 
 # Function to calculate box volume based on the suffix
 def calculate_box_volume(suffix):
@@ -101,19 +104,25 @@ def plot_thermal_conductivity_vs_volume(steady_state_fluxes, slopes, box_volumes
 
     # Calculate thermal conductivity for each data point
     for flux, slope, volume in zip(steady_state_fluxes, slopes, box_volumes):
+    
         # Calculate temperature gradient (temperature slope / box size)
-        temperature_gradient = slope / volume
+        temperature_gradient = slope
 
         # Calculate thermal conductivity with the negative sign
         thermal_conductivity = -flux / temperature_gradient
+        
+        # Convert to W/(m.K)
+        thermal_conductivity = thermal_conductivity * ((1.60218e-19)/(1e-22))
+        # pdb.set_trace()
+        
         thermal_conductivities.append(thermal_conductivity)
 
     # Plot thermal conductivity vs box volume
     plt.figure(figsize=(10, 6))
     plt.plot(box_volumes, thermal_conductivities, marker='o', linestyle='-', color='green', label='Thermal Conductivity')
 
-    plt.xlabel('Box Volume')
-    plt.ylabel('Thermal Conductivity')
+    plt.xlabel('Box Volume (cubic angstroms)')
+    plt.ylabel('Thermal Conductivity (W/(m.K)')
     plt.title('Thermal Conductivity vs Box Volume')
     plt.grid(True)
     plt.legend()
