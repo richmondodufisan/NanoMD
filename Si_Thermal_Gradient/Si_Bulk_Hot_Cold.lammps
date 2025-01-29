@@ -155,8 +155,8 @@ fix energy_output_middle all print 100 "${ke_sum_middle}, ${pe_sum_middle}" file
 dump 1 all atom 1000 dump.lammpstrj
 
 # Export atomic positions in XYZ format for visualization in VESTA
-dump xyz_output all xyz 10000 output.xyz
-dump_modify xyz_output sort id
+# dump xyz_output all xyz 10000 output.xyz
+# dump_modify xyz_output sort id
 
 
 

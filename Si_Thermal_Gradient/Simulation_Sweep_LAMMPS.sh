@@ -43,10 +43,10 @@ for scale in $(seq $min_scale $step $max_scale); do
   scaled_lammps_script="${output_dir}/scaled_lammps_script_${scale}.lammps"
   cp $base_lammps_script $scaled_lammps_script
 
-  sed -i "s/variable lx_small equal 200/variable lx_small equal \$scaled_x/" $scaled_lammps_script
-  sed -i "s/variable ly_small equal 50/variable ly_small equal \$scaled_y/" $scaled_lammps_script
-  sed -i "s/variable lz_small equal 50/variable lz_small equal \$scaled_z/" $scaled_lammps_script
-  
+  sed -i "s/variable lx_small equal 200/variable lx_small equal $scaled_x/" $scaled_lammps_script
+  sed -i "s/variable ly_small equal 50/variable ly_small equal $scaled_y/" $scaled_lammps_script
+  sed -i "s/variable lz_small equal 50/variable lz_small equal $scaled_z/" $scaled_lammps_script
+
   # Update file paths, regions, and run time in the LAMMPS script
   sed -i "s|read_data .*|read_data ${scaled_geometry_file}|" $scaled_lammps_script
   
