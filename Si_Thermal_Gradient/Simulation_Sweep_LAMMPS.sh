@@ -48,7 +48,7 @@ for scale in $(seq $min_scale $step $max_scale); do
   sed -i "s/variable lz_small equal 50/variable lz_small equal $scaled_z/" $scaled_lammps_script
 
   # Update file paths, regions, and run time in the LAMMPS script
-  sed -i "s|read_data .*|read_data ${scaled_geometry_file}|" $scaled_lammps_script
+  sed -i "s|read_data .*|read_data ${scaled_geometry_file} add append shift 0 0 0|" $scaled_lammps_script
   
 
   
