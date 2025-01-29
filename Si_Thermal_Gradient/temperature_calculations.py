@@ -72,4 +72,4 @@ def plot_temperature_data(filename):
 
 # Main code block for single-file plotting (for testing)
 if __name__ == "__main__":
-    plot_temperature_data('./lammps_out/temp_profile_1.5.txt')
+    plot_temperature_data('./lammps_out/temp_profile_0.2.txt')
