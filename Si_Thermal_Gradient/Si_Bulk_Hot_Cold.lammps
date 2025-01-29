@@ -75,7 +75,8 @@ compute pe_middle middle_atoms pe/atom              # Potential energy per atom 
 # compute stress_middle middle_atoms centroid/stress/atom NULL # Stress per atom in middle region
 
 # Compute the total heat flux in the middle region
-compute heat_flux_middle middle_atoms heat/flux ke_middle pe_middle stress_middle
+# compute heat_flux_middle middle_atoms heat/flux ke_middle pe_middle stress_middle
+compute heat_flux_middle middle_atoms heat/flux ke_middle pe_middle
 
 # Define the heat flux in the x-direction for the middle region
 variable J_middle equal c_heat_flux_middle[1]       # Heat flux component in the x-direction for middle region
