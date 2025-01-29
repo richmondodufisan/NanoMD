@@ -8,11 +8,11 @@ from ase.visualize import view
 unit_cell = read('Si.cif')  # Replace with your CIF file path
 
 # Desired box dimensions [x, y, z]
-desired_box = np.array([50, 25, 25])
+desired_box = np.array([200, 50, 50])
 
 # Rotation angles (in degrees)
-left_rotation_angle = 15  # Clockwise rotation for the left side
-right_rotation_angle = 15  # Clockwise rotation for the right side (negative for counter-clockwise in this setup)
+left_rotation_angle = 15 
+right_rotation_angle = 15 
 
 # Split the desired box in half along the x-axis
 left_box_dimensions = desired_box / np.array([2, 1, 1])
@@ -71,5 +71,5 @@ final_supercell.set_pbc(True)
 
 # Visualize and save
 view(final_supercell)
-final_supercell.write('Silicon_grain_boundary_50x25x25.data', format='lammps-data')
-final_supercell.write('Silicon_grain_boundary_50x25x25.xyz')
+final_supercell.write('Silicon_grain_boundary_200x50x50.data', format='lammps-data')
+final_supercell.write('Silicon_grain_boundary_200x50x50.xyz')
