@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Base scaling factor settings
-min_scale=0.5
-max_scale=1.0
+min_scale=0.1
+max_scale=3.0
 step=0.1
 
 # File paths
