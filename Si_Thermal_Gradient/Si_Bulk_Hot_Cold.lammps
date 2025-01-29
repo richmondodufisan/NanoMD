@@ -72,7 +72,7 @@ fix temp_profile all ave/chunk 1 1000000 1000000 myChunk temp file temp_profile.
 # Define necessary computes for heat flux
 compute ke_middle middle_atoms ke/atom              # Kinetic energy per atom in middle region
 compute pe_middle middle_atoms pe/atom              # Potential energy per atom in middle region
-compute stress_middle middle_atoms stress/atom NULL # Stress per atom in middle region
+compute stress_middle middle_atoms centroid/stress/atom NULL # Stress per atom in middle region
 
 # Compute the total heat flux in the middle region
 compute heat_flux_middle middle_atoms heat/flux ke_middle pe_middle stress_middle

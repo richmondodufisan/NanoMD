@@ -64,7 +64,7 @@ if __name__ == "__main__":
     smoothed_flux = savitzky_golay_smooth(time, heat_flux, window_size, poly_order)
 
     # Plot the original and smoothed data
-    plot_heat_flux(time, heat_flux, smoothed_flux, 'flux_v_time.png')
+    plot_heat_flux(time, heat_flux, smoothed_flux, 'flux_v_time1.0.png')
 
     # Print the steady-state heat flux
     steady_state_flux = get_steady_state_flux(smoothed_flux)
