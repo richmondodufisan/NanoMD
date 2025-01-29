@@ -2,7 +2,7 @@
 
 # Base scaling factor settings
 min_scale=0.5
-max_scale=3.0
+max_scale=1.0
 step=0.1
 
 # File paths
@@ -42,12 +42,15 @@ for scale in $(seq $min_scale $step $max_scale); do
   # Adjust the LAMMPS input script
   scaled_lammps_script="${output_dir}/scaled_lammps_script_${scale}.lammps"
   cp $base_lammps_script $scaled_lammps_script
+
+  sed -i "s/variable lx_small equal 200/variable lx_small equal \$scaled_x/" $scaled_lammps_script
+  sed -i "s/variable ly_small equal 50/variable ly_small equal \$scaled_y/" $scaled_lammps_script
+  sed -i "s/variable lz_small equal 50/variable lz_small equal \$scaled_z/" $scaled_lammps_script
   
   # Update file paths, regions, and run time in the LAMMPS script
   sed -i "s|read_data .*|read_data ${scaled_geometry_file}|" $scaled_lammps_script
-  sed -i "s/region hot_region block .* .* .* .* .* .*/region hot_region block 0 $(echo "40 * $scale" | bc) 0 $scaled_y 0 $scaled_z units box/" $scaled_lammps_script
-  sed -i "s/region cold_region block .* .* .* .* .* .*/region cold_region block $(echo "160 * $scale" | bc) $(echo "200 * $scale" | bc) 0 $scaled_y 0 $scaled_z units box/" $scaled_lammps_script
-  sed -i "s/region middle_region block .* .* .* .* .* .*/region middle_region block $(echo "40 * $scale" | bc) $(echo "160 * $scale" | bc) 0 $scaled_y 0 $scaled_z units box/" $scaled_lammps_script
+  
+
   
   # Adjust the run time based on the scale (longer for larger boxes)
   run_time=$(printf "%.0f" $(echo "5000000 * $scale" | bc))

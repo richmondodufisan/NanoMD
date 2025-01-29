@@ -11,15 +11,57 @@ atom_style atomic               # Simple atomic style (no bonds or angles, that 
 # 2) System definition
 # Read the atomic structure from the xyz file
 # The box dimensions are defined by you in the xyz file
-read_data Silicon_supercell_200x50x50.data  # Replace with the path to your xyz file
+
+
+# Define the box dimensions
+variable lx_small equal 200  
+variable ly_small equal 50   
+variable lz_small equal 50   
+
+# Create a larger box to avoid losing atoms
+variable lx equal ${lx_small}*1.5  
+variable ly equal ${ly_small}*1.5   
+variable lz equal ${lz_small}*1.5   
+
+# Create the larger simulation box explicitly
+region large_box block 0 ${lx} 0 ${ly} 0 ${lz} units box
+create_box 1 large_box  # Define the simulation box before adding atoms
+
+# Read the raw supercell data (atoms are initially at supercell positions)
+read_data Silicon_supercell_200x50x50.data add append shift 0 0 0
+
+# Shift the atoms to the center of the larger box
+variable xshift equal (${lx}-${lx_small})/2.0  # Calculate the shift in x
+variable yshift equal (${ly}-${ly_small})/2.0   # Calculate the shift in y
+variable zshift equal (${lz}-${lz_small})/2.0   # Calculate the shift in z
+
+# Apply the shift to all atoms
+displace_atoms all move ${xshift} ${yshift} ${zshift} units box
+
+
+
+
+
+
 
 # Define atomic mass of Silicon
 mass 1 28.0855  # Atomic mass of silicon
 
+variable hot_min equal 0
+variable hot_max equal 0+(${lx_small}*0.2)+${xshift}
+variable cold_min equal ${hot_max}+(${lx_small}*0.6)
+variable cold_max equal ${cold_min}+(${lx_small}*0.2)+${xshift}
+
+
+
 # Define the hot, cold, and middle regions based on the simulation box
-region hot_region block 0 40 0 50 0 50 units box   # Leftmost region x direction (hot region)
-region cold_region block 160 200 0 50 0 50 units box # Rightmost region in x direction (cold region)
-region middle_region block 40 160 0 50 0 50 units box # Middle section (everything in between)
+region hot_region block ${hot_min} ${hot_max} 0 ${ly} 0 ${lz} units box   # Leftmost region x direction (hot region)
+
+region cold_region block ${cold_min} ${cold_max} 0 ${ly} 0 ${lz} units box # Rightmost region in x direction (cold region)
+
+region middle_region block ${hot_max} ${cold_min} 0 ${ly} 0 ${lz} units box # Middle section (everything in between)
+
+
 
 # Group the atoms in these regions
 group hot_atoms region hot_region
@@ -112,6 +154,9 @@ fix energy_output_middle all print 100 "${ke_sum_middle}, ${pe_sum_middle}" file
 # Output a trajectory file every 1000 timesteps for visualization in VMD
 dump 1 all atom 1000 dump.lammpstrj
 
+# Export atomic positions in XYZ format for visualization in VESTA
+dump xyz_output all xyz 10000 output.xyz
+dump_modify xyz_output sort id
 
 
 
@@ -119,4 +164,4 @@ dump 1 all atom 1000 dump.lammpstrj
 
 # 8) Run the simulation
 timestep 0.001
-run 50000000  # Run for a long enough time to reach steady-state
+run 5000000  # Run for a long enough time to reach steady-state
