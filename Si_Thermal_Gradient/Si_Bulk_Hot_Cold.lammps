@@ -119,4 +119,4 @@ dump 1 all atom 1000 dump.lammpstrj
 
 # 8) Run the simulation
 timestep 0.001
-run 5000000  # Run for a long enough time to reach steady-state
+run 50000000  # Run for a long enough time to reach steady-state
