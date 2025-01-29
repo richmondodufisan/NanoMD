@@ -2,7 +2,7 @@
 
 # Base scaling factor settings
 min_scale=0.5
-max_scale=2.0
+max_scale=3.0
 step=0.1
 
 # File paths
