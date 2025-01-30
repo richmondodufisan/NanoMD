@@ -47,18 +47,18 @@ def plot_temperature_data(filename):
     # x_position = x_position[n_to_skip:-n_to_skip]
     # temperature = temperature[n_to_skip:-n_to_skip]
     
-    # x_position = x_position[2:-4]
-    # temperature = temperature[2:-4]
+    x_position_fit = x_position[2:-20]
+    temperature_fit = temperature[2:-20]
 
-    slope, intercept = np.polyfit(x_position, temperature, 1)
+    slope, intercept = np.polyfit(x_position_fit, temperature_fit, 1)
 
     # Create the best-fit line
-    best_fit_line = slope * x_position + intercept
+    best_fit_line = slope * x_position_fit + intercept
 
     # Plot the data and the best-fit line
     plt.figure()
     plt.plot(x_position, temperature, 'o', label='Data points')  # Original data points
-    plt.plot(x_position, best_fit_line, 'r-', label=f'Best fit line: y={slope:.2f}x+{intercept:.2f}')  # Best-fit line
+    plt.plot(x_position_fit, best_fit_line, 'r-', label=f'Best fit line: y={slope:.2f}x+{intercept:.2f}')  # Best-fit line
     plt.xlabel('X Position')
     plt.ylabel('Temperature')
     plt.title('X Position vs Temperature with Best Fit Line')
