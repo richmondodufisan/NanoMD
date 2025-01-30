@@ -44,16 +44,16 @@ variable hot_right_max equal ${hot_right_min}+(${lx}*0.1)
 # Define the hot, cold, and middle regions based on the simulation box
 region hot_region_left block ${hot_left_min} ${hot_left_max} 0 ${ly} 0 ${lz} units box   # Leftmost region x direction (hot region)
 
-region hot_region_right block ${hot_right_min} ${hot_right_max} 0 ${ly} 0 ${lz} units box   # Leftmost region x direction (hot region)
+region hot_region_right block ${hot_right_min} ${hot_right_max} 0 ${ly} 0 ${lz} units box   # Rightmost region x direction (hot region)
 
-region cold_region block ${cold_min} ${cold_max} 0 ${ly} 0 ${lz} units box # Rightmost region in x direction (cold region)
-
-
+region cold_region block ${cold_min} ${cold_max} 0 ${ly} 0 ${lz} units box # Middle region in x direction (cold region)
 
 
-region middle_region_left block ${hot_left_max} ${cold_min} 0 ${ly} 0 ${lz} units box # Middle section (everything in between)
 
-region middle_region_right block ${cold_max} ${hot_right_min} 0 ${ly} 0 ${lz} units box # Middle section (everything in between)
+
+region middle_region_left block ${hot_left_max} ${cold_min} 0 ${ly} 0 ${lz} units box 
+
+region middle_region_right block ${cold_max} ${hot_right_min} 0 ${ly} 0 ${lz} units box
 
 
 
