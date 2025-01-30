@@ -8,20 +8,29 @@ import pdb
 
 # Function to calculate box volume based on the suffix
 # The middle box of the "1.0" simulation is 120 x 50 x 50
-# def calculate_box_volume(suffix):
-    # """
-    # Calculate the box volume by scaling the base dimensions (120 x 50 x 50)
-    # with the suffix.
-    # """
-    # base_length = 120
-    # base_width = 50
-    # base_height = 50
-    # return (base_length * suffix) * (base_width * suffix) * (base_height * suffix)
+def calculate_box_volume(suffix):
+    """
+    Calculate the box volume by scaling the base dimensions (120 x 50 x 50)
+    with the suffix.
+    """
+    base_length = 120
+    base_width = 50
+    base_height = 50
+    return (base_length * suffix) * (base_width * suffix) * (base_height * suffix)
 
 
-
+extensive_flux = [776.5761663468576, 940.1539851246981, 1430.1208944273103]
 steady_state_fluxes = []
+
+suffixes = [0.6, 0.7, 0.8]
 box_volumes = []
+
+
+for suffix in suffixes:
+  box_volumes.append(calculate_box_volume(suffix))
+  
+for flux, volume in zip(extensive_flux, box_volumes):
+  steady_state_fluxes.append(flux/volume)
 
 # Plot scaled steady-state flux vs box volume
 plt.figure(figsize=(10, 6))
@@ -32,11 +41,11 @@ plt.ylabel('Scaled Steady-State Heat Flux')
 plt.title('Scaled Steady-State Heat Flux vs Box Volume')
 plt.grid(True)
 plt.legend()
-plt.savefig(output_plot)
+plt.savefig('heat_flux_vs_volume')
 plt.show()
 
 
-slopes = []
+slopes = [-10.20, -9.06, -8.0]
 
 # Plot temperature slope vs box volume
 plt.figure(figsize=(10, 6))

@@ -39,13 +39,16 @@ def plot_temperature_data(filename):
     temperature = data[:, 3]
 
     # Perform linear regression to fit a straight line
-    suffix = float(filename.split('_')[-1].replace('.txt', ''))
-    n_chunks = int(20 * suffix)
-    n_to_skip = int(0.2 * n_chunks) + 1
+    # suffix = float(filename.split('_')[-1].replace('.txt', ''))
+    # n_chunks = int(20 * suffix)
+    # n_to_skip = int(0.2 * n_chunks) + 1
 
     # Slice data based on n_to_skip
-    x_position = x_position[n_to_skip:-n_to_skip]
-    temperature = temperature[n_to_skip:-n_to_skip]
+    # x_position = x_position[n_to_skip:-n_to_skip]
+    # temperature = temperature[n_to_skip:-n_to_skip]
+    
+    # x_position = x_position[2:-4]
+    # temperature = temperature[2:-4]
 
     slope, intercept = np.polyfit(x_position, temperature, 1)
 
@@ -62,7 +65,7 @@ def plot_temperature_data(filename):
     plt.legend()
     plt.grid(True)
 
-    plt.savefig(f'{filename.split("/")[-1].replace(".txt", "")}_temp_profile.png')
+    plt.savefig(f'{filename.split("/")[-1].replace(".txt", "")}_temp_profile_1.0.png')
 
     # Show the plot
     plt.show()
@@ -72,4 +75,4 @@ def plot_temperature_data(filename):
 
 # Main code block for single-file plotting (for testing)
 if __name__ == "__main__":
-    plot_temperature_data('./lammps_out/temp_profile_0.2.txt')
+    plot_temperature_data('./lammps_out/temp_profile_1.0.txt')
