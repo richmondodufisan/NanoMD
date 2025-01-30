@@ -2,7 +2,7 @@
 
 # Base scaling factor settings
 min_scale=0.5
-max_scale=1.0
+max_scale=2.0
 step=0.1
 
 # File paths
@@ -22,8 +22,8 @@ lammps_scripts=()
 for scale in $(seq $min_scale $step $max_scale); do
   # Scale dimensions
   scaled_x=$(echo "200 * $scale" | bc)
-  scaled_y=$(echo "50 * $scale" | bc)
-  scaled_z=$(echo "50 * $scale" | bc)
+  scaled_y=$(echo "25 * $scale" | bc)
+  scaled_z=$(echo "25 * $scale" | bc)
   
   # Generate scaled geometry
   scaled_python_script="${output_dir}/silicon_box_${scale}.py"
@@ -43,23 +43,27 @@ for scale in $(seq $min_scale $step $max_scale); do
   scaled_lammps_script="${output_dir}/scaled_lammps_script_${scale}.lammps"
   cp $base_lammps_script $scaled_lammps_script
 
-  sed -i "s/variable lx_small equal 200/variable lx_small equal $scaled_x/" $scaled_lammps_script
-  sed -i "s/variable ly_small equal 50/variable ly_small equal $scaled_y/" $scaled_lammps_script
-  sed -i "s/variable lz_small equal 50/variable lz_small equal $scaled_z/" $scaled_lammps_script
+  sed -i "s/variable lx equal 200/variable lx equal $scaled_x/" $scaled_lammps_script
+  sed -i "s/variable ly equal 25/variable ly equal $scaled_y/" $scaled_lammps_script
+  sed -i "s/variable lz equal 25/variable lz equal $scaled_z/" $scaled_lammps_script
 
   # Update file paths, regions, and run time in the LAMMPS script
-  sed -i "s|read_data .*|read_data ${scaled_geometry_file} add append shift 0 0 0|" $scaled_lammps_script
+  sed -i "s|read_data .*|read_data ${scaled_geometry_file}|" $scaled_lammps_script
   
 
   
   # Adjust the run time based on the scale (longer for larger boxes)
   run_time=$(printf "%.0f" $(echo "5000000 * $scale" | bc))
-  sed -i "s/run [0-9]*/run ${run_time}/" $scaled_lammps_script
+  
+  # Replace ONLY the LAST "run" command
+  sed -i -E '$s/run [0-9]*/run '${run_time}'/' $scaled_lammps_script
   
   # Modify output file names to include scaling factor
   sed -i "s/temp_profile.txt/temp_profile_${scale}.txt/" $scaled_lammps_script
-  sed -i "s/heat_flux_output_middle.txt/heat_flux_output_middle_${scale}.txt/" $scaled_lammps_script
-  sed -i "s/energy_output_middle.txt/energy_output_middle_${scale}.txt/" $scaled_lammps_script
+  
+  sed -i "s/heat_flux_output_middle_left.txt/heat_flux_output_middle_left_${scale}.txt/" $scaled_lammps_script
+  sed -i "s/heat_flux_output_middle_right.txt/heat_flux_output_middle_right_${scale}.txt/" $scaled_lammps_script
+
   sed -i "s/dump.lammpstrj/dump_${scale}.lammpstrj/" $scaled_lammps_script
 
   # Save the new LAMMPS script to the list

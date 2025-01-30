@@ -14,29 +14,12 @@ atom_style atomic               # Simple atomic style (no bonds or angles, that 
 
 
 # Define the box dimensions
-variable lx_small equal 200  
-variable ly_small equal 50   
-variable lz_small equal 50   
-
-# Create a larger box to avoid losing atoms
-variable lx equal ${lx_small}*1.5  
-variable ly equal ${ly_small}*1.5   
-variable lz equal ${lz_small}*1.5   
-
-# Create the larger simulation box explicitly
-region large_box block 0 ${lx} 0 ${ly} 0 ${lz} units box
-create_box 1 large_box  # Define the simulation box before adding atoms
+variable lx equal 200  
+variable ly equal 25   
+variable lz equal 25   
 
 # Read the raw supercell data (atoms are initially at supercell positions)
-read_data Silicon_supercell_200x50x50.data add append shift 0 0 0
-
-# Shift the atoms to the center of the larger box
-variable xshift equal (${lx}-${lx_small})/2.0  # Calculate the shift in x
-variable yshift equal (${ly}-${ly_small})/2.0   # Calculate the shift in y
-variable zshift equal (${lz}-${lz_small})/2.0   # Calculate the shift in z
-
-# Apply the shift to all atoms
-displace_atoms all move ${xshift} ${yshift} ${zshift} units box
+read_data Silicon_supercell_200x25x25.data
 
 
 
@@ -47,41 +30,56 @@ displace_atoms all move ${xshift} ${yshift} ${zshift} units box
 # Define atomic mass of Silicon
 mass 1 28.0855  # Atomic mass of silicon
 
-variable hot_min equal 0+${xshift}
-variable hot_max equal 0+(${lx_small}*0.2)+${xshift}
-variable cold_min equal ${hot_max}+(${lx_small}*0.6)
-variable cold_max equal ${cold_min}+(${lx_small}*0.2)
+variable hot_left_min equal 0
+variable hot_left_max equal 0+(${lx}*0.1)
+
+variable cold_min equal ${hot_left_max}+(${lx}*0.35)
+variable cold_max equal ${cold_min}+(${lx}*0.1)
+
+variable hot_right_min equal ${cold_max}+(${lx}*0.35)
+variable hot_right_max equal ${hot_right_min}+(${lx}*0.1)
 
 
 
 # Define the hot, cold, and middle regions based on the simulation box
-region hot_region block ${hot_min} ${hot_max} 0 ${ly} 0 ${lz} units box   # Leftmost region x direction (hot region)
+region hot_region_left block ${hot_left_min} ${hot_left_max} 0 ${ly} 0 ${lz} units box   # Leftmost region x direction (hot region)
+
+region hot_region_right block ${hot_right_min} ${hot_right_max} 0 ${ly} 0 ${lz} units box   # Leftmost region x direction (hot region)
 
 region cold_region block ${cold_min} ${cold_max} 0 ${ly} 0 ${lz} units box # Rightmost region in x direction (cold region)
 
-region middle_region block ${hot_max} ${cold_min} 0 ${ly} 0 ${lz} units box # Middle section (everything in between)
 
 
 
-# Extra space for periodic BCs
-region left_extra block 0 ${xshift} 0 ${ly} 0 ${lz} units box
+region middle_region_left block ${hot_left_max} ${cold_min} 0 ${ly} 0 ${lz} units box # Middle section (everything in between)
 
-region right_extra block ${cold_max} ${lx} 0 ${ly} 0 ${lz} units box
+region middle_region_right block ${cold_max} ${hot_right_min} 0 ${ly} 0 ${lz} units box # Middle section (everything in between)
+
 
 
 
 # Group the atoms in these regions
-# group hot_atoms region hot_region
+# group hot_left_atoms region hot_region_left
+# group hot_right_atoms region hot_region_right
 # group cold_atoms region cold_region
-# group middle_atoms region middle_region
+
+# group middle_left_atoms region middle_region_left 
+# group middle_right_atoms region middle_region_right
+
+
 
 # Use dynamic groups ("Eulerian" POV)
-group hot_atoms dynamic all region hot_region every 1
+group hot_left_atoms dynamic all region hot_region_left every 1
+group hot_right_atoms dynamic all region hot_region_right every 1
 group cold_atoms dynamic all region cold_region every 1
-group middle_atoms dynamic all region middle_region every 1
 
-group extra_atoms_left dynamic all region left_extra every 1
-group extra_atoms_right dynamic all region right_extra every 1
+
+
+group middle_left_atoms dynamic all region middle_region_left every 1
+group middle_right_atoms dynamic all region middle_region_right every 1
+
+
+
 
 
 
@@ -100,17 +98,19 @@ run 0
 
 
 # Set initial velocities
-velocity hot_atoms create 1000 12345 mom yes rot yes dist gaussian  # High temperature for hot region
+velocity hot_left_atoms create 1000 12345 mom yes rot yes dist gaussian  # High temperature for hot region
+velocity hot_right_atoms create 1000 12345 mom yes rot yes dist gaussian  # High temperature for hot region
 velocity cold_atoms create 300 67890 mom yes rot yes dist gaussian  # Low (room) temperature for cold region
 
 
 
-fix 1 hot_atoms nvt temp 1000.0 1000.0 0.1  # Apply thermostat to hot region, NVT ensemble
-fix 2 cold_atoms nvt temp 300.0 300.0 0.1  # Apply thermostat to cold region, NVT ensemble
-fix 3 middle_atoms nve  # Apply NVE to the middle region (no thermostat), NVE ensemble
+fix 1 hot_left_atoms nvt temp 1000.0 1000.0 0.1  # Apply thermostat to hot region, NVT ensemble
+fix 2 hot_right_atoms nvt temp 1000.0 1000.0 0.1  # Apply thermostat to hot region, NVT ensemble
+fix 3 cold_atoms nvt temp 300.0 300.0 0.1  # Apply thermostat to cold region, NVT ensemble
 
-fix 4 extra_atoms_left nve
-fix 5 extra_atoms_right nve
+
+fix 4 middle_left_atoms nve  # Apply NVE to the middle region (no thermostat), NVE ensemble
+fix 5 middle_right_atoms nve  # Apply NVE to the middle region (no thermostat), NVE ensemble
 
 
 
@@ -121,8 +121,8 @@ fix 5 extra_atoms_right nve
 
 # 4) Compute and output the temperature profile at final timestep
 
-# Bin atoms along the x-direction into chunks of width 10.0
-compute myChunk all chunk/atom bin/1d x lower 10.0
+# Bin atoms along the x-direction into chunks of width 5.0
+compute myChunk all chunk/atom bin/1d x lower 5.0
 
 # Compute the temperature profile
 fix temp_profile all ave/chunk 1 1000000 1000000 myChunk temp file temp_profile.txt
@@ -132,44 +132,35 @@ fix temp_profile all ave/chunk 1 1000000 1000000 myChunk temp file temp_profile.
 
 
 
-
 # 5) Compute the heat flux for the middle region
 # Define necessary computes for heat flux
 
-compute ke_middle middle_atoms ke/atom              		# Kinetic energy per atom in middle region
-compute pe_middle middle_atoms pe/atom              		# Potential energy per atom in middle region
-compute stress_middle middle_atoms stress/atom NULL virial 	# Stress per atom in middle region (virial contributions only)
+compute ke_middle_left middle_left_atoms ke/atom              		# Kinetic energy per atom in middle region
+compute pe_middle_left middle_left_atoms pe/atom              		# Potential energy per atom in middle region
+compute stress_middle_left middle_left_atoms stress/atom NULL virial 	# Stress per atom in middle region (virial contributions only)
+
+compute ke_middle_right middle_right_atoms ke/atom              		# Kinetic energy per atom in middle region
+compute pe_middle_right middle_right_atoms pe/atom              		# Potential energy per atom in middle region
+compute stress_middle_right middle_right_atoms stress/atom NULL virial 	# Stress per atom in middle region (virial contributions only)
 
 
 
 # Compute the total heat flux in the middle region
-compute heat_flux_middle middle_atoms heat/flux ke_middle pe_middle stress_middle
-# compute heat_flux_middle middle_atoms heat/flux ke_middle pe_middle
+compute heat_flux_middle_left middle_left_atoms heat/flux ke_middle_left pe_middle_left stress_middle_left
+compute heat_flux_middle_right middle_right_atoms heat/flux ke_middle_right pe_middle_right stress_middle_right
+
 
 
 
 # Define the heat flux in the x-direction for the middle region
-variable J_middle equal c_heat_flux_middle[1]       # Heat flux component in the x-direction for middle region
+variable J_middle_left equal c_heat_flux_middle_left[1]       # Heat flux component in the x-direction for middle region
+variable J_middle_right equal c_heat_flux_middle_right[1]       # Heat flux component in the x-direction for middle region
+
+
 
 # Output the heat flux value for the middle region to a file
-fix heat_flux_output_middle all print 100 "${J_middle}" file heat_flux_output_middle.txt screen no
-
-
-
-
-
-# 6) Compute total energy of middle atoms (kinetic + potential)
-compute total_ke_middle middle_atoms reduce sum c_ke_middle  # Sum of kinetic energy for middle atoms
-compute total_pe_middle middle_atoms reduce sum c_pe_middle  # Sum of potential energy for middle atoms
-
-# Store the results of the computes in variables
-variable ke_sum_middle equal c_total_ke_middle
-variable pe_sum_middle equal c_total_pe_middle
-
-# Output kinetic and potential energy separately to a different text file
-fix energy_output_middle all print 100 "${ke_sum_middle}, ${pe_sum_middle}" file energy_output_middle.txt screen no
-
-
+fix heat_flux_output_middle_left all print 100 "${J_middle_left}" file heat_flux_output_middle_left.txt screen no
+fix heat_flux_output_middle_right all print 100 "${J_middle_right}" file heat_flux_output_middle_right.txt screen no
 
 
 

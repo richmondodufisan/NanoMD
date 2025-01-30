@@ -8,7 +8,7 @@ from ase.visualize import view
 unit_cell = read('Si.cif')  # Replace with your CIF file path
 
 # Desired box dimensions [x, y, z]
-desired_box = np.array([200, 50, 50])
+desired_box = np.array([200, 25, 25])
 
 # Get the lattice vectors of the unit cell
 cell = unit_cell.get_cell()
@@ -42,7 +42,7 @@ trimmed_supercell.set_pbc(True)  # Enable periodic boundary conditions
 # view(trimmed_supercell)
 
 # Save the final trimmed structure to a LAMMPS data file
-trimmed_supercell.write('Silicon_supercell_200x50x50.data', format='lammps-data')
+trimmed_supercell.write('Silicon_supercell_200x25x25.data', format='lammps-data')
 
 # Optionally, you can also save as an XYZ file if needed
-trimmed_supercell.write('Silicon_supercell_200x50x50.xyz')
+trimmed_supercell.write('Silicon_supercell_200x25x25.xyz')
