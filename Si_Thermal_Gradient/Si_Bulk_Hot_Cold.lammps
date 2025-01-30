@@ -1,7 +1,7 @@
 # 1) Initialization
 units metal                     # Using metal units
 dimension 3                     # 3D simulation
-boundary f p p                  # Periodic boundary conditions in y & z, fixed in x
+boundary p p p                  # Periodic boundary conditions in y & z, fixed in x # EDIT - PERIODIC EVERYWHERE
 atom_style atomic               # Simple atomic style (no bonds or angles, that info should be included in interatomic potential file)
 
 
@@ -47,10 +47,10 @@ displace_atoms all move ${xshift} ${yshift} ${zshift} units box
 # Define atomic mass of Silicon
 mass 1 28.0855  # Atomic mass of silicon
 
-variable hot_min equal 0
+variable hot_min equal 0+${xshift}
 variable hot_max equal 0+(${lx_small}*0.2)+${xshift}
 variable cold_min equal ${hot_max}+(${lx_small}*0.6)
-variable cold_max equal ${cold_min}+(${lx_small}*0.2)+${xshift}
+variable cold_max equal ${cold_min}+(${lx_small}*0.2)
 
 
 
@@ -63,10 +63,25 @@ region middle_region block ${hot_max} ${cold_min} 0 ${ly} 0 ${lz} units box # Mi
 
 
 
+# Extra space for periodic BCs
+region left_extra block 0 ${xshift} 0 ${ly} 0 ${lz} units box
+
+region right_extra block ${cold_max} ${lx} 0 ${ly} 0 ${lz} units box
+
+
+
 # Group the atoms in these regions
-group hot_atoms region hot_region
-group cold_atoms region cold_region
-group middle_atoms region middle_region
+# group hot_atoms region hot_region
+# group cold_atoms region cold_region
+# group middle_atoms region middle_region
+
+# Use dynamic groups ("Eulerian" POV)
+group hot_atoms dynamic all region hot_region every 1
+group cold_atoms dynamic all region cold_region every 1
+group middle_atoms dynamic all region middle_region every 1
+
+group extra_atoms_left dynamic all region left_extra every 1
+group extra_atoms_right dynamic all region right_extra every 1
 
 
 
@@ -79,6 +94,11 @@ group middle_atoms region middle_region
 pair_style tersoff/mod
 pair_coeff * * Si.tersoff.mod Si  # Apply the Tersoff potential to silicon from https://www.ctcms.nist.gov/potentials/system/Si/
 
+
+# "Run" to initialize system so that groups can be dynamically populated
+run 0
+
+
 # Set initial velocities
 velocity hot_atoms create 1000 12345 mom yes rot yes dist gaussian  # High temperature for hot region
 velocity cold_atoms create 300 67890 mom yes rot yes dist gaussian  # Low (room) temperature for cold region
@@ -88,6 +108,9 @@ velocity cold_atoms create 300 67890 mom yes rot yes dist gaussian  # Low (room)
 fix 1 hot_atoms nvt temp 1000.0 1000.0 0.1  # Apply thermostat to hot region, NVT ensemble
 fix 2 cold_atoms nvt temp 300.0 300.0 0.1  # Apply thermostat to cold region, NVT ensemble
 fix 3 middle_atoms nve  # Apply NVE to the middle region (no thermostat), NVE ensemble
+
+fix 4 extra_atoms_left nve
+fix 5 extra_atoms_right nve
 
 
 
