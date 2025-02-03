@@ -13,16 +13,16 @@ def calculate_box_volume(suffix):
     Calculate the box volume by scaling the base dimensions (120 x 50 x 50)
     with the suffix.
     """
-    base_length = 120
-    base_width = 50
-    base_height = 50
+    base_length = 70
+    base_width = 25
+    base_height = 25
     return (base_length * suffix) * (base_width * suffix) * (base_height * suffix)
 
 
-extensive_flux = [776.5761663468576, 940.1539851246981, 1430.1208944273103]
+extensive_flux = [301.1955177099526, 496.5364539730309, 638.7511583814965, 721.8555101155985, 941.9044351341644]
 steady_state_fluxes = []
 
-suffixes = [0.6, 0.7, 0.8]
+suffixes = [1.0, 1.1, 1.2, 1.3, 1.4]
 box_volumes = []
 
 
@@ -45,7 +45,7 @@ plt.savefig('heat_flux_vs_volume')
 plt.show()
 
 
-slopes = [-10.20, -9.06, -8.0]
+slopes = [-8.16, -7.52, -6.99, -6.16, -5.78]
 
 # Plot temperature slope vs box volume
 plt.figure(figsize=(10, 6))

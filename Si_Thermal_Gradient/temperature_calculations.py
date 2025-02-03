@@ -47,8 +47,8 @@ def plot_temperature_data(filename):
     # x_position = x_position[n_to_skip:-n_to_skip]
     # temperature = temperature[n_to_skip:-n_to_skip]
     
-    x_position_fit = x_position[2:-20]
-    temperature_fit = temperature[2:-20]
+    x_position_fit = x_position[7:-28]
+    temperature_fit = temperature[7:-28]
 
     slope, intercept = np.polyfit(x_position_fit, temperature_fit, 1)
 
@@ -65,7 +65,7 @@ def plot_temperature_data(filename):
     plt.legend()
     plt.grid(True)
 
-    plt.savefig(f'{filename.split("/")[-1].replace(".txt", "")}_temp_profile_1.0.png')
+    plt.savefig(f'{filename.split("/")[-1].replace(".txt", "")}_temp_profile_1.4.png')
 
     # Show the plot
     plt.show()
@@ -75,4 +75,4 @@ def plot_temperature_data(filename):
 
 # Main code block for single-file plotting (for testing)
 if __name__ == "__main__":
-    plot_temperature_data('./lammps_out/temp_profile_1.0.txt')
+    plot_temperature_data('./lammps_out/temp_profile_1.4.txt')
