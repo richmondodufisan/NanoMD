@@ -3,32 +3,6 @@ import matplotlib.pyplot as plt
 
 def calculate_slope(filename):
     """
-    Calculate the slope of temperature vs position for a given data file.
-    This function will also handle variable chunks based on suffix.
-    """
-    # Load the data from the text file, skipping the first 4 lines
-    data = np.loadtxt(filename, skiprows=1)
-
-    # Extract the second and fourth columns
-    x_position = data[:, 1]  # second column
-    temperature = data[:, 3]  # fourth column
-
-    # Determine the number of chunks and how many to skip based on suffix
-    suffix = float(filename.split('_')[-1].replace('.txt', ''))
-    n_chunks = int(20 * suffix)
-    n_to_skip = int(0.2 * n_chunks) + 1
-
-    # Slice data based on n_to_skip
-    x_position = x_position[n_to_skip:-n_to_skip]
-    temperature = temperature[n_to_skip:-n_to_skip]
-
-    # Perform linear regression to fit a straight line (y = mx + b)
-    slope, intercept = np.polyfit(x_position, temperature, 1)
-
-    return slope
-
-def plot_temperature_data(filename):
-    """
     Plot the temperature data and best fit line for a single file.
     """
     # Load the data from the text file
@@ -39,16 +13,18 @@ def plot_temperature_data(filename):
     temperature = data[:, 3]
 
     # Perform linear regression to fit a straight line
-    # suffix = float(filename.split('_')[-1].replace('.txt', ''))
-    # n_chunks = int(20 * suffix)
-    # n_to_skip = int(0.2 * n_chunks) + 1
+    suffix = float(filename.split('_')[-1].replace('.txt', ''))
+    n_chunks = int(40 * suffix)
+    
+    n_to_skip_front = int(0.075 * n_chunks)
+    n_to_skip_back = int(0.5 * n_chunks) + n_to_skip_front
 
     # Slice data based on n_to_skip
-    # x_position = x_position[n_to_skip:-n_to_skip]
-    # temperature = temperature[n_to_skip:-n_to_skip]
+    x_position_fit = x_position[n_to_skip_front:-n_to_skip_back]
+    temperature_fit = temperature[n_to_skip_front:-n_to_skip_back]
     
-    x_position_fit = x_position[7:-28]
-    temperature_fit = temperature[7:-28]
+    # x_position_fit = x_position[7:-43]
+    # temperature_fit = temperature[7:-43]
 
     slope, intercept = np.polyfit(x_position_fit, temperature_fit, 1)
 
@@ -65,14 +41,16 @@ def plot_temperature_data(filename):
     plt.legend()
     plt.grid(True)
 
-    plt.savefig(f'{filename.split("/")[-1].replace(".txt", "")}_temp_profile_1.4.png')
+    plt.savefig(f'{filename.split("/")[-1].replace(".txt", "")}_temp_profile_2.0.png')
 
     # Show the plot
     plt.show()
 
     # Print the slope of the line
     print(f"The slope of the best-fit line is: {slope:.2f}")
+    
+    return slope
 
 # Main code block for single-file plotting (for testing)
 if __name__ == "__main__":
-    plot_temperature_data('./lammps_out/temp_profile_1.4.txt')
+    plot_temperature_data('./output_new/temp_profile_2.0.txt')

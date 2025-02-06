@@ -57,7 +57,7 @@ if __name__ == "__main__":
     time, heat_flux = read_heat_flux_data(filename)
 
     # Set parameters for Savitzky-Golay filter
-    window_size = 5001  # Needs to be odd
+    window_size = 5501  # Needs to be odd
     poly_order = 3
 
     # Apply Savitzky-Golay smoothing
