@@ -65,11 +65,11 @@ def plot_temperature_slope_vs_volume():
     box_volumes = []
 
     # Exact suffixes to avoid floating-point approximation errors
-    suffixes = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
+    suffixes = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3.0]
 
     for suffix in suffixes:
         # Generate the filename for the temperature profile
-        filename = f"./output_new/temp_profile_{suffix}.txt"
+        filename = f"./lammps_current/temp_profile_{suffix}.txt"
 
         try:
             # Calculate the temperature slope using the helper file
@@ -142,8 +142,8 @@ if __name__ == "__main__":
     POLY_ORDER = 3
 
     # Generate filenames based on exact suffixes
-    suffixes = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
-    filenames = [f"./output_new/heat_flux_output_middle_left_{suffix}.txt" for suffix in suffixes]
+    suffixes = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3.0]
+    filenames = [f"./lammps_current/heat_flux_output_middle_left_{suffix}.txt" for suffix in suffixes]
 
     # Process files and plot the steady-state flux vs box volume
     box_volumes, steady_state_fluxes = plot_steady_state_vs_volume(filenames)

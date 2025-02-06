@@ -2,7 +2,7 @@
 
 # Base scaling factor settings
 min_scale=0.5
-max_scale=10.0
+max_scale=3.0
 step=0.1
 
 # File paths
@@ -53,7 +53,7 @@ for scale in $(seq $min_scale $step $max_scale); do
 
   
   # Adjust the run time based on the scale (longer for larger boxes)
-  run_time=$(printf "%.0f" $(echo "500000 * $scale" | bc))
+  run_time=$(printf "%.0f" $(echo "2500000 * $scale" | bc))
   
   # Replace ONLY the LAST "run" command
   sed -i -E '$s/run [0-9]*/run '${run_time}'/' $scaled_lammps_script
