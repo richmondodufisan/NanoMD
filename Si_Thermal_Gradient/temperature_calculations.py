@@ -17,7 +17,9 @@ def calculate_slope(filename):
     n_chunks = int(40 * suffix)
     
     n_to_skip_front = int(0.075 * n_chunks)
+    
     n_to_skip_back = int(0.5 * n_chunks) + n_to_skip_front
+    # n_to_skip_back = n_to_skip_front
 
     # Slice data based on n_to_skip
     x_position_fit = x_position[n_to_skip_front:-n_to_skip_back]
@@ -41,7 +43,7 @@ def calculate_slope(filename):
     plt.legend()
     plt.grid(True)
 
-    plt.savefig(f'{filename.split("/")[-1].replace(".txt", "")}_temp_profile_2.0.png')
+    plt.savefig(f'{filename.split("/")[-1].replace(".txt", "")}.png')
 
     # Show the plot
     plt.show()
@@ -53,4 +55,4 @@ def calculate_slope(filename):
 
 # Main code block for single-file plotting (for testing)
 if __name__ == "__main__":
-    plot_temperature_data('./output_new/temp_profile_2.0.txt')
+    calculate_slope('./output_new/temp_profile_2.0.txt')
