@@ -118,8 +118,6 @@ velocity all create 500 12345 mom yes rot yes dist gaussian
 # Equilibrate the entire system using NVT before applying temperature gradient
 fix equilibration all nvt temp 500.0 500.0 0.1 
 run 50000  # Run for 50,000 timesteps for equilibration
-unfix equilibration  # Remove equilibration fix
-
 
 # Output trajectory during equilibration
 dump equil all atom 1000 equilibration.lammpstrj  
@@ -128,8 +126,6 @@ dump_modify equil sort id
 # Export atomic positions in XYZ format after equilibration
 dump xyz_equil all xyz 50000 equilibrated.xyz  
 dump_modify xyz_equil sort id  
-
-run 50000  
 
 unfix equilibration  
 undump equil  
