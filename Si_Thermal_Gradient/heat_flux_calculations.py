@@ -53,7 +53,7 @@ def plot_heat_flux(time, heat_flux, smoothed_flux, output_file=None):
 
 # Main code block for single-file processing
 if __name__ == "__main__":
-    filename = './output_new/heat_flux_output_middle_left_2.0.txt'  # Replace with the path to your file
+    filename = './lammps_half_long/heat_flux_output_middle_left_0.5.txt'  # Replace with the path to your file
     time, heat_flux = read_heat_flux_data(filename)
 
     # Set parameters for Savitzky-Golay filter
@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
 
     # Plot the original and smoothed data
-    plot_heat_flux(time, heat_flux, smoothed_flux, 'flux_v_time2.0.png')
+    plot_heat_flux(time, heat_flux, smoothed_flux, 'flux_v_time0.5.png')
 
     # Print the steady-state heat flux
     steady_state_flux = get_steady_state_flux(smoothed_flux)

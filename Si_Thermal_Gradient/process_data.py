@@ -38,7 +38,8 @@ def plot_steady_state_vs_volume(filenames, output_plot='steady_state_vs_volume.p
         plot_heat_flux(time, heat_flux, smoothed_flux, 'flux_v_time' + str(suffix) + '.png')
 
         # Scale steady-state heat flux by box volume
-        scaled_flux = steady_state_flux / box_volume
+        # scaled_flux = steady_state_flux / box_volume
+        scaled_flux = steady_state_flux
 
         # Append results for plotting
         box_volumes.append(box_volume)

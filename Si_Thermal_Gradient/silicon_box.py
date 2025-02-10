@@ -25,11 +25,15 @@ print("Scaling factors (number of repetitions along x, y, z):", scaling_factors)
 scaling_matrix = np.diag(scaling_factors)
 supercell = make_supercell(unit_cell, scaling_matrix)
 
-# FOR COLORING VISUALIZATION
 
+
+
+
+
+############## FOR COLORING VISUALIZATION  #############
 # Define the coloring regions
-x_min = 0.2 * desired_box[0]
-x_max = 0.8 * desired_box[0]
+# x_min = 0.2 * desired_box[0]
+# x_max = 0.8 * desired_box[0]
 
 
 # lx = desired_box[0]
@@ -54,16 +58,23 @@ colors = []
 for atom in supercell:
     pos = atom.position
     if (0 < pos[0] < desired_box[0]) and (0 < pos[1] < desired_box[1]) and (0 < pos[2] < desired_box[2]):
+    
+    
         trimmed_positions.append(pos)
         trimmed_symbols.append(atom.symbol)
         
-        # # Assign colors based on position
-        if pos[0] < x_min:
-            colors.append('red')  # Leftmost region
-        elif pos[0] > x_max:
-            colors.append('blue')  # Rightmost region
-        else:
-            colors.append('gray')  # Default color
+        
+        
+        
+        ############## FOR COLORING VISUALIZATION  #############
+        
+        # # # Assign colors based on position
+        # if pos[0] < x_min:
+            # colors.append('red')  # Leftmost region
+        # elif pos[0] > x_max:
+            # colors.append('blue')  # Rightmost region
+        # else:
+            # colors.append('gray')  # Default color
             
             
         # Assign colors based on position
@@ -74,20 +85,29 @@ for atom in supercell:
         # else:
             # colors.append('gray')  # Default color
 
+
+
+
 # Create a new Atoms object with only the atoms inside the box
 trimmed_supercell = Atoms(positions=trimmed_positions, symbols=trimmed_symbols, cell=desired_box)
 trimmed_supercell.set_pbc(True)  # Enable periodic boundary conditions
 
-# Visualization using Matplotlib
-fig, ax = plt.subplots(figsize=(10, 5))
 
-# Increase radii and remove black boundaries
-plot_atoms(trimmed_supercell, ax, colors=colors, radii=0.8)
-ax.set_xticks([])
-ax.set_yticks([])
-ax.set_frame_on(False)  # Remove axis frame
-plt.savefig("atom_config.png")
-plt.show()
+
+############## FOR COLORING VISUALIZATION  #############
+# Visualization using Matplotlib
+# fig, ax = plt.subplots(figsize=(10, 5))
+
+# # Increase radii and remove black boundaries
+# plot_atoms(trimmed_supercell, ax, colors=colors, radii=0.8)
+# ax.set_xticks([])
+# ax.set_yticks([])
+# ax.set_frame_on(False)  # Remove axis frame
+# plt.savefig("atom_config.png")
+# plt.show()
+
+
+
 
 # Save the final trimmed structure
 trimmed_supercell.write('Silicon_supercell_200x25x25.data', format='lammps-data')

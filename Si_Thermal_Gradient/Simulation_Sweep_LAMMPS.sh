@@ -60,11 +60,13 @@ for scale in $(seq $min_scale $step $max_scale); do
   
   # Modify output file names to include scaling factor
   sed -i "s/temp_profile.txt/temp_profile_${scale}.txt/" $scaled_lammps_script
-  
   sed -i "s/heat_flux_output_middle_left.txt/heat_flux_output_middle_left_${scale}.txt/" $scaled_lammps_script
   sed -i "s/heat_flux_output_middle_right.txt/heat_flux_output_middle_right_${scale}.txt/" $scaled_lammps_script
-
   sed -i "s/dump.lammpstrj/dump_${scale}.lammpstrj/" $scaled_lammps_script
+  
+  # Modify equilibration output filenames
+  sed -i "s/equilibration.lammpstrj/equilibration_${scale}.lammpstrj/" $scaled_lammps_script
+  sed -i "s/equilibrated.xyz/equilibrated_${scale}.xyz/" $scaled_lammps_script
 
   # Save the new LAMMPS script to the list
   lammps_scripts+=($scaled_lammps_script)
