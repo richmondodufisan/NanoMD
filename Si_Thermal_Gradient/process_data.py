@@ -38,8 +38,8 @@ def plot_steady_state_vs_volume(filenames, output_plot='steady_state_vs_volume.p
         plot_heat_flux(time, heat_flux, smoothed_flux, 'flux_v_time' + str(suffix) + '.png')
 
         # Scale steady-state heat flux by box volume
-        # scaled_flux = steady_state_flux / box_volume
-        scaled_flux = steady_state_flux
+        scaled_flux = steady_state_flux / box_volume
+        # scaled_flux = steady_state_flux
 
         # Append results for plotting
         box_volumes.append(box_volume)
@@ -66,11 +66,11 @@ def plot_temperature_slope_vs_volume():
     box_volumes = []
 
     # Exact suffixes to avoid floating-point approximation errors
-    suffixes = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    suffixes = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5]
 
     for suffix in suffixes:
         # Generate the filename for the temperature profile
-        filename = f"./lammps_equil/temp_profile_{suffix}.txt"
+        filename = f"./lammps_equil_new/temp_profile_{suffix}.txt"
 
         try:
             # Calculate the temperature slope using the helper file
@@ -139,12 +139,12 @@ def plot_thermal_conductivity_vs_volume(steady_state_fluxes, slopes, box_volumes
 # Main code block
 if __name__ == "__main__":
     # Parameters for Savitzky-Golay smoothing
-    WINDOW_SIZE = 5001  # Needs to be odd
+    WINDOW_SIZE = 10001  # Needs to be odd
     POLY_ORDER = 3
 
     # Generate filenames based on exact suffixes
-    suffixes = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
-    filenames = [f"./lammps_equil/heat_flux_output_middle_left_{suffix}.txt" for suffix in suffixes]
+    suffixes = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5]
+    filenames = [f"./lammps_equil_new/heat_flux_output_middle_left_{suffix}.txt" for suffix in suffixes]
 
     # Process files and plot the steady-state flux vs box volume
     box_volumes, steady_state_fluxes = plot_steady_state_vs_volume(filenames)

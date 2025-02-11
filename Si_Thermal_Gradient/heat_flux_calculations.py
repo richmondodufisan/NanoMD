@@ -46,6 +46,10 @@ def plot_heat_flux(time, heat_flux, smoothed_flux, output_file=None):
     plt.grid(True)
     plt.legend()
     
+    # Print the steady-state heat flux
+    steady_state_flux = get_steady_state_flux(smoothed_flux)
+    print(f"Steady state heat flux (Savitzky-Golay): {steady_state_flux}")
+    
     if output_file:
         plt.savefig(output_file)
     plt.show()
@@ -67,6 +71,4 @@ if __name__ == "__main__":
     # Plot the original and smoothed data
     plot_heat_flux(time, heat_flux, smoothed_flux, 'flux_v_time0.5.png')
 
-    # Print the steady-state heat flux
-    steady_state_flux = get_steady_state_flux(smoothed_flux)
-    print(f"Steady state heat flux (Savitzky-Golay): {steady_state_flux}")
+    
