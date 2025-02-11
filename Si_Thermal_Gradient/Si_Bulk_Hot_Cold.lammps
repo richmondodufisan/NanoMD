@@ -116,7 +116,8 @@ minimize 1.0e-4 1.0e-6 1000 10000
 velocity all create 500 12345 mom yes rot yes dist gaussian  
 
 # Equilibrate the entire system using NVT before applying temperature gradient
-fix equilibration all nvt temp 500.0 500.0 0.1 
+fix equilibration all nvt temp 500.0 500.0 0.5 
+timestep 0.001
 run 50000  # Run for 50,000 timesteps for equilibration
 
 # Output trajectory during equilibration
@@ -131,7 +132,7 @@ unfix equilibration
 undump equil  
 undump xyz_equil
 
-
+reset_timestep 0
 
 
 
@@ -142,16 +143,10 @@ undump xyz_equil
 
 
 # 5) Apply Temperature Gradient
-# Set initial velocities
-velocity hot_left_atoms create 1000 12345 mom yes rot yes dist gaussian  # High temperature for hot region
-velocity hot_right_atoms create 1000 12345 mom yes rot yes dist gaussian  # High temperature for hot region
-velocity cold_atoms create 300 67890 mom yes rot yes dist gaussian  # Low (room) temperature for cold region
 
-
-
-fix 1 hot_left_atoms nvt temp 1000.0 1000.0 0.1  # Apply thermostat to hot region, NVT ensemble
-fix 2 hot_right_atoms nvt temp 1000.0 1000.0 0.1  # Apply thermostat to hot region, NVT ensemble
-fix 3 cold_atoms nvt temp 300.0 300.0 0.1  # Apply thermostat to cold region, NVT ensemble
+fix 1 hot_left_atoms nvt temp 500.0 1000.0 0.5  # Apply thermostat to hot region, NVT ensemble
+fix 2 hot_right_atoms nvt temp 500.0 1000.0 0.5  # Apply thermostat to hot region, NVT ensemble
+fix 3 cold_atoms nvt temp 500.0 300.0 0.5  # Apply thermostat to cold region, NVT ensemble
 
 
 fix 4 middle_left_atoms nve  # Apply NVE to the middle region (no thermostat), NVE ensemble
@@ -223,4 +218,4 @@ dump 1 all atom 1000 dump.lammpstrj
 
 # 8) Run the simulation
 timestep 0.001
-run 2500000  # Run for a long enough time to reach steady-state
+run 5000000  # Run for a long enough time to reach steady-state
