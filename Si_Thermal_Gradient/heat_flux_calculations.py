@@ -57,11 +57,11 @@ def plot_heat_flux(time, heat_flux, smoothed_flux, output_file=None):
 
 # Main code block for single-file processing
 if __name__ == "__main__":
-    filename = './lammps_half_long/heat_flux_output_middle_left_0.5.txt'  # Replace with the path to your file
+    filename = './lammps_og_tersoff/heat_flux_output_middle_left_3.4.txt'  # Replace with the path to your file
     time, heat_flux = read_heat_flux_data(filename)
 
     # Set parameters for Savitzky-Golay filter
-    window_size = 5001  # Needs to be odd
+    window_size = 10001  # Needs to be odd
     poly_order = 3
 
     # Apply Savitzky-Golay smoothing

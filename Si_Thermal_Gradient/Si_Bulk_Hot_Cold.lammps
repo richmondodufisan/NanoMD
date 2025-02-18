@@ -94,7 +94,7 @@ group middle_right_atoms dynamic all region middle_region_right every 1
 # pair_coeff * * Si.tersoff.mod Si  # Apply the Tersoff potential to silicon from https://www.ctcms.nist.gov/potentials/system/Si/
 
 pair_style tersoff
-pair_coeff * * 1988_Si(B).tersoff Si  
+pair_coeff * * Si.tersoff.mod Si  
 
 
 # "Run" to initialize system so that groups can be dynamically populated
@@ -182,4 +182,4 @@ dump 1 all atom 1000 dump.lammpstrj
 
 # 8) Run the simulation
 timestep 0.001
-run 2500000  # Run for a long enough time to reach steady-state
+run 5000000  # Run for a long enough time to reach steady-state

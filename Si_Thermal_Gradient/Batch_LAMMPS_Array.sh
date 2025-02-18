@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --account=p32089  ## YOUR ACCOUNT pXXXX or bXXXX
-#SBATCH --partition=long  ### PARTITION (buyin, short, normal, etc)
+#SBATCH --partition=normal  ### PARTITION (buyin, short, normal, etc)
 #SBATCH --array=0-5         ## Adjust based on the number of LAMMPS scripts in the text file (0-indexed)
 #SBATCH --nodes=1           ## Number of nodes per job
 #SBATCH --ntasks-per-node=10 ## Number of CPUs per node
-#SBATCH --time=168:00:00     ## Max runtime per job
+#SBATCH --time=48:00:00     ## Max runtime per job
 #SBATCH --mem-per-cpu=1G    ## Memory per CPU
 #SBATCH --job-name=Si_LAMMPS_Batch  ## Job name for identification
 #SBATCH --output=log_%A_%a.lammps ## Output log file for each array task (%A is the job ID, %a is the array task ID)

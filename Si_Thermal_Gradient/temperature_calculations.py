@@ -55,4 +55,4 @@ def calculate_slope(filename):
 
 # Main code block for single-file plotting (for testing)
 if __name__ == "__main__":
-    calculate_slope('./output_new/temp_profile_2.0.txt')
+    calculate_slope('./lammps_out_tersoff/temp_profile_5.0.txt')
