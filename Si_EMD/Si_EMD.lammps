@@ -1,12 +1,33 @@
 # Equilibrium Molecular Dynamics (EMD) for Silicon Thermal Conductivity
 
-# 1) Initialization
-units metal                      # Using metal units
+# Define variables:
+
+units       real
+variable    T equal 500
+variable    V equal vol
+variable    dt equal 4.0
+variable    p equal 200     # correlation length
+variable    s equal 10      # sample interval
+variable    d equal $p*$s   # dump interval
+
+# Convert to SI Units:
+
+variable    kB equal 1.3806504e-23    # [J/K] Boltzmann
+variable    kCal2J equal 4186.0/6.02214e23
+variable    A2m equal 1.0e-10
+variable    fs2s equal 1.0e-15
+variable    convert equal ${kCal2J}*${kCal2J}/${fs2s}/${A2m}
+
+
+
+
+
+
+# Problem Setup
 dimension 3                      # 3D simulation
 boundary p p p                   # Periodic boundary conditions in all directions
 atom_style atomic                # Atomic style
 
-# 2) System Definition
 variable lx equal 200  
 variable ly equal 25   
 variable lz equal 25   
@@ -17,16 +38,28 @@ read_data Silicon_supercell_200x25x25.data
 # Define atomic mass of Silicon
 mass 1 28.0855  
 
-# 3) Interatomic Potential (Tersoff)
+# Interatomic Potential (Modified Tersoff)
 pair_style tersoff/mod
 pair_coeff * * Si.tersoff.mod Si  
 
-# 4) Equilibration
-velocity all create 300 12345 mom yes rot yes dist gaussian  # Initialize velocities
-fix NVT all nvt temp 300.0 300.0 0.1                        # NVT ensemble for equilibration
-run 10000                                                    # Run for system stabilization
+timestep     ${dt}
+thermo       $d
 
-# 5) Setup for Thermal Conductivity Calculation
+
+
+
+
+
+# Equilibration & Thermalization
+velocity all create $T 123456 mom yes rot yes dist gaussian		# Initialize velocities
+fix NVT all nvt temp $T $T 10 drag 0.2							# NVT ensemble for equilibration
+run 10000														# Run for system stabilization
+
+
+
+
+
+# Thermal Conductivity Calculation
 unfix NVT
 fix NVE all nve                                              # Switch to NVE ensemble
 
@@ -36,37 +69,21 @@ compute myPE all pe/atom
 compute myStress all stress/atom NULL virial
 compute flux all heat/flux myKE myPE myStress                # Compute heat flux
 
+# Heat Flux Components
 variable Jx equal c_flux[1]/vol
 variable Jy equal c_flux[2]/vol
 variable Jz equal c_flux[3]/vol
 
 # Autocorrelation function for heat flux
-variable p equal 200      # correlation length
-variable s equal 10       # sample interval
-variable d equal $p*$s    # dump interval
+fix          JJ all ave/correlate $s $p $d &
+             c_flux[1] c_flux[2] c_flux[3] type auto file J0Jt.dat ave running
+variable     scale equal ${convert}/${kB}/$T/$T/$V*$s*${dt}
+variable     k11 equal trap(f_JJ[3])*${scale}
+variable     k22 equal trap(f_JJ[4])*${scale}
+variable     k33 equal trap(f_JJ[5])*${scale}
 
-fix JJ all ave/correlate $s $p $d & 
-    c_flux[1] c_flux[2] c_flux[3] type auto file J0Jt.dat ave running
-
-# Conversion to SI units
-variable kB equal 1.3806504e-23  # [J/K] Boltzmann
-variable eV2J equal 1.60218e-19  # eV to Joules
-variable A2m equal 1.0e-10       # Angstrom to meters
-variable ps2s equal 1.0e-12      # Picoseconds to seconds
-
-variable convert equal ${eV2J}*${eV2J}/${ps2s}/${A2m}
-
-variable scale equal ${convert}/${kB}/1000/1000/vol*$s*0.001
-variable k11 equal trap(f_JJ[3])*${scale}
-variable k22 equal trap(f_JJ[4])*${scale}
-variable k33 equal trap(f_JJ[5])*${scale}
-
-# Output
-thermo 5000
 thermo_style custom step temp v_Jx v_Jy v_Jz v_k11 v_k22 v_k33
-
-run 500000  # Run for long enough to gather meaningful statistics
-
-variable k equal (v_k11+v_k22+v_k33)/3.0
-variable ndens equal count(all)/vol
-print "average conductivity: $k [W/mK] @ 1000 K, ${ndens} /A^3"
+run          100000
+variable     k equal (v_k11+v_k22+v_k33)/3.0
+variable     ndens equal count(all)/vol
+print        "average conductivity: $k[W/mK] @ $T K, ${ndens} /A\^3"
