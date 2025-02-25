@@ -18,7 +18,7 @@ read_data Silicon_supercell_200x25x25.data
 mass 1 28.0855  
 
 # 3) Interatomic Potential (Tersoff)
-pair_style tersoff
+pair_style tersoff/mod
 pair_coeff * * Si.tersoff.mod Si  
 
 # 4) Equilibration
