@@ -46,13 +46,9 @@ pair_coeff * * Si.sw Si
 
 
 
-timestep     ${dt}
+
+
 thermo       $d
-
-
-
-
-
 
 # Equilibration & Thermalization
 velocity all create $T 123456 mom yes rot yes dist gaussian		# Initialize velocities
