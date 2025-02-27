@@ -58,7 +58,7 @@ thermo       $d
 # Equilibration & Thermalization
 velocity all create $T 123456 mom yes rot yes dist gaussian		# Initialize velocities
 fix NVT all nvt temp $T $T 10 drag 0.2							# NVT ensemble for equilibration
-run 10000														# Run for system stabilization
+run 100000														# Run for system stabilization
 
 
 
@@ -88,7 +88,7 @@ variable     k22 equal trap(f_JJ[4])*${scale}
 variable     k33 equal trap(f_JJ[5])*${scale}
 
 thermo_style custom step temp v_Jx v_Jy v_Jz v_k11 v_k22 v_k33
-run          100000
+run          1000000
 variable     k equal (v_k11+v_k22+v_k33)/3.0
 variable     ndens equal count(all)/vol
 print        "average conductivity: $k[W/mK] @ $T K, ${ndens} /A\^3"
