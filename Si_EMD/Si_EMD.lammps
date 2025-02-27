@@ -5,10 +5,18 @@
 units       real
 variable    T equal 500
 variable    V equal vol
-variable    dt equal 0.01
-variable    p equal 77     # correlation length
-variable    s equal 1      # sample interval
-variable    d equal $p*$s   # dump interval
+
+# variable    dt equal 0.01
+# variable    p equal 77     # correlation length
+# variable    s equal 1      # sample interval
+# variable    d equal $p*$s   # dump interval
+
+variable dt equal 1.0
+variable p equal 2000
+variable s equal 10
+variable d equal $p*$s
+
+
 
 # Convert to SI Units:
 
@@ -39,11 +47,11 @@ read_data Silicon_supercell_200x25x25.data
 mass 1 28.0855  
 
 # Interatomic Potential (Modified Tersoff)
-# pair_style tersoff/mod
-# pair_coeff * * Si.tersoff.mod Si  
+pair_style tersoff/mod
+pair_coeff * * Si.tersoff.mod Si  
 
-pair_style sw
-pair_coeff * * Si.sw Si  
+# pair_style sw
+# pair_coeff * * Si.sw Si  
 
 
 
