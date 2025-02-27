@@ -6,7 +6,7 @@ units       real
 variable    T equal 500
 variable    V equal vol
 variable    dt equal 0.01
-variable    p equal 76.6     # correlation length
+variable    p equal 77     # correlation length
 variable    s equal 1      # sample interval
 variable    d equal $p*$s   # dump interval
 
