@@ -19,7 +19,7 @@ variable ly equal 25
 variable lz equal 25   
 
 # Read the raw supercell data (atoms are initially at supercell positions)
-read_data Silicon_supercell_200x25x25.data
+read_data Silica_supercell_200x25x25.data
 
 
 
@@ -27,8 +27,11 @@ read_data Silicon_supercell_200x25x25.data
 
 
 
-# Define atomic mass of Silicon
-mass 1 28.0855  # Atomic mass of silicon
+# Define atomic mass of Silicon & Oxygen
+mass 1 28.0855  # Silicon (Si)
+mass 2 15.9994  # Oxygen (O)
+
+
 
 variable hot_left_min equal 0
 variable hot_left_max equal 0+(${lx}*0.1)
@@ -88,13 +91,10 @@ group middle_right_atoms dynamic all region middle_region_right every 1
 
 
 # 3) Simulation settings
-# Set the interatomic potential (modified Tersoff potential for silicon)
-
-# pair_style tersoff/mod
-# pair_coeff * * Si.tersoff.mod Si  # Apply the Tersoff potential to silicon from https://www.ctcms.nist.gov/potentials/system/Si/
+# Set the interatomic potential (Tersoff potential for Si-O)
 
 pair_style tersoff
-pair_coeff * * Si.tersoff.mod Si  
+pair_coeff * * 2007_SiO.tersoff Si O 
 
 
 # "Run" to initialize system so that groups can be dynamically populated

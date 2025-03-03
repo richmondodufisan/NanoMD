@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # Base scaling factor settings
-min_scale=0.5
-max_scale=1.0
-step=0.1
+min_scale=1.0
+max_scale=50.0
+step=2.5
 
 # File paths
-base_python_script="silicon_box.py"  # Replace with the Python script name
-base_lammps_script="Si_Bulk_Hot_Cold.lammps"  # Replace with your LAMMPS script name
-geometry_file_prefix="Silicon_supercell"  # Prefix for generated geometry files
-xyz_file_prefix="Silicon_supercell"  # Prefix for XYZ files
+base_python_script="silica_box.py"  # Replace with the Python script name
+base_lammps_script="SiO2_Bulk_Hot_Cold.lammps"  # Replace with your LAMMPS script name
+geometry_file_prefix="Silica_supercell"  # Prefix for generated geometry files
+xyz_file_prefix="Silica_supercell"  # Prefix for XYZ files
 output_dir="scaled_simulations"  # Directory to store results
 
 # Create the output directory
