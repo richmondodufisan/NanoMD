@@ -1,0 +1,185 @@
+# 1) Initialization
+units metal                     # Using metal units
+dimension 3                     # 3D simulation
+boundary p p p                  # Periodic boundary conditions in y & z, fixed in x # EDIT - PERIODIC EVERYWHERE
+atom_style atomic               # Simple atomic style (no bonds or angles, that info should be included in interatomic potential file)
+
+
+
+
+
+# 2) System definition
+# Read the atomic structure from the xyz file
+# The box dimensions are defined by you in the xyz file
+
+
+# Define the box dimensions
+variable lx equal 140.0  
+variable ly equal 25   
+variable lz equal 25   
+
+# Read the raw supercell data (atoms are initially at supercell positions)
+read_data scaled_simulations/Silicon_supercell_0.7.data
+
+
+
+
+
+
+
+# Define atomic mass of Silicon
+mass 1 28.0855  # Atomic mass of silicon
+
+variable hot_left_min equal 0
+variable hot_left_max equal 0+(${lx}*0.1)
+
+variable cold_min equal ${hot_left_max}+(${lx}*0.35)
+variable cold_max equal ${cold_min}+(${lx}*0.1)
+
+variable hot_right_min equal ${cold_max}+(${lx}*0.35)
+variable hot_right_max equal ${hot_right_min}+(${lx}*0.1)
+
+
+
+# Define the hot, cold, and middle regions based on the simulation box
+region hot_region_left block ${hot_left_min} ${hot_left_max} 0 ${ly} 0 ${lz} units box   # Leftmost region x direction (hot region)
+
+region hot_region_right block ${hot_right_min} ${hot_right_max} 0 ${ly} 0 ${lz} units box   # Rightmost region x direction (hot region)
+
+region cold_region block ${cold_min} ${cold_max} 0 ${ly} 0 ${lz} units box # Middle region in x direction (cold region)
+
+
+
+
+region middle_region_left block ${hot_left_max} ${cold_min} 0 ${ly} 0 ${lz} units box 
+
+region middle_region_right block ${cold_max} ${hot_right_min} 0 ${ly} 0 ${lz} units box
+
+
+
+
+# Group the atoms in these regions
+# group hot_left_atoms region hot_region_left
+# group hot_right_atoms region hot_region_right
+# group cold_atoms region cold_region
+
+# group middle_left_atoms region middle_region_left 
+# group middle_right_atoms region middle_region_right
+
+
+
+# Use dynamic groups ("Eulerian" POV)
+group hot_left_atoms dynamic all region hot_region_left every 1
+group hot_right_atoms dynamic all region hot_region_right every 1
+group cold_atoms dynamic all region cold_region every 1
+
+
+
+group middle_left_atoms dynamic all region middle_region_left every 1
+group middle_right_atoms dynamic all region middle_region_right every 1
+
+
+
+
+
+
+
+
+
+
+# 3) Simulation settings
+# Set the interatomic potential (modified Tersoff potential for silicon)
+
+# pair_style tersoff/mod
+# pair_coeff * * Si.tersoff.mod Si  # Apply the Tersoff potential to silicon from https://www.ctcms.nist.gov/potentials/system/Si/
+
+pair_style tersoff
+pair_coeff * * Si.tersoff.mod Si  
+
+
+# "Run" to initialize system so that groups can be dynamically populated
+run 0
+
+
+# Set initial velocities
+velocity hot_left_atoms create 1000 12345 mom yes rot yes dist gaussian  # High temperature for hot region
+velocity hot_right_atoms create 1000 12345 mom yes rot yes dist gaussian  # High temperature for hot region
+velocity cold_atoms create 300 67890 mom yes rot yes dist gaussian  # Low (room) temperature for cold region
+
+
+
+fix 1 hot_left_atoms nvt temp 1000.0 1000.0 0.1  # Apply thermostat to hot region, NVT ensemble
+fix 2 hot_right_atoms nvt temp 1000.0 1000.0 0.1  # Apply thermostat to hot region, NVT ensemble
+fix 3 cold_atoms nvt temp 300.0 300.0 0.1  # Apply thermostat to cold region, NVT ensemble
+
+
+fix 4 middle_left_atoms nve  # Apply NVE to the middle region (no thermostat), NVE ensemble
+fix 5 middle_right_atoms nve  # Apply NVE to the middle region (no thermostat), NVE ensemble
+
+
+
+
+
+
+
+
+# 4) Compute and output the temperature profile at final timestep
+
+# Bin atoms along the x-direction into chunks of width 5.0
+compute myChunk all chunk/atom bin/1d x lower 5.0
+
+# Compute the temperature profile
+fix temp_profile all ave/chunk 1 500000 500000 myChunk temp file temp_profile_0.7.txt
+
+
+
+
+
+
+# 5) Compute the heat flux for the middle region
+# Define necessary computes for heat flux
+
+compute ke_middle_left middle_left_atoms ke/atom              		# Kinetic energy per atom in middle region
+compute pe_middle_left middle_left_atoms pe/atom              		# Potential energy per atom in middle region
+compute stress_middle_left middle_left_atoms stress/atom NULL virial 	# Stress per atom in middle region (virial contributions only)
+
+compute ke_middle_right middle_right_atoms ke/atom              		# Kinetic energy per atom in middle region
+compute pe_middle_right middle_right_atoms pe/atom              		# Potential energy per atom in middle region
+compute stress_middle_right middle_right_atoms stress/atom NULL virial 	# Stress per atom in middle region (virial contributions only)
+
+
+
+# Compute the total heat flux in the middle region
+compute heat_flux_middle_left middle_left_atoms heat/flux ke_middle_left pe_middle_left stress_middle_left
+compute heat_flux_middle_right middle_right_atoms heat/flux ke_middle_right pe_middle_right stress_middle_right
+
+
+
+
+# Define the heat flux in the x-direction for the middle region
+variable J_middle_left equal c_heat_flux_middle_left[1]       # Heat flux component in the x-direction for middle region
+variable J_middle_right equal c_heat_flux_middle_right[1]       # Heat flux component in the x-direction for middle region
+
+
+
+# Output the heat flux value for the middle region to a file
+fix heat_flux_output_middle_left all print 100 "${J_middle_left}" file heat_flux_output_middle_left_0.7.txt screen no
+fix heat_flux_output_middle_right all print 100 "${J_middle_right}" file heat_flux_output_middle_right_0.7.txt screen no
+
+
+
+# 7) Dump the trajectory for visualization
+# Output a trajectory file every 1000 timesteps for visualization in VMD
+dump 1 all atom 1000 dump_0.7.lammpstrj
+
+# Export atomic positions in XYZ format for visualization in VESTA
+# dump xyz_output all xyz 10000 output.xyz
+# dump_modify xyz_output sort id
+
+
+
+
+
+# 8) Run the simulation
+timestep 0.001
+run 3500000  # Run for a long enough time to reach steady-state

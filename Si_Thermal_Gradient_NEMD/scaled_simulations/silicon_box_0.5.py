@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 unit_cell = read('Si.cif')  # Replace with your CIF file path
 
 # Desired box dimensions [x, y, z]
-desired_box = np.array([200, 25, 25])
+desired_box = np.array([100.0, 25, 25])
 
 # Get the lattice vectors of the unit cell
 cell = unit_cell.get_cell()
@@ -110,5 +110,5 @@ trimmed_supercell.set_pbc(True)  # Enable periodic boundary conditions
 
 
 # Save the final trimmed structure
-trimmed_supercell.write('Silicon_supercell_200x25x25.data', format='lammps-data')
-trimmed_supercell.write('Silicon_supercell_200x25x25.xyz')
+trimmed_supercell.write('scaled_simulations/Silicon_supercell_0.5.data', format='lammps-data')
+trimmed_supercell.write('scaled_simulations/Silicon_supercell_0.5.xyz')

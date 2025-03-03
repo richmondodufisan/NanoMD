@@ -2,7 +2,7 @@
 
 # Base scaling factor settings
 min_scale=0.5
-max_scale=3.0
+max_scale=1.0
 step=0.1
 
 # File paths
@@ -22,8 +22,8 @@ lammps_scripts=()
 for scale in $(seq $min_scale $step $max_scale); do
   # Scale dimensions
   scaled_x=$(echo "200 * $scale" | bc)
-  scaled_y=$(echo "25 * $scale" | bc)
-  scaled_z=$(echo "25 * $scale" | bc)
+  scaled_y=25
+  scaled_z=25
   
   # Generate scaled geometry
   scaled_python_script="${output_dir}/silicon_box_${scale}.py"
