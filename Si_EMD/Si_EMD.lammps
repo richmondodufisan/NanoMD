@@ -96,7 +96,7 @@ fix          JJ all ave/correlate $s $p $d &
 # if flux is not scaled by V, then V should be in denominator
 # writing the expression a bit clearer:
 
-variable scale equal (${convert}/(${kB}*$T*$T*V))*$s*${dt}
+variable scale equal (${convert}/(${kB}*$T*$T*$V))*$s*${dt}
 
 variable     k11 equal trap(f_JJ[3])*${scale}
 variable     k22 equal trap(f_JJ[4])*${scale}
