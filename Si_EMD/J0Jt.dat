@@ -1,3 +1,0 @@
-# Time-correlated data for fix JJ
-# Timestep Number-of-time-windows
-# Index TimeDelta Ncount c_flux[1]*c_flux[1] c_flux[2]*c_flux[2] c_flux[3]*c_flux[3]
