@@ -16,9 +16,10 @@ def calculate_slope(filename):
     suffix = float(filename.split('_')[-1].replace('.txt', ''))
     n_chunks = int(40 * suffix)
     
-    n_to_skip_front = int(0.075 * n_chunks)
+    n_to_skip_front = int(0.2 * n_chunks)
     
-    n_to_skip_back = int(0.5 * n_chunks) + n_to_skip_front
+    # n_to_skip_back = int(0.5 * n_chunks) + n_to_skip_front
+    n_to_skip_back = int(0.5 * n_chunks)
     # n_to_skip_back = n_to_skip_front
 
     # Slice data based on n_to_skip
@@ -55,4 +56,4 @@ def calculate_slope(filename):
 
 # Main code block for single-file plotting (for testing)
 if __name__ == "__main__":
-    calculate_slope('./lammps_out_tersoff/temp_profile_5.0.txt')
+    calculate_slope('./results/temp_profile_1.0.txt')

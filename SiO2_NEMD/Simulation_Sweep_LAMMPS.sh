@@ -50,10 +50,8 @@ for scale in $(seq $min_scale $step $max_scale); do
   # Update file paths, regions, and run time in the LAMMPS script
   sed -i "s|read_data .*|read_data ${scaled_geometry_file}|" $scaled_lammps_script
   
-
-  
   # Adjust the run time based on the scale (longer for larger boxes)
-  run_time=$(printf "%.0f" $(echo "10000000 * $scale" | bc))
+  run_time=$(printf "%.0f" $(echo "1000000 * $scale" | bc))
   
   # Replace ONLY the LAST "run" command
   sed -i -E '$s/run [0-9]*/run '${run_time}'/' $scaled_lammps_script

@@ -129,7 +129,7 @@ fix 5 middle_right_atoms nve  # Apply NVE to the middle region (no thermostat), 
 compute myChunk all chunk/atom bin/1d x lower 5.0
 
 # Compute the temperature profile
-fix temp_profile all ave/chunk 1 1000000 1000000 myChunk temp file temp_profile.txt
+fix temp_profile all ave/chunk 1 100000 100000 myChunk temp file temp_profile.txt
 
 
 
@@ -170,7 +170,7 @@ fix heat_flux_output_middle_right all print 100 "${J_middle_right}" file heat_fl
 
 # 7) Dump the trajectory for visualization
 # Output a trajectory file every 1000 timesteps for visualization in VMD
-dump 1 all atom 1000 dump.lammpstrj
+# dump 1 all atom 1000 dump.lammpstrj
 
 # Export atomic positions in XYZ format for visualization in VESTA
 # dump xyz_output all xyz 10000 output.xyz
@@ -182,4 +182,4 @@ dump 1 all atom 1000 dump.lammpstrj
 
 # 8) Run the simulation
 timestep 0.001
-run 10000000  # Run for a long enough time to reach steady-state
+run 1000000  # Run for a long enough time to reach steady-state
