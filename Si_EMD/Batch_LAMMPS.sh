@@ -13,4 +13,5 @@ module purge
 module load lammps/20200303-openmpi-4.0.5-intel-19.0.5.281
 
 mpirun -np ${SLURM_NTASKS} lmp -in Si_EMD.lammps
+
 #srun --mpi=pmix_v3 lmp -in in.lj

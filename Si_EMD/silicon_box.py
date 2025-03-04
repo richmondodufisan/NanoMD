@@ -6,7 +6,7 @@ from ase.visualize.plot import plot_atoms
 import matplotlib.pyplot as plt
 
 # Load the unit cell from the CIF file
-unit_cell = read('Si.cif')  # Replace with your CIF file path
+unit_cell = read('Si_hex.cif')  # Replace with your CIF file path
 
 # Desired box dimensions [x, y, z]
 desired_box = np.array([200, 50, 50])
