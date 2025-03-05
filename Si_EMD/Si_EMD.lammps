@@ -6,9 +6,9 @@ units       real
 variable    T equal 500
 variable    V equal vol
 
-variable    dt equal 0.001
-variable    p equal 100      # correlation length
-variable    s equal 1        # sample interval
+variable    dt equal 0.01
+variable    p equal 77      # correlation length
+variable    s equal 100        # sample interval
 variable    d equal $p*$s    # dump interval
 
 # variable dt equal 1.0
@@ -66,7 +66,7 @@ thermo       $d
 # Equilibration & Thermalization
 velocity all create $T 123456 mom yes rot yes dist gaussian		# Initialize velocities
 fix NVT all nvt temp $T $T 100 									# NVT ensemble for equilibration
-run 200000														# Run for system stabilization
+run 500000														# Run for system stabilization
 
 
 
