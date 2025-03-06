@@ -6,10 +6,10 @@ from ase.visualize.plot import plot_atoms
 import matplotlib.pyplot as plt
 
 # Load the unit cell from the CIF file
-unit_cell = read('Si_hex.cif')  # Replace with your CIF file path
+unit_cell = read('Si_cubic.cif')  # Replace with your CIF file path
 
 # Desired box dimensions [x, y, z]
-desired_box = np.array([200, 50, 50])
+desired_box = np.array([21.4, 21.4, 64.2])
 
 # Get the lattice vectors of the unit cell
 cell = unit_cell.get_cell()
@@ -110,5 +110,5 @@ trimmed_supercell.set_pbc(True)  # Enable periodic boundary conditions
 
 
 # Save the final trimmed structure
-trimmed_supercell.write('Silicon_supercell_200x25x25.data', format='lammps-data')
-trimmed_supercell.write('Silicon_supercell_200x25x25.xyz')
+trimmed_supercell.write('Silicon_supercell.data', format='lammps-data')
+trimmed_supercell.write('Silicon_supercell.xyz')

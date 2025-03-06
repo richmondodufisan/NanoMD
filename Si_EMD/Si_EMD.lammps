@@ -8,7 +8,7 @@ variable    V equal vol
 
 variable    dt equal 0.01
 variable    p equal 77      # correlation length
-variable    s equal 100        # sample interval
+variable    s equal 1        # sample interval
 variable    d equal $p*$s    # dump interval
 
 # variable dt equal 1.0
@@ -36,12 +36,12 @@ dimension 3                      # 3D simulation
 boundary p p p                   # Periodic boundary conditions in all directions
 atom_style atomic                # Atomic style
 
-variable lx equal 200  
-variable ly equal 25   
-variable lz equal 25   
+variable lx equal 21.4  
+variable ly equal 21.4   
+variable lz equal 64.2   
 
 # Read the atomic structure from the data file
-read_data Silicon_supercell_200x25x25.data
+read_data Silicon_supercell.data
 
 # Define atomic mass of Silicon
 mass 1 28.0855  
@@ -66,7 +66,7 @@ thermo       $d
 # Equilibration & Thermalization
 velocity all create $T 123456 mom yes rot yes dist gaussian		# Initialize velocities
 fix NVT all nvt temp $T $T 100 									# NVT ensemble for equilibration
-run 500000														# Run for system stabilization
+run 100000														# Run for system stabilization
 
 
 
@@ -103,7 +103,7 @@ variable     k22 equal trap(f_JJ[4])*${scale}
 variable     k33 equal trap(f_JJ[5])*${scale}
 
 thermo_style custom step temp v_Jx v_Jy v_Jz v_k11 v_k22 v_k33
-run          1000000
+run          500000
 variable     k equal (v_k11+v_k22+v_k33)/3.0
 variable     ndens equal count(all)/vol
 print        "average conductivity: $k[W/mK] @ $T K, ${ndens} /A\^3"
