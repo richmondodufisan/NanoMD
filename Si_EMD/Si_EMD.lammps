@@ -6,24 +6,25 @@ units       real
 variable    T equal 500
 variable    V equal vol
 
-variable    dt equal 0.01
-variable    p equal 77      # correlation length
-variable    s equal 1        # sample interval
+# variable    dt equal 0.01	# dt = 0.01 t_u
+# variable    p equal 77      # correlation length, 0.0766 ps = 76.6 fs
+# variable    s equal 1        # sample interval - sample flux at every timestep
+# variable    d equal $p*$s    # dump interval
+
+variable    dt equal 1.0	# dt = 0.01 t_u
+variable    p equal 77      # correlation length, 0.0766 ps = 76.6 fs
+variable    s equal 1        # sample interval - sample flux at every timestep
 variable    d equal $p*$s    # dump interval
 
-# variable dt equal 1.0
-# variable p equal 200
-# variable s equal 10
-# variable d equal $p*$s
 
 
 
 # Convert to SI Units:
 
 variable    kB equal 1.3806504e-23    # [J/K] Boltzmann
-variable    kCal2J equal 4186.0/6.02214e23
-variable    A2m equal 1.0e-10
-variable    fs2s equal 1.0e-15
+variable    eV2J equal 1.60218e-19/6.02214e23 #eV to Joules
+variable    A2m equal 1.0e-10				# Angstroms to Meters
+variable    ps2s equal 1.0e-12				# picoseconds to seconds
 variable    convert equal ${kCal2J}*${kCal2J}/${fs2s}/${A2m}
 
 
@@ -36,9 +37,9 @@ dimension 3                      # 3D simulation
 boundary p p p                   # Periodic boundary conditions in all directions
 atom_style atomic                # Atomic style
 
-variable lx equal 21.4  
-variable ly equal 21.4   
-variable lz equal 64.2   
+# variable lx equal 21.4  
+# variable ly equal 21.4   
+# variable lz equal 64.2   
 
 # Read the atomic structure from the data file
 read_data Silicon_supercell.data
@@ -47,11 +48,11 @@ read_data Silicon_supercell.data
 mass 1 28.0855  
 
 # Interatomic Potential (Modified Tersoff)
-pair_style tersoff/mod
-pair_coeff * * Si.tersoff.mod Si  
+# pair_style tersoff/mod
+# pair_coeff * * Si.tersoff.mod Si  
 
-# pair_style sw
-# pair_coeff * * Si.sw Si  
+pair_style sw
+pair_coeff * * Si.sw Si  
 
 
 

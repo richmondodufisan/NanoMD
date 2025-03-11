@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 unit_cell = read('Si_cubic.cif')  # Replace with your CIF file path
 
 # Desired box dimensions [x, y, z]
-desired_box = np.array([21.4, 21.4, 64.2])
+desired_box = np.array([109, 109, 109])
 
 # Get the lattice vectors of the unit cell
 cell = unit_cell.get_cell()
