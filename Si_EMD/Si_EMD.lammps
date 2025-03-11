@@ -2,7 +2,7 @@
 
 # Define variables:
 
-units       real
+units       metal
 variable    T equal 500
 variable    V equal vol
 
