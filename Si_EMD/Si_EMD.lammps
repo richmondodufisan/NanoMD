@@ -12,7 +12,7 @@ variable    V equal vol
 # variable    d equal $p*$s    # dump interval
 
 variable    dt equal 1.0	# dt = 0.01 t_u
-variable    p equal 77      # correlation length
+variable    p equal 100      # correlation length
 variable    s equal 1        # sample interval - sample flux at every timestep
 variable    d equal $p*$s    # dump interval
 
