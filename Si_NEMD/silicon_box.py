@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 unit_cell = read('Si.cif')  # Replace with your CIF file path
 
 # Desired box dimensions [x, y, z]
-desired_box = np.array([200, 25, 25])
+desired_box = np.array([100, 50, 50])
 
 # Get the lattice vectors of the unit cell
 cell = unit_cell.get_cell()
@@ -32,19 +32,19 @@ supercell = make_supercell(unit_cell, scaling_matrix)
 
 ############## FOR COLORING VISUALIZATION  #############
 # Define the coloring regions
-# x_min = 0.2 * desired_box[0]
-# x_max = 0.8 * desired_box[0]
+x_min = 0.2 * desired_box[0]
+x_max = 0.8 * desired_box[0]
 
 
-# lx = desired_box[0]
-# hot_left_min = 0
-# hot_left_max = 0+(lx*0.1)
+lx = desired_box[0]
+hot_left_min = 0
+hot_left_max = 0+(lx*0.1)
 
-# cold_min = hot_left_max+(lx*0.35)
-# cold_max = cold_min+(lx*0.1)
+cold_min = hot_left_max+(lx*0.35)
+cold_max = cold_min+(lx*0.1)
 
-# hot_right_min = cold_max+(lx*0.35)
-# hot_right_max = hot_right_min+(lx*0.1)
+hot_right_min = cold_max+(lx*0.35)
+hot_right_max = hot_right_min+(lx*0.1)
 
 
 
@@ -68,7 +68,8 @@ for atom in supercell:
         
         ############## FOR COLORING VISUALIZATION  #############
         
-        # # # Assign colors based on position
+        # Assign colors based on position
+        # HOT - COLD
         # if pos[0] < x_min:
             # colors.append('red')  # Leftmost region
         # elif pos[0] > x_max:
@@ -78,12 +79,17 @@ for atom in supercell:
             
             
         # Assign colors based on position
+        # HOT - COLD - HOT
         # if ((pos[0] > hot_left_min) and (pos[0] < hot_left_max))  or ((pos[0] > hot_right_min) and (pos[0] < hot_right_max)):
             # colors.append('red')  # Leftmost region
         # elif ((pos[0] > cold_min) and (pos[0] < cold_max)):
             # colors.append('blue')  # Rightmost region
         # else:
             # colors.append('gray')  # Default color
+            
+        
+        # All one color
+        colors.append('red')
 
 
 
@@ -96,15 +102,15 @@ trimmed_supercell.set_pbc(True)  # Enable periodic boundary conditions
 
 ############## FOR COLORING VISUALIZATION  #############
 # Visualization using Matplotlib
-# fig, ax = plt.subplots(figsize=(10, 5))
+fig, ax = plt.subplots(figsize=(10, 5))
 
-# # Increase radii and remove black boundaries
-# plot_atoms(trimmed_supercell, ax, colors=colors, radii=0.8)
-# ax.set_xticks([])
-# ax.set_yticks([])
-# ax.set_frame_on(False)  # Remove axis frame
-# plt.savefig("atom_config.png")
-# plt.show()
+# Increase radii and remove black boundaries
+plot_atoms(trimmed_supercell, ax, colors=colors, radii=0.8)
+ax.set_xticks([])
+ax.set_yticks([])
+ax.set_frame_on(False)  # Remove axis frame
+plt.savefig("atom_config.png")
+plt.show()
 
 
 
