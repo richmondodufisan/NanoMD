@@ -75,7 +75,8 @@ for atom in supercell:
             # colors.append('blue')  # Rightmost region
         # else:
             # colors.append('gray')  # Default color
-            
+        
+        
             
         # Assign colors based on position
         # if ((pos[0] > hot_left_min) and (pos[0] < hot_left_max))  or ((pos[0] > hot_right_min) and (pos[0] < hot_right_max)):
@@ -86,6 +87,8 @@ for atom in supercell:
             # colors.append('gray')  # Default color
 
 
+        # colors.append('red')  # Default color
+
 
 
 # Create a new Atoms object with only the atoms inside the box
@@ -95,7 +98,7 @@ trimmed_supercell.set_pbc(True)  # Enable periodic boundary conditions
 
 
 ############## FOR COLORING VISUALIZATION  #############
-# Visualization using Matplotlib
+# # Visualization using Matplotlib
 # fig, ax = plt.subplots(figsize=(10, 5))
 
 # # Increase radii and remove black boundaries
