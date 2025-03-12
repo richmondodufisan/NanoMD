@@ -7,7 +7,7 @@ variable    T equal 500
 variable    V equal vol
 
 variable    dt equal 0.001	# dt = 1 fs
-variable    p equal 1000      # correlation length
+variable    p equal 77      # correlation length - 0.0766 ps
 variable    s equal 1        # sample interval - sample flux at every timestep
 variable    d equal $p*$s    # dump interval
 
