@@ -6,8 +6,8 @@ units       metal
 variable    T equal 500
 variable    V equal vol
 
-variable    dt equal 0.001	# dt = 0.01 t_u
-variable    p equal 100      # correlation length, 0.0766 ps = 76.6 fs
+variable    dt equal 0.001	# dt = 1 fs
+variable    p equal 1000      # correlation length
 variable    s equal 1        # sample interval - sample flux at every timestep
 variable    d equal $p*$s    # dump interval
 
@@ -61,7 +61,7 @@ log equilibrium.log
 
 velocity all create $T 123456 mom yes rot yes dist gaussian		# Initialize velocities
 fix NVT all nvt temp $T $T 100 									# NVT ensemble for equilibration
-run 500000														# Run for system stabilization
+run 5000000														# Run for system stabilization
 
 
 
