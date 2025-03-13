@@ -7,8 +7,8 @@ variable    T equal 500
 variable    V equal vol
 
 variable    dt equal 0.000766			# dt = 0.01 * 0.0766 (Volz & Chen - 2009) stable timestep for Silicon
-variable    p equal 200      			# large enough number for sampling
-variable    s equal 10       			# sample interval - sample flux at every 10 timesteps (avoids noise from sampling every step)
+variable    p equal 300      			# large enough number for sampling
+variable    s equal 50       			# sample interval - sample flux at every 10 timesteps (avoids noise from sampling every step)
 variable    d equal $p*$s    			# dump interval/correlation length - integrate to this time instead of to infinity
 
 
