@@ -7,7 +7,7 @@ variable    T equal 500
 variable    V equal vol
 
 variable    dt equal 0.000766			# dt = 0.01 * 0.0766 (Volz & Chen - 2009) stable timestep for Silicon
-variable    p equal 10000      			# large enough number for sampling
+variable    p equal 200      			# large enough number for sampling
 variable    s equal 10       			# sample interval - sample flux at every 10 timesteps (avoids noise from sampling every step)
 variable    d equal $p*$s    			# dump interval/correlation length - integrate to this time instead of to infinity
 
@@ -60,7 +60,7 @@ log equilibrium.log
 
 velocity all create $T 123456 mom yes rot yes dist gaussian		# Initialize velocities
 fix          NVT all nvt temp $T $T 10 drag 0.2 			# NVT ensemble for equilibration
-run 50000					 			# Run for system stabilization
+run 500000					 			# Run for system stabilization
 
 
 
@@ -104,7 +104,7 @@ variable     k22 equal trap(f_JJ[4])*${scale}
 variable     k33 equal trap(f_JJ[5])*${scale}
 
 thermo_style custom step temp v_Jx v_Jy v_Jz v_k11 v_k22 v_k33
-run          100000
+run          10000000
 variable     k equal (v_k11+v_k22+v_k33)/3.0
 variable     ndens equal count(all)/vol
 print        "average conductivity: $k[W/mK] @ $T K, ${ndens} /A\^3"
