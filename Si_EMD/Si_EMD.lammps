@@ -6,11 +6,10 @@ units       metal
 variable    T equal 500
 variable    V equal vol
 
-variable    dt equal 0.001	# dt = 1 fs
-variable    p equal 7700      # correlation length - 0.0766 ps
-variable    s equal 1        # sample interval - sample flux at every timestep
-variable    d equal $p*$s    # dump interval
-
+variable    dt equal 0.000766			# dt = 0.01 * 0.0766 (Volz & Chen - 2009) stable timestep for Silicon
+variable    p equal 10000      			# large enough number for sampling
+variable    s equal 10       			# sample interval - sample flux at every 10 timesteps (avoids noise from sampling every step)
+variable    d equal $p*$s    			# dump interval/correlation length - integrate to this time instead of to infinity
 
 
 
@@ -83,7 +82,13 @@ variable Jx equal c_flux[1]/vol
 variable Jy equal c_flux[2]/vol
 variable Jz equal c_flux[3]/vol
 
+
 # Autocorrelation function for heat flux
+# "running" option means integral is calculated cumulatively
+# actual integral is from zero to infinity, 
+# this stops at the maximum timestep
+# thermal conductivity calculations should be checked for convergence
+
 fix          JJ all ave/correlate $s $p $d &
              c_flux[1] c_flux[2] c_flux[3] type auto file J0Jt.dat ave running
 			 
