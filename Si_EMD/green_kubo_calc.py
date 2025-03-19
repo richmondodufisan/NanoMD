@@ -30,9 +30,9 @@ Jy = data[:, 2]
 Jz = data[:, 3]
 
 # Multiply by V if already scaled by volume (code is for non-scaled fluxes)
-Jx = V * Jx
-Jy = V * Jy
-Jz = V * Jz
+# Jx = V * Jx
+# Jy = V * Jy
+# Jz = V * Jz
 
 # Downsample flux data for plotting
 timesteps_downsampled = timesteps[::s]
