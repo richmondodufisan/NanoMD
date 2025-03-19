@@ -20,7 +20,7 @@ p = 100  # Number of correlation samples
 s = 20  # Sample interval
 d = p * s  # Correlation length in number of timesteps
 
-V = 109 * 109 * 109  # Volume in cubic angstroms
+V = 109**3  # Volume in cubic angstroms
 
 # Load flux data
 data = np.loadtxt("heat_flux.dat")
@@ -100,7 +100,7 @@ def compute_acf(J, p, s, d_timestep):
 
                 C_vals[p_num] += (1/p) * np.dot(J_0, J_t)
 
-            C_vals[p_num] /= n_windows  # Average over available windows
+            C_vals[p_num] /= n_windows  # Average over available windows         
             counts[p_num] = n_windows  # Track number of contributions
 
     return C_vals, counts
@@ -115,7 +115,6 @@ thermal_conductivity_y = []
 thermal_conductivity_z = []
 time_evolution = []
 
-s_values = np.arange(0, p * s, s) * dt  # Convert to time units
 
 total_timesteps = len(timesteps)
 
@@ -127,9 +126,9 @@ else:
         C_y, counts_y = compute_acf(Jy_downsampled, p, s, d_timestep)
         C_z, counts_z = compute_acf(Jz_downsampled, p, s, d_timestep)
 
-        kappa_11 = np.trapz(C_x, s_values) * scale
-        kappa_22 = np.trapz(C_y, s_values) * scale
-        kappa_33 = np.trapz(C_z, s_values) * scale
+        kappa_11 = np.trapz(C_x) * scale
+        kappa_22 = np.trapz(C_y) * scale
+        kappa_33 = np.trapz(C_z) * scale
 
         time_evolution.append(d_timestep * dt)
         thermal_conductivity_x.append(kappa_11)
