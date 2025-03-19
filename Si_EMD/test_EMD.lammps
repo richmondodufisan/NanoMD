@@ -33,7 +33,7 @@ atom_style atomic                # Atomic style
 
 
 # Read the atomic structure from the data file
-read_data Silicon_supercell_109.data
+read_data Silicon_supercell.data
 
 # Define atomic mass of Silicon
 mass 1 28.0855  
