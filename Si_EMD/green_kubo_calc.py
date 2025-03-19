@@ -44,7 +44,7 @@ Jz_downsampled = Jz[::s]
 # Plot raw and downsampled Jx
 plt.figure(figsize=(10, 6))
 plt.plot(timesteps, Jx, label="Raw Jx", alpha=0.5)
-plt.plot(timesteps_downsampled, Jx_downsampled, label="Downsampled Jx", marker='o', linestyle='-', color='red')
+plt.plot(timesteps_downsampled, Jx_downsampled, label="Downsampled Jx", marker='o', linestyle='-', color='red', markersize=3, linewidth=0.5)
 plt.xlabel("Timesteps")
 plt.ylabel("Jx (Heat Flux)")
 plt.title("Raw and Downsampled Jx")
