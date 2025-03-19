@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define parameter values
-sample_vals=("10" "25" "50" "75" "100" "150")
+sample_vals=("200" "250" "300" "350" "400")
 interval_vals=("50" "100" "200" "300" "400" "500")
 length_vals=("109")
 temp_vals=("500")
