@@ -98,8 +98,7 @@ def compute_acf(J, p, s, d_timestep):
                 J_0 = J[loc0:loc0 + p]
                 J_t = J[loct:loct + p]
 
-                # C_vals[p_num] += (1/p) * np.dot(J_0, J_t)
-                C_vals[p_num] += np.dot(J_0, J_t)
+                C_vals[p_num] += (1/p) * np.dot(J_0, J_t)
 
             C_vals[p_num] /= n_windows  # Average over available windows
             counts[p_num] = n_windows  # Track number of contributions
