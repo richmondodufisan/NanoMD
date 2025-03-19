@@ -62,7 +62,7 @@ with open("J0Jt_python.dat", "w") as f_out:
 
 
 
-# Compute ACF function (corrected for cumulative averaging)
+# Compute ACF function
 def compute_acf(J, p, s, d_timestep):
 
     # Compute the autocorrelation function C_J(Δt) at every d timestep.
