@@ -50,6 +50,7 @@ plt.ylabel("Jx (Heat Flux)")
 plt.title("Raw and Downsampled Jx")
 plt.legend()
 plt.grid(True)
+plt.savefig("sampling.png")
 plt.show()
 
 # Open file for J0Jt.dat output
@@ -161,4 +162,5 @@ if thermal_conductivity_x:
     plt.title("Evolution of Thermal Conductivity Over Time")
     plt.legend()
     plt.grid(True)
+    plt.savefig("kappa_evolution.png")
     plt.show()
