@@ -23,7 +23,7 @@ d = p * s  # Correlation length in number of timesteps
 V = 109**3  # Volume in cubic angstroms
 
 # Load flux data
-data = np.loadtxt("heat_flux.dat")
+data = np.loadtxt("test.dat")
 timesteps = data[:, 0]
 Jx = data[:, 1]
 Jy = data[:, 2]

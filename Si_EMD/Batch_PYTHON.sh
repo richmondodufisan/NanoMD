@@ -8,5 +8,13 @@
 #SBATCH --job-name=python  ## When you run squeue -u NETID this is how you can identify the job
 #SBATCH --constraint="[quest8|quest9|quest10|quest11]"
 
+module purge
+module load mamba/24.3.0
+module load git
+eval "$(conda shell.bash hook)"
+
+conda activate my-env
+
 # python3 create_trajectory_video.py
-python3 green_kubo_heatmap.py
+# python3 green_kubo_heatmap.py
+python3 green_kubo_calc.py
