@@ -121,3 +121,4 @@ sns.heatmap(kappa_matrix, xticklabels=unique_s, yticklabels=unique_p, cmap="cool
 plt.xlabel("Sample Interval (s)")
 plt.ylabel("Number of Samples (p)")
 plt.title("Heat Map of Thermal Conductivity")
+plt.savefig("kappa_heatmap.png")
