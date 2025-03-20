@@ -18,8 +18,8 @@ dt = 0.000766  # Timestep [ps]
 V = 109**3  # Volume in cubic angstroms
 
 # Define sample intervals and number of samples for testing
-s_values = np.arange(10, 30, 10)  # Example intervals
-p_values = np.arange(50, 150, 50)  # Example number of samples
+s_values = np.arange(10, 110, 10)  # Example intervals
+p_values = np.arange(10, 110, 10)  # Example number of samples
 
 
 
@@ -42,7 +42,7 @@ truncation_timestep = int(truncation_time / dt)
 # Print truncation details
 print(f"Truncation time: {truncation_time} ps")
 print(f"Truncation timestep: {truncation_timestep} steps")
-print(f"Timestep, dt: {dt} ps")
+print(f"Timestep, dt: {dt} ps\n")
 
 # Truncate data
 timesteps = timesteps[timesteps <= truncation_timestep]
@@ -177,5 +177,5 @@ plt.figure(figsize=(10, 6))
 sns.heatmap(kappa_matrix, xticklabels=unique_s, yticklabels=unique_p, cmap="coolwarm", annot=True, fmt=".2f")
 plt.xlabel("Sample Interval (s)")
 plt.ylabel("Number of Samples (p)")
-plt.title("Heat Map of Thermal Conductivity")
+plt.title("Map of Thermal Conductivity calculated by Green-Kubo Method")
 plt.savefig("kappa_heatmap.png")
