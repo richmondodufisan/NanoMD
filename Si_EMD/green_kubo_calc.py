@@ -16,8 +16,8 @@ convert = (eV2J**2) / (ps2s * A2m)
 # Simulation parameters (should match LAMMPS)
 T = 500  # Temperature [K]
 dt = 0.000766  # Timestep [ps]
-p = 100  # Number of correlation samples
-s = 20  # Sample interval
+p = 350  # Number of correlation samples
+s = 450  # Sample interval
 d = p * s  # Correlation length in number of timesteps
 
 V = 109**3  # Volume in cubic angstroms
@@ -220,7 +220,7 @@ if thermal_conductivity_x:
     plt.plot(time_evolution, thermal_conductivity_z, label=r"$k_{zz}$")
     plt.xlabel("Time (ps)")
     plt.ylabel("Thermal Conductivity (W/mK)")
-    plt.title("Evolution of Thermal Conductivity Over Time")
+    plt.title(f"Evolution of Thermal Conductivity Over Time - p = {p}, s = {s}")
     plt.legend()
     plt.grid(True)
     plt.savefig("kappa_evolution.png")

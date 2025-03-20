@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import pandas as pd
 
 
 # Constants
@@ -172,10 +173,20 @@ for i, p in enumerate(unique_p):
         if np.any(mask):
             kappa_matrix[i, j] = np.mean(kappa_avg[mask])
 
+
+
+# Create a DataFrame from the kappa_matrix
+df_kappa = pd.DataFrame(kappa_matrix, index=unique_p, columns=unique_s)
+
+# Save to CSV
+df_kappa.to_csv("kappa_matrix.csv", index=True, header=True)
+
+
 # Plot heatmap
 plt.figure(figsize=(10, 6))
-sns.heatmap(kappa_matrix, xticklabels=unique_s, yticklabels=unique_p, cmap="coolwarm", annot=True, fmt=".2f")
+sns.heatmap(kappa_matrix, xticklabels=unique_s, yticklabels=unique_p, cmap="coolwarm")
 plt.xlabel("Sample Interval (s)")
 plt.ylabel("Number of Samples (p)")
-plt.title("Map of Thermal Conductivity calculated by Green-Kubo Method")
+plt.title("Thermal Conductivity calculated by Green-Kubo Method")
+plt.tight_layout()
 plt.savefig("kappa_heatmap.png")
