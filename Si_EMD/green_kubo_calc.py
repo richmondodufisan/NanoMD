@@ -23,16 +23,16 @@ d = p * s  # Correlation length in number of timesteps
 V = 109**3  # Volume in cubic angstroms
 
 # Load flux data
-data = np.loadtxt("test.dat")
+data = np.loadtxt("test_flux.dat")
 timesteps = data[:, 0]
 Jx = data[:, 1]
 Jy = data[:, 2]
 Jz = data[:, 3]
 
 # Multiply by V if already scaled by volume (code is for non-scaled fluxes)
-# Jx = V * Jx
-# Jy = V * Jy
-# Jz = V * Jz
+Jx = V * Jx
+Jy = V * Jy
+Jz = V * Jz
 
 # Downsample flux data for plotting
 timesteps_downsampled = timesteps[::s]
@@ -50,11 +50,11 @@ plt.ylabel("Jx (Heat Flux)")
 plt.title("Raw and Downsampled Jx")
 plt.legend()
 plt.grid(True)
-plt.savefig("sampling.png")
-plt.show()
+plt.savefig("sampling_old.png")
+# plt.show()
 
 # Open file for J0Jt.dat output
-with open("J0Jt_python.dat", "w") as f_out:
+with open("J0Jt_python_old.dat", "w") as f_out:
 
 # Index TimeDelta Ncount c_flux[1]*c_flux[1] c_flux[2]*c_flux[2] c_flux[3]*c_flux[3]
     f_out.write("# Time-correlated data for Python Green-Kubo analysis\n")
@@ -137,7 +137,7 @@ else:
         thermal_conductivity_z.append(kappa_33)
 
         # Write to J0Jt.dat file
-        with open("J0Jt_python.dat", "a") as f_out:
+        with open("J0Jt_python_old.dat", "a") as f_out:
             f_out.write(f"{d_timestep - d} {p}\n")
             
             for k in range(p):
@@ -162,5 +162,5 @@ if thermal_conductivity_x:
     plt.title("Evolution of Thermal Conductivity Over Time")
     plt.legend()
     plt.grid(True)
-    plt.savefig("kappa_evolution.png")
-    plt.show()
+    plt.savefig("kappa_evolution_old.png")
+    # plt.show()
