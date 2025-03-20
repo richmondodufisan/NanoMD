@@ -16,5 +16,4 @@ eval "$(conda shell.bash hook)"
 conda activate my-env
 
 # python3 create_trajectory_video.py
-# python3 green_kubo_heatmap.py
-python3 green_kubo_calc.py
+python3 green_kubo_heatmap.py

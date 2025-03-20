@@ -1,26 +1,36 @@
 # Equilibrium Molecular Dynamics (EMD) for Silicon Thermal Conductivity
 
 # Define variables:
+
 units       metal
 variable    T equal 500
 variable    V equal vol
 
 variable    dt equal 0.000766			# dt = 0.01 * 0.0766 (Volz & Chen - 2009) stable timestep for Silicon
-variable    p equal 300      			# large enough number for sampling
-variable    s equal 50       			# sample interval - sample flux at every 10 timesteps (avoids noise from sampling every step)
+variable    p equal 100      			# large enough number for sampling
+variable    s equal 20       			# sample interval - sample flux at every 10 timesteps (avoids noise from sampling every step)
 variable    d equal $p*$s    			# dump interval/correlation length - integrate to this time instead of to infinity
 
+
+
 # Convert to SI Units:
-variable    kB equal 1.3806504e-23    	# [J/K] Boltzmann
-variable    eV2J equal 1.60218e-19   	# eV to Joules
-variable    A2m equal 1.0e-10			# Angstroms to Meters
-variable    ps2s equal 1.0e-12			# picoseconds to seconds
+
+variable    kB equal 1.3806504e-23    		# [J/K] Boltzmann
+variable    eV2J equal 1.60218e-19   		 #eV to Joules
+variable    A2m equal 1.0e-10				# Angstroms to Meters
+variable    ps2s equal 1.0e-12				# picoseconds to seconds
 variable    convert equal ${eV2J}*${eV2J}/${ps2s}/${A2m}
+
+
+
+
+
 
 # Problem Setup
 dimension 3                      # 3D simulation
 boundary p p p                   # Periodic boundary conditions in all directions
 atom_style atomic                # Atomic style
+
 
 # Read the atomic structure from the data file
 read_data Silicon_supercell.data
@@ -29,20 +39,33 @@ read_data Silicon_supercell.data
 mass 1 28.0855  
 
 # Interatomic Potential (Modified Tersoff)
+# pair_style tersoff/mod
+# pair_coeff * * Si.tersoff.mod Si  
+
+# Interatomic Potential (Stillinger-Weber)
 pair_style sw
 pair_coeff * * Si.sw Si  
 
+
+
 timestep     ${dt}
 
+
+
 # Equilibration & Thermalization
+
 thermo       $d
 thermo_style custom step temp pe ke etotal press vol
 thermo_modify lost warn
 log equilibrium.log
 
+
 velocity all create $T 123456 mom yes rot yes dist gaussian		# Initialize velocities
-fix NVT all nvt temp $T $T 1 									# NVT ensemble for equilibration
-run 5000000					 									# Run for system stabilization
+fix NVT all nvt temp $T $T 10 									# NVT ensemble for equilibration
+run 100000							 							# Run for system stabilization
+
+
+
 
 # Thermal Conductivity Calculation
 unfix NVT
@@ -50,24 +73,41 @@ fix NVE all nve                                              # Switch to NVE ens
 reset_timestep 0
 log thermal_conductivity.log   # Save the simulation data in a separate log file
 
+
 compute myKE all ke/atom
 compute myPE all pe/atom
 compute myStress all stress/atom NULL virial
 compute flux all heat/flux myKE myPE myStress                # Compute heat flux
+
+
+# Raw Hear Flux Components
+variable Jx_raw equal c_flux[1]
+variable Jy_raw equal c_flux[2]
+variable Jz_raw equal c_flux[3]
 
 # Heat Flux Components
 variable Jx equal c_flux[1]/vol
 variable Jy equal c_flux[2]/vol
 variable Jz equal c_flux[3]/vol
 
+
 # OUTPUT FLUX DATA AT EVERY TIMESTEP
-fix flux_output all print 1 "$step ${Jx} ${Jy} ${Jz}" file heat_flux.dat screen no
+variable step equal step
+fix flux_output all print 1 "${step} ${Jx_raw} ${Jy_raw} ${Jz_raw}" file heat_flux.dat screen no
 
 # Autocorrelation function for heat flux
-fix          JJ all ave/correlate $s $p $d & 
-             c_flux[1] c_flux[2] c_flux[3] type auto file J0Jt.dat ave running
+# "running" option means integral is calculated cumulatively
+# actual integral is from zero to infinity, 
+# this stops at the maximum timestep
+# thermal conductivity calculations should be checked for convergence
+			 
+fix JJ all ave/correlate $s $p $d c_flux[1] c_flux[2] c_flux[3] type auto file J0Jt.dat ave running
+			 
 
-# Scaling factor for Green-Kubo integral
+# if flux is scaled by V in autocorrelation, V should be in numerator
+# if flux is not scaled by V, then V should be in denominator
+# writing the expression a bit clearer:
+
 variable scale equal (${convert}/(${kB}*$T*$T*$V))*$s*${dt}
 
 variable     k11 equal trap(f_JJ[3])*${scale}
@@ -75,8 +115,7 @@ variable     k22 equal trap(f_JJ[4])*${scale}
 variable     k33 equal trap(f_JJ[5])*${scale}
 
 thermo_style custom step temp v_Jx v_Jy v_Jz v_k11 v_k22 v_k33
-run          50000000
-
+run          10000000
 variable     k equal (v_k11+v_k22+v_k33)/3.0
 variable     ndens equal count(all)/vol
-print        "average conductivity: $k [W/mK] @ $T K, ${ndens} /A\^3"
+print        "average conductivity: $k[W/mK] @ $T K, ${ndens} /A\^3"

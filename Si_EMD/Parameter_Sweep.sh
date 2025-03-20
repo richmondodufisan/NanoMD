@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # Define parameter values
-sample_vals=("200" "250" "300" "350" "400")
-interval_vals=("50" "100" "200" "300" "400" "500")
-length_vals=("109")
-temp_vals=("500")
+sample_vals=("20")
+interval_vals=("50")
+
+length_vals=("25" "50" "100" "200" "300")
+temp_vals=("100" "300" "500" "700" "1000")
 
 # Create the output directory if it doesn't exist
 mkdir -p ./param_sweep
@@ -12,7 +13,6 @@ mkdir -p ./param_sweep
 # Initialize the job list file
 rm -f Si_EMD_List.txt
 > Si_EMD_List.txt
-
 
 # Counter for the array job index
 job_index=0
@@ -41,13 +41,17 @@ for d in "${length_vals[@]}"; do
                 script_path="./param_sweep/$script_name"
                 eq_log="equilibrium_sample_${s}_interval_${p}_length_${d}_temp_${T}.log"
                 tc_log="thermal_conductivity_sample_${s}_interval_${p}_length_${d}_temp_${T}.log"
-                
+                heat_flux_file="heat_flux_sample_${s}_interval_${p}_length_${d}_temp_${T}.dat"
+                j0jt_file="J0Jt_sample_${s}_interval_${p}_length_${d}_temp_${T}.dat"
+
                 # Create a new LAMMPS script with modified parameters
                 sed "s/^variable    T equal .*/variable    T equal ${T}/; \
                      s/^variable    p equal .*/variable    p equal ${p}/; \
                      s/^variable    s equal .*/variable    s equal ${s}/; \
                      s|log equilibrium.log|log ${eq_log}|; \
                      s|log thermal_conductivity.log|log ${tc_log}|; \
+                     s|fix flux_output all print 1 \"\${step} \${Jx_raw} \${Jy_raw} \${Jz_raw}\" file heat_flux.dat screen no|fix flux_output all print 1 \"\${step} \${Jx_raw} \${Jy_raw} \${Jz_raw}\" file ${heat_flux_file} screen no|; \
+                     s|fix JJ all ave/correlate \$s \$p \$d c_flux\[1\] c_flux\[2\] c_flux\[3\] type auto file J0Jt.dat ave running|fix JJ all ave/correlate \$s \$p \$d c_flux\[1\] c_flux\[2\] c_flux\[3\] type auto file ${j0jt_file} ave running|; \
                      s|read_data Silicon_supercell.data|read_data ${data_file}|" Si_EMD.lammps > "$script_path"
                 
                 # Append the script path to the job list file

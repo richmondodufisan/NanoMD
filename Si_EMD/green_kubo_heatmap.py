@@ -24,8 +24,8 @@ dt = 0.000766  # Timestep [ps]
 V = 109**3  # Volume in cubic angstroms
 
 # Define sample intervals and number of samples for testing
-s_values = np.arange(10, 110, 10)  # Example intervals
-p_values = np.arange(10, 110, 10)  # Example number of samples
+s_values = np.arange(25, 550, 25)  # Example intervals
+p_values = np.arange(100, 2100, 100)  # Example number of samples
 
 # Compute ACF function
 def compute_acf(J, p, s, d_timestep):
