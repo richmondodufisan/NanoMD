@@ -13,7 +13,7 @@ module load mamba/24.3.0
 module load git
 eval "$(conda shell.bash hook)"
 
-conda activate my-env
+conda activate myenv
 
 # python3 create_trajectory_video.py
 python3 green_kubo_heatmap.py
