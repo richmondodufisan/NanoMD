@@ -2,12 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Load flux data
-flux_data = np.loadtxt("heat_flux.dat")
-timesteps = flux_data[:, 0]
-Jx = flux_data[:, 1]
-Jy = flux_data[:, 2]
-Jz = flux_data[:, 3]
 
 # Constants
 kB = 1.3806504e-23  # Boltzmann constant [J/K]
@@ -24,8 +18,48 @@ dt = 0.000766  # Timestep [ps]
 V = 109**3  # Volume in cubic angstroms
 
 # Define sample intervals and number of samples for testing
-s_values = np.arange(25, 550, 25)  # Example intervals
-p_values = np.arange(100, 2100, 100)  # Example number of samples
+s_values = np.arange(10, 30, 10)  # Example intervals
+p_values = np.arange(50, 150, 50)  # Example number of samples
+
+
+
+
+
+# Load flux data
+flux_data = np.loadtxt("heat_flux.dat")
+timesteps = flux_data[:, 0]
+Jx = flux_data[:, 1]
+Jy = flux_data[:, 2]
+Jz = flux_data[:, 3]
+
+# TRUNCATE DATA IF NECESSARY (e.g if run for too long and kappa begins drifting)
+# Define truncation time in picoseconds if slicing heat_flux
+truncation_time = 1000 
+
+# Convert truncation time to timesteps
+truncation_timestep = int(truncation_time / dt)
+
+# Print truncation details
+print(f"Truncation time: {truncation_time} ps")
+print(f"Truncation timestep: {truncation_timestep} steps")
+print(f"Timestep, dt: {dt} ps")
+
+# Truncate data
+timesteps = timesteps[timesteps <= truncation_timestep]
+Jx = Jx[:len(timesteps)]
+Jy = Jy[:len(timesteps)]
+Jz = Jz[:len(timesteps)]
+
+# Multiply by V if already scaled by volume (code is for non-scaled fluxes)
+# Jx = V * Jx
+# Jy = V * Jy
+# Jz = V * Jz
+
+
+
+
+
+
 
 # Compute ACF function
 def compute_acf(J, p, s, d_timestep):
@@ -50,6 +84,9 @@ def compute_acf(J, p, s, d_timestep):
         # Find number of windows available for the current C(lag)
         n_datapoints = int(d_timestep/s)
         
+        if (n_datapoints != len(J)):
+            raise RuntimeError("Calculation of thermal conductivity must be with FINAL timestep")
+        
         n_windows = n_datapoints - p_num - p + 1
         
 
@@ -70,18 +107,31 @@ def compute_acf(J, p, s, d_timestep):
 
     return C_vals, counts
 
+
+
+
 # Compute and store thermal conductivity data
 thermal_data = []
 
+
 for s in s_values:
     for p in p_values:
+    
         d = p * s
-        total_timesteps = len(timesteps)
         
-        if d < total_timesteps:
-            C_x, _ = compute_acf(Jx, p, s, total_timesteps)
-            C_y, _ = compute_acf(Jy, p, s, total_timesteps)
-            C_z, _ = compute_acf(Jz, p, s, total_timesteps)
+        timesteps_downsampled = timesteps[::s]
+        Jx_downsampled = Jx[::s]
+        Jy_downsampled = Jy[::s]
+        Jz_downsampled = Jz[::s]  
+
+        
+        if (int(d/s) < len(timesteps_downsampled)):
+        
+            last_d_timestep = len(timesteps_downsampled) * s
+        
+            C_x, _ = compute_acf(Jx_downsampled, p, s, last_d_timestep)
+            C_y, _ = compute_acf(Jy_downsampled, p, s, last_d_timestep)
+            C_z, _ = compute_acf(Jz_downsampled, p, s, last_d_timestep)
             
             scale = (convert / (kB * T * T * V)) * s * dt
             kappa_x = np.trapz(C_x) * scale
@@ -89,6 +139,13 @@ for s in s_values:
             kappa_z = np.trapz(C_z) * scale
             
             thermal_data.append([s, p, kappa_x, kappa_y, kappa_z])
+            
+            kappa_iso = (kappa_x + kappa_y + kappa_z) / 3.0
+            print(f"Thermal conductivity computed for s = {s}, p = {p}. kappa ={kappa_iso:.2f} W/mK\n")
+
+
+
+
 
 # Save computed data
 np.savetxt("thermal_conductivity_data.dat", thermal_data, fmt="%.6f", header="s p kappa_x kappa_y kappa_z")

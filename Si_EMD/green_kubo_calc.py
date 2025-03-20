@@ -22,6 +22,13 @@ d = p * s  # Correlation length in number of timesteps
 
 V = 109**3  # Volume in cubic angstroms
 
+
+
+
+
+
+
+
 # Load flux data
 data = np.loadtxt("heat_flux.dat")
 timesteps = data[:, 0]
@@ -29,16 +36,39 @@ Jx = data[:, 1]
 Jy = data[:, 2]
 Jz = data[:, 3]
 
+
+
+# TRUNCATE DATA IF NECESSARY (e.g if run for too long and kappa begins drifting)
+# Define truncation time in picoseconds if slicing heat_flux
+truncation_time = 1000 
+
+# Convert truncation time to timesteps
+truncation_timestep = int(truncation_time / dt)
+
+# Print truncation details
+print(f"Truncation time: {truncation_time} ps")
+print(f"Truncation timestep: {truncation_timestep} steps")
+print(f"Timestep, dt: {dt} ps")
+
+# Truncate data
+timesteps = timesteps[timesteps <= truncation_timestep]
+Jx = Jx[:len(timesteps)]
+Jy = Jy[:len(timesteps)]
+Jz = Jz[:len(timesteps)]
+
 # Multiply by V if already scaled by volume (code is for non-scaled fluxes)
-Jx = V * Jx
-Jy = V * Jy
-Jz = V * Jz
+# Jx = V * Jx
+# Jy = V * Jy
+# Jz = V * Jz
+
+
 
 # Downsample flux data for plotting
 timesteps_downsampled = timesteps[::s]
 Jx_downsampled = Jx[::s]
 Jy_downsampled = Jy[::s]
 Jz_downsampled = Jz[::s]
+
 
 # Plot raw and downsampled Jx
 plt.figure(figsize=(10, 6))
@@ -50,6 +80,11 @@ plt.title("Raw and Downsampled Jx")
 plt.legend()
 plt.grid(True)
 plt.savefig("sampling.png")
+
+
+
+
+
 
 
 
@@ -114,6 +149,16 @@ def compute_acf(J, p, s, d_timestep, C_vals, counts):
     
     return C_vals, counts
 
+
+
+
+
+
+
+
+
+
+
 # Scaling factor for Green-Kubo integral
 scale = (convert / (kB * T * T * V)) * s * dt
 
@@ -170,9 +215,9 @@ else:
 # Plot evolution of thermal conductivity only if data exists
 if thermal_conductivity_x:
     plt.figure(figsize=(10, 6))
-    plt.plot(time_evolution, thermal_conductivity_x, label=r"$k_{xx}$", linestyle='-', marker='o')
-    plt.plot(time_evolution, thermal_conductivity_y, label=r"$k_{yy}$", linestyle='-', marker='s')
-    plt.plot(time_evolution, thermal_conductivity_z, label=r"$k_{zz}$", linestyle='-', marker='^')
+    plt.plot(time_evolution, thermal_conductivity_x, label=r"$k_{xx}$")
+    plt.plot(time_evolution, thermal_conductivity_y, label=r"$k_{yy}$")
+    plt.plot(time_evolution, thermal_conductivity_z, label=r"$k_{zz}$")
     plt.xlabel("Time (ps)")
     plt.ylabel("Thermal Conductivity (W/mK)")
     plt.title("Evolution of Thermal Conductivity Over Time")
