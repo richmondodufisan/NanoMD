@@ -6,7 +6,7 @@
 #SBATCH --time=04:00:00 ## how long does this need to run (remember different partitions have restrictions on this param)
 #SBATCH --mem-per-cpu=100M ## how much RAM do you need per CPU (this effects your FairShare score so be careful to not ask for more than you need))
 #SBATCH --job-name=python  ## When you run squeue -u NETID this is how you can identify the job
-#SBATCH --constraint="[quest8|quest9|quest10|quest11]"
+
 
 module purge
 module load mamba/24.3.0
