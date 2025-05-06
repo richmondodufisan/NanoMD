@@ -16,8 +16,8 @@ convert = (eV2J**2) / (ps2s * A2m)
 # Simulation parameters (should match LAMMPS)
 T = 500  # Temperature [K]
 dt = 0.000766  # Timestep [ps]
-p = 350  # Number of correlation samples
-s = 450  # Sample interval
+p = 100  # Number of correlation samples
+s = 20  # Sample interval
 d = p * s  # Correlation length in number of timesteps
 
 V = 109**3  # Volume in cubic angstroms
@@ -96,11 +96,6 @@ with open("J0Jt_python.dat", "w") as f_out:
 
 
 # Compute ACF function with incremental updates
-# More efficient version than the one implemented in green_kubo_heatmap.py
-# This does not recalculate old windows already averaged
-# green_kubo_heatmap.py version is fine since it only does it once
-# That version is also more instructive/easier to understand
-
 
 def compute_acf(J, p, s, d_timestep, C_vals, counts):
 
@@ -135,7 +130,8 @@ def compute_acf(J, p, s, d_timestep, C_vals, counts):
                     
                     if loct + p > len(J):
                         break  # Prevent index out of bounds error
-
+                    
+                    # Each window ALSO equals p
                     J_0 = J[loc0:loc0 + p]
                     J_t = J[loct:loct + p]
 

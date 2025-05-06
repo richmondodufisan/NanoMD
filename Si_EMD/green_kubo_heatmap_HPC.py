@@ -167,11 +167,23 @@ if rank == 0:
 
     # Plot heatmap
     plt.figure(figsize=(10, 6))
-    sns.heatmap(kappa_matrix, xticklabels=unique_s, yticklabels=unique_p, cmap="coolwarm")
+    show_values = True  # ← Toggle this to False if you don't want numbers inside the squares
+
+    sns.heatmap(
+        kappa_matrix,
+        xticklabels=unique_s,
+        yticklabels=unique_p,
+        cmap="coolwarm",
+        annot=show_values,
+        fmt=".2f",             # Format numbers to 2 decimal places
+        annot_kws={"size": 6}  # Smaller font to prevent overflow
+    )
+
     plt.xlabel("Sample Interval (s)")
     plt.ylabel("Number of Samples (p)")
     plt.title("Thermal Conductivity calculated by Green-Kubo Method")
-    plt.tight_layout() 
+    plt.tight_layout()
     plt.savefig("kappa_heatmap.png")
+
 
     print("Finished Parallel Computation!")
