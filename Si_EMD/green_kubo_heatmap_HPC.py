@@ -1,5 +1,6 @@
 from mpi4py import MPI
 import numpy as np
+from scipy.integrate import trapezoid
 import matplotlib.pyplot as plt
 import seaborn as sns
 import time
@@ -118,9 +119,10 @@ for s, p in my_tasks:
         C_z, _ = compute_acf(Jz_downsampled, p, s, last_d_timestep)
 
         scale = (convert / (kB * T * T * V)) * s * dt
-        kappa_x = np.trapz(C_x) * scale
-        kappa_y = np.trapz(C_y) * scale
-        kappa_z = np.trapz(C_z) * scale
+        kappa_x = trapezoid(C_x) * scale
+        kappa_y = trapezoid(C_y) * scale
+        kappa_z = trapezoid(C_z) * scale
+
 
         kappa_iso = (kappa_x + kappa_y + kappa_z) / 3.0
         thermal_data.append([s, p, kappa_x, kappa_y, kappa_z])
