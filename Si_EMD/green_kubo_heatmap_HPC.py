@@ -26,8 +26,8 @@ dt = 0.000766  # Timestep [ps]
 V = 109**3  # Volume in cubic angstroms
 
 # Define sample intervals and number of samples for testing
-s_values = np.arange(50, 2000, 50)
-p_values = np.arange(50, 2000, 50)
+s_values = np.arange(50, 1000, 50)
+p_values = np.arange(50, 1000, 50)
 
 # Master node loads data and distributes work
 if rank == 0:
