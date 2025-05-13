@@ -169,7 +169,7 @@ if rank == 0:
 
     # Plot heatmap
     plt.figure(figsize=(10, 6))
-    show_values = True  # ← Toggle this to False if you don't want numbers inside the squares
+    show_values = False  # ← Toggle this to False if you don't want numbers inside the squares
 
     sns.heatmap(
         kappa_matrix,
@@ -177,8 +177,8 @@ if rank == 0:
         yticklabels=unique_p,
         cmap="coolwarm",
         annot=show_values,
-        fmt=".2f",             # Format numbers to 2 decimal places
-        annot_kws={"size": 6}  # Smaller font to prevent overflow
+        # fmt=".2f",             # Format numbers to 2 decimal places
+        # annot_kws={"size": 6}  # Smaller font to prevent overflow
     )
 
     plt.xlabel("Sample Interval (s)")

@@ -18,4 +18,4 @@ conda activate myenv
 # python3 create_trajectory_video.py
 python3 green_kubo_heatmap_HPC.py
 
-python3 green_kubo_calc.py
+# python3 green_kubo_calc.py
