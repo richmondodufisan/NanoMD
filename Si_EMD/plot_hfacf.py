@@ -57,7 +57,7 @@ normalized_integrals = [val / max(integrals) for val in integrals]
 plt.figure(figsize=(10, 6))
 plt.plot(real_times, normalized_integrals, marker='o', linestyle='-')
 plt.title("Normalized Integral of Averaged HFACF per Interval")
-plt.xlabel("Real Time (Timestep Origin)")
+plt.xlabel("Real Time (ps)")
 plt.ylabel("Normalized Integrated ACF")
 plt.grid(True)
 plt.tight_layout()
