@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr" >
+<head>
+    <title>Atomsk - Option select - Pierre Hirel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" media="screen" type="text/css" title="Default" href="./default.css" />
+    <link rel="icon" href="../img/atomsk_logo.png" type="image/png" />
+</head>
+   
+<body>
+
+<p><a href="./index.html">Retour au menu principal</a></p>
+
+<h2>Option : select</h2>
+
+<h4>Syntaxe</h4>
+
+<p><code>-select all</code></p>
+
+<p><code>-select invert</code></p>
+
+<p><code>-select &#60;espèce&#62;</code></p>
+
+<p><code>-select &#60;indice&#62;</code></p>
+
+<p><code>-select &#60;indice1&#62;,&#60;indice2&#62;,&#60;indice3&#62;:&#60;indice4&#62;,...</code></p>
+
+<p><code>-select list &#60;fichier&#62;</code></p>
+
+<p><code>-select random &#60;N&#62; &#60;espèce&#62;</code></p>
+
+<p><code>-select &#60;above|below&#62; &#60;d&#62; &#60;dir&#62;</code></p>
+
+<p><code>-select &#60;in|out&#62; cell</code></p>
+
+<p><code>-select &#60;in|out&#62; box &#60;x&#62; &#60;y&#62; &#60;z&#62; &#60;x'&#62; &#60;y'&#62; &#60;z'&#62;</code></p>
+
+<p><code>-select &#60;in|out&#62; sphere &#60;x&#62; &#60;y&#62; &#60;z&#62; &#60;R&#62;</code></p>
+
+<p><code>-select &#60;in|out&#62; cylinder &#60;axe&#62; &#60;x<sub>1</sub>&#62; &#60;x<sub>2</sub>&#62; &#60;R&#62;</code></p>
+
+<p><code>-select &#60;in|out&#62; cone &#60;axe&#62; &#60;x&#62; &#60;y&#62; &#60;z&#62; &#60;&alpha;&#62;</code></p>
+
+<p><code>-select &#60;in|out&#62; torus &#60;axe&#62; &#60;x&#62; &#60;y&#62; &#60;z&#62; &#60;R&#62; &#60;r&#62;</code></p>
+
+<p><code>-select prop &#60;propriété&#62; &#60;valeur1[:valeur2]&#62;</code></p>
+
+<p><code>-select &#60;NNN&#62; &#60;espèce&#62; neighbors &#60;indice&#62;</code></p>
+
+<p><code>-select grid &#60;fichier&#62;</code></p>
+
+<p><code>-select stl [center] &#60;fichier&#62;</code></p>
+
+<p><code>-select &#60;i&#62; modulo &#60;j&#62;</code></p>
+
+<p><code>-select [add|rm|intersect|xor|among] &#60;n'importe quel critère ci-dessus&#62;</code></p>
+
+
+<h4>Description</h4>
+
+<p>Cette option permet de sélectionner des atomes en fonction des critères donnés. La sélection peut inclure tous les atomes d'une espèce donnée, les atomes au-dessus ou en-dessous d'un plan donné, ceux à l'intérieur ou à l'extérieur d'une région géométrique, ou un certain nombre d'atomes pris au hasard.</p>
+
+<p>Lorsque <strong>-select all</strong> est utilisé, toute sélection est détruite. Tous les atomes seront alors traités de la même façon, cela revient donc à sélectionner tous les atomes.</p>
+
+<p>Lorsque <strong>-select invert</strong> est utilisé la sélection est inversée (tout atome précédemment sélectionné est dé-sélectionné, et tout atome non sélectionné est sélectionné). Si aucune sélection n'était définie précédemment (donc tous les atomes étaient sélectionnés) alors rien n'est fait, car cela n'a pas de sens de ne sélectionner aucun atome.</p>
+
+<p>Lorsque <strong>-select &#60;espèce&#62;</strong> est utilisé tous les atomes de l'espèce donnée sont sélectionnés. L'espèce chimique doit être désignée par son symbole chimique (e.g. Al, Si, C, Cu...).</p>
+
+<p>Lorsque <strong>-select &#60;indice&#62;</strong> est utilisé (où &#60;indice&#62; est un entier), seul l'atome ayant l'indice correspondant est sélectionné. Plusieurs indices peuvent être donnés en les séparant par des virgules. Une plage d'indices peut être définie par deux entiers séparés par deux-points.</p>
+
+<p>Lorsque <strong>-select list &#60;fichier&#62;</strong> est utilisé, la liste d'atomes à sélectionner est lue depuis le &#60;fichier&#62;. Le &#60;fichier&#62; doit être un fichier texte contenant un indice atomique (nombre entier) par ligne.</p>
+
+<p>En utilisant <strong>-select random</strong>, N atomes de l'&#60;espèce&#62; donnée sont sélectionnés au hasard (où N est un nombre entier). Si N est un nombre réel suivi du symbole "%" alors ce pourcentage d'atomes sera sélectionné. Si &#60;espèce&#62; vaut "any" ou "all" alors N atomes sont sélectionnés au hasard quelle que soit leur espèce chimique. Notez que cette option tente de définir des indices au hasard, elle est donc largement non-reproductible, c-à-d. qu'en partant du même système et en appliquant cette option il est très probable d'obtenir des résultats différents.</p>
+
+<p>En utilisant <strong>-select above</strong> (respectivement, <strong>-select below</strong>), tous les atomes situés à une distance supérieure (respectivement inférieure) à la distance &#60;d&#62; par rapport à l'origine cartésienne (0,0,0) le long de la direction &#60;dir&#62; donné sont sélectionnés. La direction &#60;dir&#62; peut être "X", "Y", "Z" (indiquant les axes cartésiens), ou une direction cristallographique définie par ses indices de Miller [<em>hkl</em>], ou [<em>hkil</em>] pour les systèmes hexagonaux (voir <a href="./options.html">comment spécifier les indices de Miller</a>). Si l'orientation cristallograpĥique du système est définie (par exemple grâce à l'<a href="./option_properties.html">option <code>-properties</code></a>) alors les 
+indices de Miller se réfèrent à cette orientation. Sinon il est supposé que l'orientation est X=[100], Y=[010], Z=[001].</p>
+
+<p>Utiliser <strong>-select in</strong> (ou <strong>out</strong>) permet de sélectionner des atomes à l'intérieur (respectivement à l'extérieur) d'une région géométrique. Seules quelques formes géométriques simples sont supportées, comme le parallélépipède, la sphère, etc. Les paramètres dépendent de la géométrie de la région :</p>
+
+<ul>
+  <li><strong>in|out</strong> : décide si ce sont les atomes à l'intérieur (in) ou à l'extérieur (out) de la région qui sont sélectionnés.</li>
+  <li><strong>x, y, z</strong> : pour la boîte ("box"), les coordonnées du premier coin ; pour la sphère ("sphere") et le tore ("torus"), coordonnées du centre ; pour le cylindre ("cylinder") seules deux coordonnées doivent être fournies, indiquant la position du centre du cylindre dans le plan normal à son &#60;axe&#62; (voir ci-dessous).</li>
+  <li><strong>x', y', z'</strong> : seulement pour la boîte ("box"), coordonnées du dernier coin.</li>
+  <li><strong>R</strong> : seulement pour la sphère, le cylindre, et le tore, leur rayon (en &Aring;).</li>
+  <li><strong>axe</strong> : pour le cylindre, le tore ou le cône, la direction de l'axe principal, doit être "X", "Y" ou "Z".</li>
+  <li><strong>r</strong> : seulement pour le tore, son rayon secondaire (en &Aring;).</li>
+  <li><strong>&alpha;</strong> : seulement pour le cône, son angle d'ouverture (en degrés).</li>
+</ul>
+
+<p>En utilisant <strong>-select in cell</strong> (ou <strong>-select out cell</strong>), les atomes situés à l'intérieur (respectivement à l'extérieur) de la boîte de simulation sont sélectionnés. Cette option ne prend aucun paramètre supplémentaire.</p>
+
+<p>La <strong>boîte</strong> ("box") est une boîte parallélépipédique définie par deux points de coordonnées (x,y,z) et (x',y',z').</p>
+
+<p>La <strong>sphère</strong> est définie par son centre (x,y,z) et son rayon R.</p>
+
+<p>Le <strong>cylindre</strong> est défini par son centre (x<sub>1</sub>,x<sub>2</sub>) dans le plan normal à son &#60;axe&#62;, et par son rayon R. Les directions x<sub>1</sub> and y<sub>2</sub> sont définies d'après la direction de l'&#60;axe&#62; par permutation X, Y, Z (par ex. si &#60;axe&#62;=Y alors x<sub>1</sub> sera la position selon l'axe cartésien Z, et x<sub>2</sub> la position suivant X).</p>
+
+<p>Le <strong>cône</strong> est défini par son axe (X, Y ou Z), la position de sa pointe (x,y,z), et son angle d'ouverture par rapport à son axe (&alpha; en degrés).</p>
+
+<p>Le <strong>tore</strong> est défini par son axe (X, Y ou Z), sa position (x,y,z), son rayon principal R, et son rayon secondaire r.</p>
+
+<p>Les positions &#60;x&#62;, &#60;y&#62;, &#60;z&#62; sont généralement données en &Aring;. Il est également possible de spécifier une distance relative aux dimensions de la boîte avec le mot-clé BOX et une opération (voir <a href="./box.html">cette page</a>). Notez que ces mots-clé ne peuvent être employés que pour les positions : le rayon &#60;R&#62; de la sphère ou du cylindre doit toujours être donné en &Aring;.</p>
+
+<p>L'option <strong>-select prop</strong> permet de sélectionner les atomes si leur &#60;propriété&#62; a la valeur donnée. Si une seule valeur est donnée, alors seuls les atomes dont la &#60;propriété&#62; a exactement cette valeur sont sélectionnés. Si deux valeurs sont données, séparées par un double point (:), alors tous les atomes dont la &#60;propriété&#62; a une valeur dans cette fourchette sont sélectionnés.</p>
+
+<p>En utilisant <strong>-select &#60;NNN&#62; &#60;espèce&#62; neighbors &#60;indice&#62;</strong>, les voisins de l'atome ayant l'&#60;indice&#62; donné sont sélectionnés. Si &#60;NNN&#62; est un entier positif alors les &#60;NNN&#62; voisins les plus proches sont sélectionnés, peu importe leur distance (&#60;NNN&#62; doit alors être inférieur à 100). Si &#60;NNN&#62; est un nombre réel négatif alors tous les voisins dans un rayon |&#60;NNN&#62;| sont sélectionnés, peu importe leur nombre. Si &#60;NNN&#62; est égal à zero, alors les premiers voisins sont sélectionnés. Notez que si certains atomes se trouvent hors de la boîte, la recherche de voisins peut donner des résultats erronés (l'<a href="./option_wrap.html">option <code>-wrap</code></a> peut être utilisée pour replacer les atomes dans la boîte). Si &#60;espèce&#62; est le symbole chimique d'une espèce alors seuls les atomes de cette espèce sont sélectionnés. Si &#60;espèce&#62; est "all" ou "any" alors les atomes sont sélectionnés sans tenir compte 
+de leur espèce chimique.</p>
+
+<p>L'option <strong>-select &#60;i&#62; modulo &#60;j&#62;</strong> sélectionne les atomes dont l'indice est égal à &#60;i&#62; modulo &#60;j&#62;, c'est-à-dire égal à i&pm;<em>n</em>j où <em>n</em> est un nombre entier.</p>
+
+<p>En utilisant <strong>-select grid</strong>, une grille d'éléments finis est lue depuis le &#60;fichier&#62;. Le &#60;fichier&#62; doit être un fichier texte respectant l'un des trois formats suivants :</p>
+<ul>
+  <li>Le &#60;fichier&#62; peut contenir une première ligne contenant trois entiers NX, NY, NZ, définissant le nombre d'éléments suivant chaque direction cartésienne. Dans ce cas tous les éléments sont des parallélépipèdes de mêmes dimensions. Ensuite, le fichier doit contenir NXxNYxNZ nombres 0 ou 1, contigus ou séparés par des espaces, sur une ou plusieurs lignes (dans la limite de 4096 caractères par ligne). Chaque nombre correspond à un élément de la grille, en se déplaçant d'abord suivant X, puis suivant Y, puis suivant Z. Un 0 indique que les atomes à l'intérieur d'un élément ne doivent pas être sélectionnés, et un 1 qu'ils doivent l'être.</li>
+  
+  <li>Ou, le &#60;fichier&#62; peut commencer par une ligne contenant le mot-clé "Finite element", puis contenir des lignes donnant la position (x,y,z) d'éléments de la grille (soit en &Aring; soit en coordonnées réduites), suivies par un nombre entier 0 ou 1. Ces éléments forment alors les n&oelig;uds d'un maillage de Voronoï, qui peut être régulier ou non.</li>
+  
+  <li>Enfin, le &#60;fichier&#62; peut contenir des lignes de caractères ASCII formant une représentation 2-D d'une grille. Les espaces et le caractère 0 sont interprétés comme des 0 (représentant des endroits où les atomes ne sont pas sélectionnés), et tout autre caractère est interprété comme un 1 (marquant les endroits où les atomes sont sélectionnés). Ceci peut être utile pour sélectionner des formes géométriques simples, comme des lettres ou de l'art ASCII. Vous pouvez utiliser des programmes comme <a href="https://figlet.org/">figlet</a> pour convertir du texte en art ASCII, ou bien <a href="https://csl.name/jp2a/">jp2a</a> pour convertir une image JPG en un fichier texte. Ensuite, Atomsk peut utiliser de tels fichiers textes comme grilles pour sélectionner des atomes.</li>
+</ul>
+
+<p>Les deux premiers formats permettent de manipuler des grilles en 2-D ou en 3-D ; le dernier format, uniquement des grilles bidimensionnelles (voir les exemples ci-dessous). Cette option permet de sélectionner des formes complexes.</p>
+
+<p>En utilisant <strong>-select stl</strong>, les atomes sont sélectionnés selon le modèle 3-D défini dans le &#60;fichier&#62;. Le &#60;fichier&#62; doit être au <a href="https://fr.wikipedia.org/wiki/Fichier_de_st%C3%A9r%C3%A9olithographie">format STL</a>, ASCII ou binaire. Ce format de fichier est très utilisé pour l'impression 3-D et dans d'autres applications 3-D, et peut être généré à l'aide de nombreux logiciels de modélisation 3-D, parmi lesquels <a href="http://tinkercad.com/">Tinkercad</a>, <a href="http://www.blender.org/">Blender</a>, ou <a href="http://sketchup.google.com/">Google Sketchup</a>; ou bien, des modèles prédéfinis peuvent être obtenus depuis une grande variété de sources, par exemple <a href="https://cults3d.com/">Cults</a>, <a href="https://pinshape.com/">Pinshape</a>, ou bien <a href="https://www.thingiverse.com/">Thingiverse</a>. Après avoir lu le fichier STL, Atomsk le redimensionne automatiquement pour qu'il rentre dans la boîte de simulation, le facteur étant égal au plus 
+petit rapport entre la dimension de la boîte atomique et la dimension correspondante du modèle 3-D. Si le mot-clé "center" apparaît avant le nom du &#60;fichier&#62;, alors le modèle 3-D est placé au centre de la boîte de simulation. Sinon, le modèle 3-D n'est translaté en aucune façon. Les atomes qui se trouvent <em>à l'intérieur</em> du modèle 3-D model sont selectionnés&nbsp;; pour sélectionner les atomes qui se trouvent à l'extérieur, utilisez simplement "-select invert". Notez que, si le modèle 3-D contient un très grand nombre de triangles (plus de 100&nbsp;000), alors la sélection peut prendre du temps.</p>
+
+<p>Pour tous les cas ci-dessus (sauf "-select all" et "-select invert"), il est possible d'utiliser l'un des mots-clés optionnels "add", "rm", "intersect", ou "xor", juste après le mot-clé "-select". Ces mots-clés permettent de modifier une sélection précédente, en la combinant avec de nouveaux critères. Supposons que l'option "-select" ait déjà été appelée et ait sélectionné un groupe d'atomes A&nbsp;; supposons qu'un nouvel appel sélectionne les atomes d'un groupe B&nbsp;; alors les mots clés correspondent aux opérations logiques suivantes&nbsp;:</p>
+
+<ul>
+  <li><strong>add</strong>&nbsp;: les atomes appartenant au groupe A ou au groupe B sont sélectionnés (opération OU) ;</li>
+  <li><strong>rm</strong>&nbsp;: les atomes appartenant au groupe A, mais pas au groupe B, sont sélectionnés (A ou non-B) ;</li>
+  <li><strong>intersect</strong>&nbsp;: les atomes appartenant à la fois au groupe A et au groupe B sont sélectionnés (opérateur ET) ;</li>
+  <li><strong>xor</strong>&nbsp;: les atomes appartenant soit au groupe A, soit au groupe B, mais pas aux deux, sont sélectionnés (opération OU exclusif, ou XOR).</li>
+  <li><strong>among</strong>&nbsp;: les atomes à sélectionner sont choisis parmi la sélection précédente. Ce mot-clé n'est utile que pour les sélections de types "prop" et "random"&nbsp;; pour les autres types de sélection, cela revient à utiliser le mot-clé "intersect".</li>
+</ul>
+
+<p>Les autres options invoquées après l'option <code>-select</code> ne seront appliquées qu'aux atomes sélectionnés, référez-vous à la page de chaque option pour savoir comment elles traitent les atomes sélectionnés. Attention : certaines options peuvent produire des résultats étranges (c-à-d. non physiques) lorsqu'elles ne sont appliquées qu'à certains atomes.</p>
+
+<p>À chaque fois que cette option est invoquée, elle oublie toute sélection précédente et en définit une nouvelle.</p>
+
+<p>Notez que cette option n'a aucun effet sur les fichiers de sortie : peu importe quels atomes sont sélectionnés ou non, leurs coordonnées seront écrites dans le ou les fichiers de sortie.</p>
+
+
+<h4>Défaut</h4>
+
+<p>Par défaut aucune sélection n'est définie, donc tous les atomes sont sélectionnés. Si une sélection est définie et que tous les atomes de la sélection sont supprimés (autrement dit, si la sélection ne contient plus aucun atome), alors la sélection est réinitialisée, autrement dit tous les atomes restants sont sélectionnés.</p>
+
+
+
+<h4>Exemples</h4>
+
+<ul>
+<li><code class="command">atomsk initial.cfg -select Si -remove-atom select final.xyz</code>
+<p>Ceci lira le fichier <code>initial.cfg</code>, sélectionnera tous les atomes de silicium et <a href="./option_rmatom.html">les supprimera</a>. Le résultat final sera écrit dans <code>final.xyz</code>.</p></li>
+
+<li><code class="command">atomsk initial.cfg -select 340,432,126:190,809 -rmatom select final.xyz</code>
+<p>Ceci va sélectionner les atomes numéros 340, 432, de 126 à 190, et 809.</p></li>
+
+<li><code class="command">atomsk initial.cfg -select above 40 y -rot z 45 final.xyz</code>
+<p>Ceci sélectionnera tous les atomes ayant une coordonnée Y supérieure à 40 &Aring;. Puis l'<a href="./option_rotate.html">option <code>-rotate</code></a> sera appliquée seulement aux atomes sélectionnés.</p></li>
+
+<li><code class="command">atomsk initial.cfg -select above 40 [111] -cut above 30 x final.xyz</code>
+<p>Ceci sélectionnera les atomes qui sont situés, par rapport à l'origine cartésienne, à une distance supérieure à 40 &Aring; suivant la direction [111]. Ensuite, l'<a href="./option_cut.html">option <code>-cut</code></a> supprimera les atomes sélectionnés, mais seulement si leur coordonnée X est supérieure à 30 &Aring;.</p></li>
+
+<li><code class="command">atomsk initial.cfg -select in box 0 0 0 20 10 3 -shift -10 0 0 final.xyz</code>
+<p>Ceci sélectionnera les atomes situés dans la boîte rectangulaire définie par les points (0,0,0) et (20,10,3). Puis l'<a href="./option_shift.html">option <code>-shift</code></a> translatera tous ces atomes sélectionnés d'un vecteur (-10,0,0).</p></li>
+
+<li><code class="command">atomsk initial.cfg -select out box 10 20 -INF BOX-10 BOX-20 INF -fix all final.xyz</code>
+<p>Ceci sélectionnera tous les atomes à l'extérieur de la boîte située entre 10 &Aring; et 10 &Aring; avant le bord de boîte suivant X ("BOX-10"), entre 20 &Aring; et 20 &Aring; avant le bord de boîte suivant Y ("BOX-20"), et entre -&infin; et +&infin; suivant Z. Puis l'<a href="./option_fix.html">option <code>-fix</code></a> sera appliquée aux atomes sélectionnés.</p></li>
+
+<li><code class="command">atomsk initial.cfg -select out sphere 0.5*BOX 0.5*BOX 0.5*BOX 10.0 -rmatom select final.xyz</code>
+<p>Ceci sélectionnera les atomes qui sont en-dehors de la sphère dont le centre est au milieu de la boîte et de rayon 10 &Aring;. Puis l'<a href="./option_rmatom.html">option <code>-rmatom</code></a> sera appliquée à ces atomes, de sorte qu'il ne reste que les atomes à l'intérieur de la sphère.</p></li>
+
+<li><code class="command">atomsk initial.cfg -select out cylinder y 40 30 20 -fix all final.xyz</code>
+<p>Ceci sélectionnera les atomes qui sont à l'extérieur du cylindre dont l'axe principal est suivant Y, le centre est en Z=40 &Aring; et X=30 &Aring;, et de rayon 20 &Aring;. Puis ces atomes seront <a href="./option_fix.html">figés</a>.</p></li>
+
+<li><code class="command">atomsk initial.cfg -select random 20 Fe -rmatom select final.xyz</code>
+<p>Ceci va sélectionner 20 atomes de fer au hasard dans le système. Puis l'<a href="./option_rmatom.html">option <code>-rmatom</code></a> supprimera ces atomes.</p></li>
+
+<li><code class="command">atomsk initial.cfg -select random 5% Si -substitute Si C final.xyz</code>
+<p>Ceci va sélectionner 5% des atomes de silicium au hasard dans le système. Puis les atomes de silicium sélectionnés seront <a href="./option_substitute.html">substitués</a> par des atomes de carbone.</p></li>
+
+<li><code class="command">atomsk initial.cfg -select random 150 any -substitute Fe C final.xyz</code>
+<p>Ceci sélectionnera 150 atomes au hasard dans le système (peu importe leur espèce). Puis les atomes de fer sélectionnés seront <a href="./option_substitute.html">substitués</a> par des atomes de carbone.</p></li>
+
+<li><code class="command">atomsk initial.cfg -select 6 any neighbors 9578 final.xyz</code>
+<p>Ceci va sélectionner les 6 voisins les plus proches de l'atome &#35;9578.</p></li>
+
+<li><code class="command">atomsk initial.cfg -select 12 Si neighbors 1245 -rmatom select final.xyz</code>
+<p>Ceci va sélectionner les 12 atomes de silicium les plus proches de l'atome &#35;1245, et va ensuite <a href="./option_rmatom.html">supprimer ces atomes</code></a>.</p></li>
+
+<li><code class="command">atomsk initial.cfg -select -8.5 any neighbors 566 final.xyz</code>
+<p>Ceci va sélectionner tous les atomes se trouvant dans un rayon de 8.5 &Aring; autour de l'atome &#35;566.</p></li>
+
+<li><code class="command">atomsk initial.cfg -select prop vx 1e5:1e6 final.xyz</code>
+<p>Ceci va sélectionner les atomes dont la vitesse suivant X (vx) est comprise entre 1e5 et 1e6 (selon l'unité de vitesse employée dans le fichier d'entrée).</p></li>
+
+<li><div class="txtfile"><h5>grille.txt</h5>
+<p><code>4 4 3<br/>
+&#35; Premier plan XY<br/>
+1 0 0 0<br/>
+0 1 0 0<br/>
+0 0 1 0<br/>
+0 0 0 1<br/>
+&#35; Second plan XY<br/>
+0 0 0 1<br/>
+0 0 1 0<br/>
+0 1 0 0<br/>
+1 0 0 0<br/>
+&#35; Troisième plan XY<br/>
+0 0 0 0<br/>
+0 1 1 0<br/>
+0 1 1 0<br/>
+0 0 0 0<br/>
+</code></p></div>
+<code class="command">atomsk initial.cfg -select grid grille.txt -rmatom select final.xyz</code>
+<p>Le fichier "grille.txt" contient une première ligne donnant le nombre d'éléments suivant chaque direction : ici, le système atomique sera découpé selon une grille de taille 4x4x3. Les lignes suivantes donnent l'état (0 ou 1) de chacun des 48 éléments de la grille (les lignes vides ou commençant par un signe &#35; sont ignorées). Une valeur de 1 indique que les atomes à l'intérieur d'un élément seront sélectionnés, et 0 qu'ils ne le seront pas. Dans ce fichier, chaque groupement de 4x4 chiffres représente une grille dans un plan XY, et il y a trois de ces plans suivant Z. En résumé, Atomsk va lire le fichier "initial.cfg", mettra automatiquement la grille à l'échelle du système atomique, sélectionnera les atomes situés dans des éléments marqués d'un "1", et <a href="./option_rmatom.html">supprimera les atomes sélectionnés</a>. Le résultat final sera écrit dans le fichier "final.xyz".</p></li>
+
+<li><div class="txtfile"><h5>grille.txt</h5>
+<p><code>Finite element<br/>
+0.2354 0.2 0.4013540 1<br/>
+0.196874 0.5354 0.541 0<br/>
+0.9432587 0.651 0.3554 1<br/>
+0.68354 0.2189 0.35 0<br/>
+0.4568 0.2367 0.920 1<br/>
+0.87413356 0.543254 0.357401 0<br/>
+0.367744 0.5485 0.548 1<br/>
+0.1289 0.855354 0.36871 0<br/>
+0.354 0.9870 0.5688 1<br/>
+0.75432 0.98700 0.10753 0<br/>
+</code></p></div>
+<code class="command">atomsk initial.cfg -select grid grille.txt -rmatom select final.xyz</code>
+<p>Le fichier "grille.txt" contient des lignes donnant la position (x,y,z) d'éléments d'une grille d'éléments finis, suivie par un entier (0 ou 1). Atomsk va lire le fichier "initial.cfg", mettra automatiquement la grille aux dimensions de la boîte, sélectionnera les atomes situés à l'intérieur des éléments marqués d'un "1", et <a href="./option_rmatom.html">supprimera les atomes sélectionnés</a>. Le resultat sera écrit dans "final.xyz".</p></li>
+
+<li><div class="txtfile"><h5>A.txt</h5>
+<p><code>00000000000000<br/>
+00000011000000<br/>
+00001111110000<br/>
+00001100110000<br/>
+00001111110000<br/>
+00001100110000<br/>
+00000000000000<br/>
+</code></p></div>
+<code class="command">atomsk initial.cfg -select grid A.txt -rmatom select final.xyz</code>
+<p>Le fichier "A.txt" contient des lignes de 0 et de 1, qui forment une représentation graphique de la lettre "A". Atomsk va lire le fichier "initial.cfg", mettra automatiquement la grille aux dimensions de la boîte, sélectionnera les atomes situés à l'intérieur des éléments marqués d'un "1", et <a href="./option_rmatom.html">supprimera les atomes sélectionnés</a>. Le resultat sera écrit dans "final.xyz".</p></li>
+</ul>
+
+
+<p><a href="./index.html">Retour au menu principal</a></p>
+
+</body>
+
+</html>

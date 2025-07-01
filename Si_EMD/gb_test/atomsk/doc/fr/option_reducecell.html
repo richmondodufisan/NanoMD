@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr" >
+<head>
+    <title>Atomsk - Option reduce cell - Pierre Hirel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" media="screen" type="text/css" title="Default" href="./default.css" />
+    <link rel="icon" href="../img/atomsk_logo.png" type="image/png" />
+</head>
+   
+<body>
+
+<p><a href="./index.html">Retour au menu principal</a></p>
+
+<h2>Option: reduce-cell</h2>
+
+<h4>Syntax</h4>
+
+<p><code>-reduce-cell &#60;x|y|z|p&#62;</code></p>
+
+
+<h4>Description</h4>
+
+<p>Cette option réduit la taille du système en une boîte plus petite, tout en préservant la périodicité du cristal.</p>
+
+<p>Cette option recherche des paires d'atomes équivalents. Si le vecteur joignant deux atomes équivalents est parallèle à un vecteur de boîte initial mais qu'il est plus court, alors il le remplace. La boîte peut ainsi être raccourcie suivant une, deux, ou les trois directions de l'espace. Ensuite, les atomes se trouvant en dehors de la nouvelle boîte sont supprimés, ainsi que leurs coquilles et leurs propriétés auxiliaires s'ils en avaient.</p>
+
+<p>Notez que cette option préserve l'orientation du cristal, elle tente juste de raccourcir chaque vecteur de boîte si c'est possible. La boîte finale devrait être la plus petite pour cette orientation et ces vecteurs de boîte donnés.</p>
+
+<p>Si cette option est appelée avec le paramètre "<strong>x</strong>", "<strong>y</strong>", ou "<strong>z</strong>", alors la taille de boîte sera réduite uniquement suivant cette direction. En l'absence de paramètre, la taille de boîte est réduite dans toutes les directions.</p>
+
+<p>Si cette option est appelée avec le paramètre "<strong>p</strong>", alors Atomsk tentera de trouver la maille primitive, c'est-à-dire la plus petite maille possible respectant la périodicité du réseau. Notez que dans ce cas, les vecteurs de boîte finaux ne seront peut-être pas alignés avec les vecteurs initiaux.</p>
+
+<p>Si le système a été tourné et que vous souhaitez obtenir une boîte orthogonale équivalente, alors utilisez l'<a href="./option_orthocell.html">option <code>-orthogonal-cell</code></a> avant celle-ci.</p>
+
+<p>Notez que cette option est prévue pour être utilisée sur des systèmes cristallins parfaits. Elle risque de ne pas donner de bons résultats sur des cristaux qui contiennent des défauts, ni sur les systèmes non cristallins ou désordonnés. Aussi, bien que Atomsk tente de réduire la taille de boîte, s'il ne trouve pas de vecteur de boîte plus court, alors la boîte restera telle quelle.</p>
+
+
+<h4>Défaut</h4>
+
+<p>Par défaut Atomsk ne réduit pas les vecteurs de boîte.</p>
+
+
+
+<h4>Exemples</h4>
+
+<ul>
+<li><code class="command">atomsk system.cfg -reduce-cell xsf</code>
+<p>Ceci va lire le fichier <code>system.cfg</code> et tentera de raccourcir les vecteurs de boîte. Le résultat sera écrit dans <code>system.xsf</code>.</p></li>
+
+<li><code class="command">atomsk --create fcc 4.02 Al -duplicate 10 10 10 -reduce-cell final.cfg</code>
+<p>Avec cette commande, Atomsk va <a href="./mode_create.html">créer une maille élémentaire</a> d'aluminium cfc, qui contient 4&nbsp;atomes. Puis, il va la <a href="./option_duplicate.html">dupliquer</a> dix fois suivant chaque direction, résultant en une super-cellule de 4000&nbsp;atomes. Puis, l'option "-reduce-cell" va essayer de réduire la taille de ce système en préservant sa périodicité, et elle va trouver que le plus petit système correspondant est la maille élémentaire contenant 4&nbsp;atomes. Finalement, Atomsk écrira le résultat final dans le fichier "final.cfg".</p></li>
+
+<li><code class="command">atomsk initial.cfg -rotate Z 45 -orthogonal-cell -reduce-cell final.cfg</code>
+<p>Ceci va <a href="./option_rotate.html">tourner le système</a> de 45° autour de l'axe Z, recherchera une <a href="./option_orthocell.html">boîte orthogonale équivalente</a>, et finalement tentera de réduire la taille de cette boîte. Le résultat sera écrit dans <code>final.cfg</code>.</p></li>
+
+<li><code class="command">atomsk initial.cfg -reduce-cell y final.cfg</code>
+<p>Cette commande va lire le fichier <code>initial.cfg</code>, et tentera de réduire la taille de boîte suivant Y. Le résultat sera écrit dans <code>final.cfg</code>.</p></li>
+
+<li><code class="command">atomsk Al_unitcell.cfg -reduce-cell p Al_primitivecell.cfg</code>
+<p>Cette commande va lire le fichier <code>Al_unitcell.cfg</code>, et tenter de trouver la maille primitive. Le résultat sera écrit dans <code>Al_primitivecell.cfg</code>.</p></li>
+</ul>
+
+<p><a href="./index.html">Retour au menu principal</a></p>
+
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <title>Atomsk - Option unit - Pierre Hirel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" media="screen" type="text/css" title="Default" href="./default.css" />
+    <link rel="icon" href="../img/atomsk_logo.png" type="image/png" />
+</head>
+   
+<body>
+
+<p><a href="./index.html">Back to main menu</a></p>
+
+<h2>Option: unit</h2>
+
+<h4>Syntax</h4>
+
+<p><code>-unit &#60;property&#62; &#60;factor&#62;</code></p>
+
+<p><code>-unit &#60;unit1&#62; &#60;unit2&#62;</code></p>
+
+
+<h4>Description</h4>
+
+<p>This option multiplies the values of the given auxiliary property by the given factor. It also allows to convert atom coordinates or velocities from one unit system &#60;unit1&#62; to another &#60;unit2&#62;.<p>
+
+<p>The &#60;property&#62; can be a Cartesian direction (X, Y or Z) to rescale atom coordinates, or any defined auxiliary property (like vx, vy or vz for atom velocities, fx, fy, fz for atom forces, etc.). The &#60;factor&#62; must be a real number (it may be equal to zero).</p>
+
+<p>This option also has presets that allow to convert the cell dimensions and atom coordinates from one unit system into another. The supported units of distance are:</p>
+
+<ul>
+  <li><strong>km</strong></li>
+  <li><strong>m</strong></li>
+  <li><strong>mm</strong></li>
+  <li><strong>micron</strong> or <strong>µm</strong></li>
+  <li><strong>nm</strong></li>
+  <li><strong>A</strong> or <strong>Angstroms</strong> or <strong>angstroms</strong></li>
+  <li><strong>B</strong> or <strong>Bohr</strong> or <strong>bohr</strong></li>
+  <li><strong>pm</strong></li>
+  <li><strong>fm</strong></li>
+</ul>
+
+<p>This option also has presets to convert atom velocities. Units of velocity must be specified as the concatenation of a unit of distance, a slash symbol (/), and a unit of time (see examples below). The supported units of time are:</p>
+
+<ul>
+  <li><strong>h</strong></li>
+  <li><strong>min</strong></li>
+  <li><strong>s</strong></li>
+  <li><strong>ms</strong></li>
+  <li><strong>µs</strong></li>
+  <li><strong>ns</strong></li>
+  <li><strong>ps</strong></li>
+  <li><strong>fs</strong></li>
+</ul>
+
+<p>Note that in any case, Atomsk performs the conversion blindly, as it has no way to know in which unit the coordinates are written in the input file. It is up to the user to make sure that the &#60;unit1&#62; actually corresponds to what is written in the input file.</p>
+
+<p>If a selection was defined (with the <a href="./option_select.html">option <code>-select</code></a>) then the unit conversion is applied only to selected atoms. Non-selected atoms and box vectors will remain unchanged.</p>
+
+
+<h4>Default</h4>
+
+<p>By default the units are not changed. When reading an input file, Atomsk just reads and stores the numbers as-is, without performing any implicit conversion of units. For instance if the input file contains the atom coordinates "1.0 2.0 3.0" in units of Bohr radius, then they will also appear as "1.0 2.0 3.0" in the output file, even in file formats that use another unit as their default. The conversion of units must be performed explicitely by the user, e.g. with the option <code>-unit</code>.</p>
+
+
+
+<h4>Examples</h4>
+
+<ul>
+<li><code class="command">atomsk initial.lmc -unit x 1.1 final.cfg</code>
+<p>This will multiply all X coordinates of atoms by a factor of 1.1.</p></li>
+
+<li><code class="command">atomsk initial.lmc -unit vx 2.0 -unit vy 2 -unit vz 2 final.cfg</code>
+<p>This will multiply all atom velocities (vx, vy, vz) by a factor of 2.</p></li>
+
+<li><code class="command">atomsk initial.xyz -unit Bohr Angstroms final.xsf</code>
+<p>This will read the file <code>initial.xyz</code>, where atom coordinates are written in units of Bohr radius, convert them to angströms, and output the result into <code>final.xsf</code>.</p></li>
+
+<li><code class="command">atomsk initial.xsf -unit A nm final.xyz</code>
+<p>This will convert from Angströms to nanometers.</p></li>
+
+<li><code class="command">atomsk initial.lmc -unit A/ps nm/ps final.cfg</code>
+<p>This will convert atom velocities from Angströms per picosecond (&Aring;/ps) to nanometers per picosecond (nm/ps).</p></li>
+
+<li><code class="command">atomsk initial.lmc -unit nm/fs km/h final.cfg</code>
+<p>This will convert atom velocities from nanometers per femtosecond (nm/fs) into kilometers per hour (km/h).</p></li>
+</ul>
+
+<p><a href="./index.html">Back to main menu</a></p>
+
+</body>
+
+</html>

@@ -53,7 +53,20 @@ for block in blocks:
 # OR: Normalize by maximum value
 normalized_integrals = [val / max(integrals) for val in integrals]
 
-# === STEP 5: Plot results ===
+# === STEP 5: Plot results (Journal Quality) ===
+plt.rcParams.update({
+    "font.size": 16,
+    "axes.titlesize": 18,
+    "axes.labelsize": 16,
+    "xtick.labelsize": 14,
+    "ytick.labelsize": 14,
+    "legend.fontsize": 14,
+    "figure.dpi": 300,
+    "savefig.dpi": 600,
+    "lines.linewidth": 2,
+    "lines.markersize": 6
+})
+
 plt.figure(figsize=(10, 6))
 plt.plot(real_times, normalized_integrals, marker='o', linestyle='-')
 plt.title("Normalized Integral of Averaged HFACF per Interval")
@@ -61,8 +74,9 @@ plt.xlabel("Real Time (ps)")
 plt.ylabel("Normalized Integrated ACF")
 plt.grid(True)
 plt.tight_layout()
-plt.savefig("normalized_integrated_acf_vs_time.png")
-plt.show()
+plt.savefig("normalized_integrated_acf_vs_time.png", dpi=600)
+# plt.show()
+
 
 # Optional: save results to CSV
 df = pd.DataFrame({

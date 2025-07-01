@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <title>Atomsk - Option sort - Pierre Hirel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" media="screen" type="text/css" title="Default" href="./default.css" />
+    <link rel="icon" href="../img/atomsk_logo.png" type="image/png" />
+</head>
+   
+<body>
+
+<p><a href="./index.html">Back to main menu</a></p>
+
+<h2>Option: sort</h2>
+
+<h4>Syntax</h4>
+
+<p><code>-sort &#60;property&#62; &#60;order&#62;</code></p>
+
+<p><code>-sort random</code></p>
+
+
+<h4>Description</h4>
+
+<p>This option sorts atoms according to one of their properties.</p>
+
+<p>The parameters for this option are:</p>
+
+<ul>
+  <li><strong>property</strong>: atom property to be sorted; can be one of 'species' (or 's'), 'x', 'y', 'z', or any per-atom auxiliary property (read from the input file or defined with the <a href="./option_properties.html">option <code>-properties</code></a>);</li>
+  <li><strong>order</strong>: if 'up' or 'down' the property is sorted by increasing or decreasing values, respectively. If 'pack', identical values of the property is packed so that they are contiguous (but without sorting them by increasing or decreasing values). If 'reverse', then the order of atoms is reversed.</li>
+</ul>
+
+<p>If the option is called as "-sort random", then the list of atoms is shuffled in random order.</p>
+
+<p>This option does not transform the system or move atoms. It changes the <em>index</em> of atoms, i.e. the order in which they appear in the final file. For example, after applying this option, the atom #i of chemical symbol Xx at position (x,y,z) and with auxiliary properties of values A1, A2, etc., will still be of the same chemical species, be at the same position, and have the same values of its auxiliary properties, but it will have a different index #j.</p>
+
+
+
+<h4>Default</h4>
+
+<p>By default atoms are not rearranged at all.</p>
+
+
+<h4>Examples</h4>
+
+<ul>
+<li><code class="command">atomsk initial.cfg -sort species up final.xyz</code>
+<p>This will rearrange the order in which atoms are written, sorting them by increasing value of their atomic weigth.</p></li>
+
+<li><code class="command">atomsk initial.cfg -sort z down final.xyz</code>
+<p>This will sort atoms by decreasing values of their Z coordinate.</p></li>
+
+<li><code class="command">atomsk initial.cfg -sort s pack POSCAR</code>
+<p>This will pack atoms that have the same atomic number so that they are contiguous.</p></li>
+
+<li><code class="command">atomsk initial.lmc -sort vx up final.xyz exyz</code>
+<p>This will read the file <code>initial.lmc</code> and sort atoms by increasing values of their velocity along X. These data will then be written to the file <code>final.xyz</code> in extended XYZ format.</p></li>
+
+<li><code class="command">atomsk initial.lmc -sort random final.cfg</code>
+<p>This will randomize the list of atoms, i.e. the index of all atoms will change so that they appear in a completely random order.</p></li>
+</ul>
+
+<p><a href="./index.html">Back to main menu</a></p>
+
+</body>
+
+</html>

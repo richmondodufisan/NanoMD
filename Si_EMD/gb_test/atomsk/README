@@ -1,0 +1,47 @@
+ ___________________________________________________
+|              ___________                          |
+|     o---o    A T O M S K                          |
+|    o---o|                                         |
+|    |   |o    (C) 2010 Pierre Hirel                |
+|    o---o     https://atomsk.univ-lille.fr         |
+|___________________________________________________|
+
+PURPOSE:
+========
+Atomsk is a command-line program meant to manipulate
+atomic systems for materials sciences.
+Atomsk can convert from and to various file formats, and
+offers options to duplicate atomic systems, introduce
+defects, construct crystals and polycrystals, and more.
+
+QUICK START:
+============
+If you downloaded the binary version:
+Open a terminal in current directory and run: "sudo install.sh".
+
+If you downloaded the source code:
+Enter the src directory and type "make atomsk".
+
+To access the documentation, open the file
+"doc/index.html" in your web browser.
+
+CONTENT OF THIS PACKAGE:
+========================
+README          This file
+LICENSE         The GNU General Public License v.3
+CHANGELOG       Modification history
+doc/            Documentation of the program (html)
+etc/            Sample configuration file
+examples/       Examples to test the program
+man/            Man page of the program
+src/            Source code of the program (Fortran95)
+tools/          Companion programs and scripts
+install.sh      Bash script to install Atomsk in GNU/Linux
+
+(C) Pierre Hirel 2010
+This program is distributed under the GNU/GPL
+(General Public License) version 3 or any later version.
+A copy of this license can be found in the file LICENSE
+that is provided with this program, or on the Web at:
+http://www.gnu.org/licenses/gpl.html
+

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <title>Atomsk - VESTA format - Pierre Hirel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" media="screen" type="text/css" title="Default" href="./default.css" />
+    <link rel="icon" href="../img/atomsk_logo.png" type="image/png" />
+</head>
+   
+<body>
+
+<p><a href="./index.html">Back to main menu</a></p>
+
+<h2>Format: VESTA</h2>
+
+<p><strong>Name:</strong> VESTA format</p>
+
+<p><strong>Extension:</strong> vesta</p>
+
+<p><strong>Specification:</strong> <a href="http://jp-minerals.org/vesta/en/doc.html">VESTA documentation</a></p>
+
+<p><strong>Visualization programs:</strong> <a href="http://jp-minerals.org/vesta/">VESTA</a></p>
+
+
+<h4>Restrictions</h4>
+
+<p>Atomsk can read VESTA files. If vectors exist in a VESTA file (after the keyword "VECTR"), then they are read and stored as per-atom auxiliary properties named vecx, vecy, vecz. If the file contains symmetry operations (after the keyword "SYMOP"), then they are applied immediately to all atoms.</p>
+
+<p>When writing a VESTA file, Atomsk ignores symmetry operations, i.e. the space group will be P1. If, among the auxiliary property, three of them have the same prefix followed by x, y and z (for instance forces fx, fy, fz, or velocities vx, vy, vz), then they are written as vectors in the file, so that VESTA can display them as arrows. Note that if values are very small or very large, they will be almost invisible or displayed as extremely large arrows in VESTA. This can be fixed by rescaling the vector components with the <a href="./option_unit.html">option <code>-unit</code></a>.</p>
+
+
+
+<h4>Examples</h4>
+
+<ul>
+<li><code class="command">atomsk initial.cfg final.vesta</code>
+<p>This will read the file <code>initial.cfg</code>, and convert it to the file <code>final.vesta</code>.</p></li>
+
+<li><code class="command">atomsk CONTCAR vesta</code>
+<p>This will read the VASP file <code>CONTCAR</code>, and convert it to the file <code>CONTCAR.vesta</code>.</p></li>
+
+<li><code class="command">atomsk file.vesta lammps</code>
+<p>This will read the VESTA file <code>file.vesta</code>, and convert it to the file <code>file.lmp</code>.</p></li>
+</ul>
+
+
+<p><a href="./index.html">Back to main menu</a></p>
+
+</body>
+
+</html>

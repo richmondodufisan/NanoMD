@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr" >
+<head>
+    <title>Atomsk - Comportement du programme, configuration - Pierre Hirel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" media="screen" type="text/css" title="Default" href="./default.css" />
+    <link rel="icon" href="../img/atomsk_logo.png" type="image/png" />
+</head>
+   
+<body>
+
+<p><a href="./index.html">Retour au menu principal</a></p>
+
+<h2>Comportement du programme : fichier de configuration personnel</h2>
+
+<h4>Syntaxe</h4>
+
+<p>aucune</p>
+
+
+<h4>Description</h4>
+
+<p>Le comportement par défaut de Atomsk peut être personnalisé grâce à un fichier de configuration.</p>
+
+<p><strong>Sur les systèmes UNIX/Linux</strong>, le comportement du programme peut être modifié pour l'ensemble des utilisateurs du système grâce au fichier de configuration <code>/etc/atomsk.conf</code>. De plus, chaque utilisateur peut posséder son propre fichier de configuration dans son dossier personnel (défini par la variable d'environnement <code>&#36;XDG_CONFIG_HOME</code> ou, le cas échéant, défini comme étant le dossier caché <code>&#36;HOME/.config/</code>) et nommé <code>atomsk.conf</code>. Enfin, un fichier de configuration nommé <code>atomsk.conf</code> peut aussi exister dans le dossier courant.</p>
+
+<p><strong>Sur les systèmes Microsoft&reg; Windows&reg;</strong>, chaque utilisateur peut posséder son propre fichier de configuration dans son dossier personnel (défini par la variable d'environnement <code>%HOMEPATH%</code>) et nommé <code>atomsk.ini</code>. Enfin, un fichier de configuration nommé <code>atomsk.ini</code> peut aussi exister dans le dossier courant.</p>
+
+<p>Ce fichier de configuration est un fichier texte. Les lignes vides ou commençant avec un croisillon (&#35;) sont ignorées, et les mots-clé suivants peuvent être utilisés :</p>
+
+<ul>
+  <li><strong>format &#60;format&#62;</strong> : indique un format pour lequel Atomsk doit toujours créer un fichier de sortie ; plusieurs formats peuvent être indiqués en utilisant ce mot-clé plusieurs fois (un par ligne).</li>
+  
+  <li><strong>overw &#60;valeur&#62;</strong> : si &#60;valeur&#62; vaut "YES" alors les fichiers de sortie sont toujours écrasés sans demander à l'utilisateur, sinon Atomsk demande avant d'écraser un fichier ; identique à l'option <a href="./progbe_ow.html"><code>-overw</code></a>.</li>
+  
+  <li><strong>ignore &#60;valeur&#62;</strong> : si &#60;valeur&#62; vaut "YES" alors les fichiers de sortie qui existent déjà ne sont pas réécrits, sinon Atomsk demande ; identique à l'option <a href="./progbe_ig.html"><code>-ignore</code></a>.</li>
+  
+  <li><strong>nthreads &#60;n&#62;</strong> : limite à &#60;n&#62; le nombre maximum de processus OpenMP utilisés par Atomsk&nbsp;; identique à l'option <a href="./progbe_Nthreads.html"><code>-nthreads</code></a>;</li>
+  
+  <li><strong>verbosity &#60;n&#62;</strong> : paramètre le niveau de verbosité à &#60;n&#62; ; identique à l'option <a href="./progbe_verb.html"><code>-verbosity</code></a>.</li>
+  
+  <li><strong>lang &#60;langue&#62;</strong> : affiche les messages dans la &#60;langue&#62; donnée ; identique à l'option <a href="./progbe_lang.html"><code>-lang</code></a>;</li>
+  
+  <li><strong>colour &#60;valeur&#62;</strong>: si &#60;valeur&#62; vaut "YES" alors Atomsk affichera certains messages en couleur (non disponible sur les systèmes Microsoft&reg; Windows&reg;).</li>
+  
+  <li><strong>colour_default &#60;couleur&#62;</strong>: si l'option "colour" ci-dessus a été activée, alors la &#60;couleur&#62; donnée sera utilisée par défaut pour tous les messages. La &#60;couleur&#62; peut être "black" (noir), "red" (rouge), "green" (vert), "yellow" (jaune), "blue" (bleu), "magenta", "cyan", "grey" (gris), ou "white" (blanc). Des attributs peuvent être ajoutés, comme "bold" (gras), "italic" (italique), "underline" (souligné), et/ou "blink" (clignotant).</li>
+  
+  <li><strong>colour_warning &#60;couleur&#62;</strong>: si l'option "colour" ci-dessus a été activée, alors la &#60;couleur&#62; donnée sera utilisée par défaut pour les messages d'alerte (<em>warnings</em>).</li>
+  
+  <li><strong>colour_error &#60;couleur&#62;</strong>: si l'option "colour" ci-dessus a été activée, alors la &#60;couleur&#62; donnée sera utilisée par défaut pour les messages d'erreur.</li>
+
+  <li><strong>progressbar &#60;style&#62;</strong>: personnalise l'apparence des barres de progression. Le &#60;style&#62; peut être&nbsp;: "barrier", "bounce", "clock", "dots", "face", "inflate", "jump", "linear", "newton", "pacman", "rotate", "snail", "tunnel", "wave", "wheel", ou "none". Avec ce dernier ("none"), aucune barre de progression n'est affichée. Avec tout autre &#60;style&#62; (non valide), seul le pourcentage est affiché. Si ce mot-clé n'est pas utilisé, alors par défaut les barres de progression sont affichées avec le style "linear".</li>
+</ul>
+
+
+
+<h4>Défaut</h4>
+
+<p>Par défaut, aucun format de sortie n'est actif. La langue est celle utilisée par le système d'exploitation, ou l'anglais par défaut. Atomsk n'ignore ni n'écrase pas les fichiers, il demande à l'utilisateur ce qu'il faut faire. Le nombre de processus est celui défini par la variable d'environnement OMP_NUM_THREADS, ou prend la valeur maximale par défaut. Les messages en couleur sont désactivés. Les barres de progression sont affichées avec le style "linear".</p>
+
+<p>Ces paramètres par défaut sont successivement remplacés (écrasés) par ceux définis dans&nbsp;:</p>
+<ul>
+  <li>/etc/atomsk.conf</li>
+  <li>${HOME}/.config/atomsk.conf</li>
+  <li>./atomsk.conf</li>
+  <li>les arguments en ligne de commande</li>
+</ul>
+
+
+
+<h4>Exemple</h4>
+
+<div class="txtfile"><h5>~/.config/atomsk.conf</h5>
+<p><code># Ceci est un commentaire<br/>
+# Toujours créer des fichiers de sortie aux formats xsf et cfg<br/>
+format  xsf<br/>
+format  cfg<br/>
+<br/>
+# Si un fichier de sortie existe,<br/>
+# ne pas le reconvertir<br/>
+overw   no<br/>
+ignore  yes<br/>
+<br/>
+# Toujours exécuter en mode silencieux<br/>
+verbosity   0<br/>
+# Activer les couleurs<br/>
+colour  yes<br/>
+colour_error  red bold blink<br/>
+</code></p></div>
+
+
+
+<p><a href="./index.html">Retour au menu principal</a></p>
+
+</body>
+
+</html>

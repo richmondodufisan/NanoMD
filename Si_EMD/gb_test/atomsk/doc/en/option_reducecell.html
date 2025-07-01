@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <title>Atomsk - Option reduce cell - Pierre Hirel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" media="screen" type="text/css" title="Default" href="./default.css" />
+    <link rel="icon" href="../img/atomsk_logo.png" type="image/png" />
+</head>
+   
+<body>
+
+<p><a href="./index.html">Back to main menu</a></p>
+
+<h2>Option: reduce-cell</h2>
+
+<h4>Syntax</h4>
+
+<p><code>-reduce-cell &#60;x|y|z|p&#62;</code></p>
+
+
+<h4>Description</h4>
+
+<p>This option reduces the system into a shorter cell, while maintaining the periodicity.</p>
+
+<p>This option searches for pairs of equivalent atoms. If the vector joining two equivalent atoms is parallel to and shorter than an initial cell vector, then it replaces it. The box may be shortened in one, two, or in all three directions. Then, atoms that are out of the new box are removed, along with their shells and auxiliary properties if they had any.</p>
+
+<p>This option preserves the crystal orientation, it just attempts to shorten the cell vectors when it is possible. The resulting final cell should be the shortest for this crystal orientation.</p>
+
+<p>If this option is called with the parameter "<strong>x</strong>", "<strong>y</strong>", or "<strong>z</strong>", then the cell size is reduced only along that direction. In the absence of parameter the cell size is reduced in all dimensions.</p>
+
+<p>If this option is called with the parameter "<strong>p</strong>", then Atomsk will attempt to find the primitive cell, i.e. the smallest vectors that respect the periodicity of the lattice. Note that in this case, the final box vectors may not be aligned with the initial ones.</p>
+
+<p>If the system is rotated and you wish to obtain an orthorhombic unit cell, then use the <a href="./option_orthocell.html">option <code>-orthogonal-cell</code></a> before this one.</p>
+
+<p>Note that this option is meant for use with perfect crystals. It cannot be expected to give good results in crystals containing defects, nor on non-crystalline or disordered systems. Also, Atomsk will attempt to reduce the cell size, but if it does not find suitable shorter vectors, then the cell will remain the same.</p>
+
+
+<h4>Default</h4>
+
+<p>By default Atomsk does not reduce cell vectors.</p>
+
+
+
+<h4>Examples</h4>
+
+<ul>
+<li><code class="command">atomsk system.cfg -reduce-cell xsf</code>
+<p>This will read the file <code>system.cfg</code> and re-calculate the supercell base vectors. The result will be output in <code>system.xsf</code>.</p></li>
+
+<li><code class="command">atomsk --create fcc 4.02 Al -duplicate 10 10 10 -reduce-cell final.cfg</code>
+<p>With this command, Atomsk will <a href="./mode_create.html">create a unit cell</a> of fcc aluminium, which contains 4&nbsp;atoms. Then it will <a href="./option_duplicate.html">duplicate it</a> ten times along each direction, resulting in a supercell containing 4000&nbsp;atoms. Then, the option "-reduce-cell" will try to reduce the size of this system while preserving its periodicity, and it will find that the smallest matching system is the unit cell containing just 4&nbsp;atoms. Finally, Atomsk will write the final result in the file "final.cfg".</p></li>
+
+<li><code class="command">atomsk initial.cfg -rotate Z 45 -orthogonal-cell -reduce-cell final.cfg</code>
+<p>This will <a href="./option_rotate.html">rotate the system</a> by 45° around Z, search for an <a href="./option_orthocell.html">equivalent orthogonal cell</a>, and finally attempt to reduce the size of this cell. The result will be output in <code>final.cfg</code>.</p></li>
+
+<li><code class="command">atomsk initial.cfg -reduce-cell y final.cfg</code>
+<p>This will read the file <code>initial.cfg</code>, and attempt to reduce the cell size along the Y axis. The result will be output in <code>final.cfg</code>.</p></li>
+
+<li><code class="command">atomsk Al_unitcell.cfg -reduce-cell p Al_primitivecell.cfg</code>
+<p>This will read the file <code>Al_unitcell.cfg</code>, and try to find the primitive cell. The result will be output in <code>Al_primitivecell.cfg</code>.</p></li>
+
+</ul>
+
+<p><a href="./index.html">Back to main menu</a></p>
+
+</body>
+
+</html>

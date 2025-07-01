@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr" >
+<head>
+    <title>Atomsk - Mode normal - Pierre Hirel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" media="screen" type="text/css" title="Default" href="./default.css" />
+    <link rel="icon" href="../img/atomsk_logo.png" type="image/png" />
+</head>
+   
+<body>
+
+<p><a href="./index.html">Retour au menu principal</a></p>
+
+<h2>Mode : normal</h2>
+
+<h4>Syntaxe</h4>
+
+<p><code>atomsk &#60;fichier-entrée&#62; [options] &#60;fichier-sortie&#62;</code></p>
+
+<p><code>atomsk &#60;fichier-entrée&#62; [options] &#60;formats&#62;</code></p>
+
+<p><code>atomsk &#60;fichier-entrée&#62; [options] &#60;préfixe&#62; &#60;formats&#62;</code></p>
+
+
+<h4>Description</h4>
+
+<p>Ceci est le mode par défaut. Dans ce mode, Atomsk lit un fichier d'entrée &#60;fichier-entrée&#62;, applique des options s'il y en a, et écrit le résultat final vers un ou plusieurs fichiers de sortie.<p>
+
+<p>Si le fichier de sortie, &#60;fichier-sortie&#62;, a un nom ou une extension reconnaissable (par exemple "fichier.xyz", ou "systeme.cfg"), alors Atomsk écrira ce fichier dans le format approprié.</p>
+
+<p>Si aucun nom de fichier de sortie n'est spécifié, mais que plusieurs formats de sortie sont donnés (parmi <a href="./formats.html">ceux supportés par Atomsk</a>), alors Atomsk utilisera le nom du fichier d'entrée, et remplacera son extension par les formats de sortie.</p>
+
+<p>Si un &#60;préfixe&#62; est donné (c'est-à-dire un nom de fichier sans extension), suivi d'un ou plusieurs formats de sortie, alors il sera utilisé comme base pour les noms de fichiers de sortie.</p>
+
+<p>Atomsk vérifie l'existence des fichiers donnés dans la ligne de commande. Si seulement l'un des fichiers existe, alors Atomsk le considère comme fichier d'entrée, et le fichier inexistant comme fichier de sortie, peu importe l'ordre dans lequel les noms de fichiers apparaîssent dans la commande. Si les deux fichiers existent, alors Atomsk demandera lequel des deux utiliser comme entrée, et s'il faut écraser le fichier de sortie. Si vous souhaitez éviter ces questions, il est recommandé de supprimer le fichier de sortie avant d'appeler Atomsk, et/ou d'utiliser l'<a href="./progbe_ig.html">option <code>-ignore</code></a> ou l'<a href="./progbe_ow.html">option <code>-overwrite</code></a>.</p>
+
+<p>Utiliser des options n'est pas obligatoire. Si la ligne de commandes contient une ou plusieurs options, alors elles sont appliquées séquentiellement, dans l'ordre où elles apparaissent dans la commande, après la lecture du fichier d'entrée, et avant l'écriture du fichier de sortie. Veuillez vous référer à la <a href="./options.html">documentation sur les options</a>.</p>
+
+<p>Notez que dans ce mode, Atomsk n'accepte qu'un et un seul fichier d'entrée, et un seul fichier de sortie (et éventuellement, un ou plusieurs formats de fichiers). Si la commande contient plus de deux noms de fichiers, alors seuls les deux premiers sont utilisés, et les autres sont purement et simplement ignorés. Ainsi, vous ne devriez jamais utiliser un métacaractère (comme le symbole étoile *) pour donner des noms de fichiers, comme par exemple "atomsk *.xyz cfg". Si vous souhaitez convertir plusieurs fichiers d'entrée, veuillez utiliser le <a href="./mode_filelist.html">mode liste</a>.</p>
+
+<p>Notez que contrairement aux autres modes, vous n'avez pas à écrire "<code>--normal</code>" pour utiliser le mode normal, puisqu'il s'agit du mode par défaut.</p>
+
+
+<h4>Exemples</h4>
+
+<ul>
+<li><code class="command">atomsk monsysteme.gin exemple.cfg</code>
+<p>Ceci convertira le fichier <code>monsysteme.gin</code> vers <code>exemple.cfg</code>.</p></li>
+
+<li><code class="command">atomsk exemple.cfg monsysteme.gin</code>
+<p>Identique à l'exemple précédent, en supposant que le fichier <code>monsysteme.gin</code> existe et pas le fichier <code>exemple.cfg</code>. Le programme reconnaît quel fichier existe et l'utilise comme fichier d'entrée. Si les deux fichiers existent, le programme demande à l'utilisateur quel fichier doit être utilisé en entrée.</p></li>
+
+<li><code class="command">atomsk monsysteme.gin cfg</code>
+<p>Ceci convertira <code>monsysteme.gin</code> vers <code>monsysteme.cfg</code>.</p></li>
+
+<li><code class="command">atomsk monsysteme.gin nouveau_systeme cfg xsf</code>
+<p>Cet exemple utilise un préfixe (<code>nouveau_systeme</code>) et plusieurs formats de sortie. Le fichier <code>monsysteme.gin</code> sera converti vers <code>nouveau_systeme.cfg</code> et <code>nouveau_systeme.xsf</code>.</p></li>
+
+<li><code class="command">atomsk xsf nouveau_systeme cfg monsysteme.gin</code>
+<p>Identique à l'exemple précédent. Notez que les paramètres et noms de fichiers peuvent apparaître dans n'importe quel ordre dans la commande.</p></li>
+
+<li><code class="command">atomsk cellule.xyz -duplicate 2 2 6 -shift above 6.5 z 0.2 0.6 0.0 defaut_empilement.xsf</code>
+<p>Cet exemple utilise plusieurs options. Le fichier <code>cellule.xyz</code> sera lu, ensuite le système sera <a href="./option_duplicate.html">dupliqué</a> pour former une super-cellule de dimensions 2x2x6, puis une partie du système sera <a href="./option_shift.html">translatée</a>, et le système final sera écrit dans le fichier <code>defaut_empilement.xsf</code>.</p></li>
+
+</ul>
+
+<p><a href="./index.html">Retour au menu principal</a></p>
+
+</body>
+
+</html>

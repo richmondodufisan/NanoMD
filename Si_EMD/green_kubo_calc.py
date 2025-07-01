@@ -209,6 +209,20 @@ else:
 
 
 # Plot evolution of thermal conductivity only if data exists
+
+plt.rcParams.update({
+    "font.size": 16,          # General font size
+    "axes.titlesize": 18,     # Title font size
+    "axes.labelsize": 16,     # Axis label font size
+    "xtick.labelsize": 14,    # Tick font size
+    "ytick.labelsize": 14,
+    "legend.fontsize": 14,    # Legend font size
+    "figure.dpi": 300,        # High-resolution figure
+    "savefig.dpi": 600,       # High-resolution save
+    "lines.linewidth": 2,     # Thicker lines
+    "lines.markersize": 6     # Marker size
+})
+
 if thermal_conductivity_x:
     plt.figure(figsize=(10, 6))
     plt.plot(time_evolution, thermal_conductivity_x, label=r"$k_{xx}$")
@@ -216,7 +230,23 @@ if thermal_conductivity_x:
     plt.plot(time_evolution, thermal_conductivity_z, label=r"$k_{zz}$")
     plt.xlabel("Time (ps)")
     plt.ylabel("Thermal Conductivity (W/mK)")
-    plt.title(f"Evolution of Thermal Conductivity Over Time - p = {p}, s = {s}")
+    plt.title(f"Thermal Conductivity Evolution (p = {p}, s = {s})")
     plt.legend()
     plt.grid(True)
-    plt.savefig("kappa_evolution.png")
+    plt.tight_layout()
+    plt.savefig("kappa_evolution.png", dpi=600)
+
+
+
+
+# if thermal_conductivity_x:
+    # plt.figure(figsize=(10, 6))
+    # plt.plot(time_evolution, thermal_conductivity_x, label=r"$k_{xx}$")
+    # plt.plot(time_evolution, thermal_conductivity_y, label=r"$k_{yy}$")
+    # plt.plot(time_evolution, thermal_conductivity_z, label=r"$k_{zz}$")
+    # plt.xlabel("Time (ps)")
+    # plt.ylabel("Thermal Conductivity (W/mK)")
+    # plt.title(f"Evolution of Thermal Conductivity Over Time - p = {p}, s = {s}")
+    # plt.legend()
+    # plt.grid(True)
+    # plt.savefig("kappa_evolution.png")

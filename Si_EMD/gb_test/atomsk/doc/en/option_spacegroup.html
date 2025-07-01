@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <title>Atomsk - Option spacegroup - Pierre Hirel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" media="screen" type="text/css" title="Default" href="./default.css" />
+    <link rel="icon" href="../img/atomsk_logo.png" type="image/png" />
+</head>
+   
+<body>
+
+<p><a href="./index.html">Back to main menu</a></p>
+
+<h2>Option: spacegroup</h2>
+
+<h4>Syntax</h4>
+
+<code>-spacegroup &#60;group&#62;</code>
+
+
+<h4>Description</h4>
+
+<p>This option applies the symmetry operations of the given space group to the current system.</p>
+
+<p>The &#60;group&#62; can either be the space group number, or the Hermann-Mauguin symbol (without any blank space). After application of symmetry operations, atom duplicates are removed.</p>
+
+<p>Note that this option changes the number of atoms in the system (but does not change the box vectors).</p>
+
+
+<h4>Default</h4>
+
+<p>Files in the <a href="./format_cif.html">CIF</a> format, the <a href="./format_gin.html">GULP input file</a> format, or the <a href="./format_jems.html">JEMS</a> format, or the <a href="./format_vesta.html">VESTA</a> format, may contain a space group number (or Hermann-Mauguin symbol). When they do, Atomsk immediately applies the corresponding symmetry operations. Otherwise, no symmetry operation is applied by default.</p>
+
+
+<h4>Examples</h4>
+
+<ul>
+<li><code class="command">atomsk initial.cfg -spacegroup Pnma final.xyz</code>
+<p>With this command, Atomsk will read the file "initial.cfg", apply the symmetry operations of the space group <em>Pnma</em> to all atoms, and write the final results into the file "final.xyz".</p></li>
+
+<li><code class="command">atomsk initial.cfg -spacegroup 42 final.xyz</code>
+<p>This will apply the symmetry operations of the space group number 42 (<em>Fmm2</em>).</p></li>
+</ul>
+
+<p><a href="./index.html">Back to main menu</a></p>
+
+</body>
+
+</html>

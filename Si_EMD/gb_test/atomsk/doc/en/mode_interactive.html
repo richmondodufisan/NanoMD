@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <title>Atomsk - Mode interactive - Pierre Hirel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" media="screen" type="text/css" title="Default" href="./default.css" />
+    <link rel="icon" href="../img/atomsk_logo.png" type="image/png" />
+</head>
+   
+<body>
+
+<p><a href="./index.html">Back to main menu</a></p>
+
+<h2>Mode: interactive</h2>
+
+<h4>Syntax</h4>
+
+<p><code>atomsk</code></p>
+
+<p><code>atomsk &#60; script.ats</code></p>
+
+
+<h4>Description</h4>
+
+<p>Running the program without any argument will enter interactive mode, which offers a command-line interpreter. When the program is started by double-clicking the executable, or a link from the system's menu, then it runs in interactive mode.</p>
+
+<p>In this mode the user can enter commands, and they are executed in real-time. The available commands are:</p>
+
+<ul>
+  <li class="clist"><strong>help</strong> Display a summary of commands</li>
+  <li class="clist"><strong>cd</strong> Change directory</li>
+  <li class="clist"><strong>ls</strong> Display a list of files in the current directory</li>
+  <li class="clist"><strong>pwd</strong> Display current working directory</li>
+  <li class="clist"><strong>print</strong> Display current box vectors and atom positions</li>
+  <li class="clist"><strong>memory</strong> Display a summary of the memory used</li>
+  <li class="clist"><strong>create</strong> Create a system from scratch</li>
+  <li class="clist"><strong>read &#60;file&#62;</strong> Read the &#60;file&#62; and load its content in memory</li>
+  <li class="clist"><strong>write &#60;file&#62;</strong> Write the current system into &#60;file&#62;</li>
+  <li class="clist"><strong>clear</strong> Clear the memory, destroying the current atomic system</li>
+  <li class="clist"><strong>quit</strong> Exit this mode and close Atomsk</li>
+</ul>
+
+<p>The command <strong>create</strong> can be called with the same arguments as the <a href="./mode_create.html">mode <code>--create</code></a>. If no argument is provided then the user will be prompted.</p>
+
+<p>The <a href="./options.html">options</a> of Atomsk are also available. They must be called <em>without</em> the leading dash sign (-), and with all their parameters.</p>
+
+<p>For now the other <a href="./modes.html">modes</a> of Atomsk cannot be called from the interactive mode.</p>
+
+<p>Note that only one command (or option) can be issued at a time, and it will take effect immediately.</p>
+
+<p>This mode reads commands from the standard input, which by default is the keyboard. In GNU/Linux environments it is possible to use the standard redirection (&#60;) to use a file as standard input (instead of the keyboard). That means that commands can be saved in a text file and be used as a script, using the standard redirection (see examples below).</p>
+
+<p>When running in interactive mode the <a href="./progbe_verb.html">verbosity level</a> is automatically reset to 1 if it is set to 0 or 2.</p>
+
+
+
+<h4>Examples</h4>
+
+<ul>
+<li><code class="command">atomsk</code>
+<p>Just enter "<code>atomsk</code>" and follow the instructions.</p></li>
+
+<li><code class="command">
+<strong>user@computer:~$</strong> atomsk<br/>
+ &#62;&#62;&#62; Atomsk is a free Open Source software, for details type 'atomsk --license'.<br/>
+ &#62;&#62;&#62; Atomsk command-line interpreter:<br/>
+ ..&#62; Type "help" for a summary of commands.<br/>
+<strong>user&#64;atomsk&#62;</strong> read initial.xsf<br/>
+<strong>user&#64;atomsk&#62;</strong> duplicate 6 6 2<br/>
+<strong>user&#64;atomsk&#62;</strong> write final.xsf cfg<br/>
+<strong>user&#64;atomsk&#62;</strong> quit
+</code>
+<p>The user just entered "atomsk" without argument, thus running the program in interactive mode. In interactive mode, Atomsk waits for commands and executes them in real-time. In this example, the user reads a file ("initial.xsf"), uses the <a href="./option_duplicate.html">option <code>-duplicate</code></a>, and then writes the system into output files "final.xsf" and "final.cfg". Note that in interactive mode, options must be used <em>without</em> the leading dash sign: use "duplicate" instead of "-duplicate". The last command "quit" exits Atomsk.</p></li>
+
+<li>
+<div class="txtfile">
+<h5>script.ats</h5>
+<p><code>#!/usr/local/bin/atomsk<br/>
+create fcc 4.02 Al<br/>
+duplicate 20 20 1<br/>
+deform x 0.3% 0.33<br/>
+wrap<br/>
+write deformed_al.xsf<br/>
+</code></p></div>
+<code class="command">atomsk &#60; script.ats</code>
+<p>Some commands were written in the text file "script.ats". Then, atomsk is run in interactive mode (because no command-line argument is present) and will execute commands from the standard input, i.e. the file "script.ats". Note that in interactive mode, the options must <em>not</em> have their leading dash sign, e.g. write "wrap" and not "-wrap".</p></li>
+</ul>
+
+
+<p><a href="./index.html">Back to main menu</a></p>
+
+</body>
+
+</html>

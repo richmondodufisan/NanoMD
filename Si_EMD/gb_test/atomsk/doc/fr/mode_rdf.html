@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr" >
+<head>
+    <title>Atomsk - Mode fonction de distribution radiale - Pierre Hirel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" media="screen" type="text/css" title="Default" href="./default.css" />
+    <link rel="icon" href="../img/atomsk_logo.png" type="image/png" />
+</head>
+   
+<body>
+
+<p><a href="./index.html">Retour au menu principal</a></p>
+
+<h2>Mode : fonction de distribution radiale</h2>
+
+<h4>Syntaxe</h4>
+
+<p><code>atomsk --rdf &#60;fichier&#62; &#60;dR&#62; [options]</code></p>
+
+<h4>Description</h4>
+
+<p>Dans ce mode Atomsk calcule la ou les fonction(s) de distribution radiale (radial distribution function, RDF) des systèmes contenus dans le &#60;fichierliste&#62;.</p>
+
+<p>L'analyse est faite pour toutes les "peaux" [R;R+dR] où R varie de 0 jusqu'à &#60;R<sub>max</sub>&#62;, et est moyennée sur tous les atomes (moyenne spatiale). Le rayon maximal &#60;R<sub>max</sub>&#62; et l'épaisseur &#60;dR&#62; de la "peau" doivent être fournis (en &Aring;). Le rayon maximal &#60;R<sub>max</sub>&#62; peut être supérieur à la taille du système.</p>
+
+<p>Si le &#60;fichier&#62; contient un système atomique (dans l'un des <a href="./formats.html">formats supportés par Atomsk</a>), alors la RDF est calculée pour ce système.</p>
+
+<p>Si le &#60;fichier&#62; contient une liste de fichiers à traiter, alors la RDF est calculée pour chacun de ces fichiers, et moyennée sur toutes ces configurations, autrement dit il s'agit d'une moyenne spatiale et temporelle. Les fichiers devraient tous correspondre au même système (par exemple, des instantanés d'une simulation en dynamique moléculaire) pour que le calcul ait du sens.</p>
+
+<p>Si les systèmes contiennent plusieurs espèces chimiques alors les fonctions de distribution radiale partielles sont calculées. Par exemple si des atomes A et B existent, alors Atomsk calculera les fonctions de distribution des atomes A autour des atomes A, de B autour de A, et B autour de B.</p>
+
+<p>Après le calcul les fichiers suivants sont produits (&#60;A&#62; et &#60;B&#62; sont remplacés par les symboles atomiques) :</p>
+
+<ul>
+  <li><strong>*_rdf_&#60;A&#62;&#60;B&#62;.dat</strong>: fichiers contenant les fonctions de ditribution radiale des atomes B autour des atomes A en fonction de la distance.</li>
+</ul>
+
+<p>Si ce mode est appelé avec une ou plusieurs <a href="./options.html">options</a> alors elles seront appliquées au système <em>avant</em> le calcul des fonctions de distribution.</p>
+
+
+<h4>Performance</h4>
+
+<p>Ce mode utilise un algorithme de recherche de voisins, qui n'est malheureusement pas très optimisé dans Atomsk. Le temps nécessaire pour la recherche de voisin augmente linéairement avec le volume (donc en R<sup>3</sup>). Il est donc conseillé d'utiliser une valeur de R<sub>max</sub> aussi petite que possible, typiquement entre 10 et 20&nbsp;&Aring;. Pour gagner du temps, la liste de voisins n'est reconstruite que si le déplacement maximal d'un atome dépasse la valeur de &#60;dR&#62;. Après cela, le temps nécessaire au calcul de la RDF en elle-même augmente linéairement avec le pas dR, et avec le nombre de particules.</p>
+
+
+<h4>Exemples</h4>
+
+<ul>
+<li><code class="command">atomsk --rdf systeme.cfg 10 0.1</code>
+<p>Ceci calculera la fonction de distribution radiale pour le système contenu dans <code>systeme.cfg</code>, de 0 à 10&nbsp;&Aring;, en utilisant un pas dR=0.1&nbsp;&Aring;.</p></li>
+
+<li><code class="command">atomsk --rdf liste.lst 10 0.1</code>
+<p>Ceci calculera les fonctions de distribution radiale pour tous les systèmes contenus dans <code>liste.lst</code>, de 0 à 10&nbsp;&Aring;, en utilisant un pas dR=0.1&nbsp;&Aring;.</p></li>
+
+</ul>
+
+<p><a href="./index.html">Retour au menu principal</a></p>
+
+</body>
+
+</html>

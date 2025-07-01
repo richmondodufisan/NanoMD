@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr" >
+<head>
+    <title>Atomsk - Mode symétrie locale - Pierre Hirel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" media="screen" type="text/css" title="Default" href="./default.css" />
+    <link rel="icon" href="../img/atomsk_logo.png" type="image/png" />
+</head>
+   
+<body>
+
+<p><a href="./index.html">Retour au menu principal</a></p>
+
+<h2>Mode : critère de symétrie locale</h2>
+
+<h4>Syntaxe</h4>
+
+<p><code>atomsk --local-symmetry &#60;file&#62; [options]</code></p>
+
+<h4>Description</h4>
+
+<p>Ce mode calcule un paramètre de symétrie locale pour chaque atome. Selon l'environnement de l'atome, il s'agit du critère de centro-symétrie, ou d'un paramètre basé sur les angles dièdres. Le but de ce calcul est de facilement différencier les atomes dans un environnement (presque) parfait, et ceux qui font partie d'un défaut cristallin.</p>
+
+<p>Le <strong>critère de centro-symétrie</strong> a été introduit par C.L. Kelchner, <em>Phys. Rev. B</em> <strong>58</strong> (1998) 11085, puis modifié dans son implémentation dans le programme de visualisation <a href="http://mt.seas.upenn.edu/Archive/Graphics/A/">Atomeye</a>. Le mode "--local-symmetry" de Atomsk suit cette dernière définition, i.e. le paramètre de symétrie centrale est sans unité et défini par&nbsp;:</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>c<sub>i</sub></em> = ( &Sum; |<em>d<sub>j</sub></em>+<em>d<sub>k</sub></em>|<sup>2</sup> ) / ( 2 &Sum; |<em>d<sub>j</sub></em>|<sup>2</sup> )</p>
+
+<p>où les atomes <em>j</em> et <em>k</em> sont des voisins opposés de l'atome central <em>i</em>, et la somme court sur toutes les paires de voisins opposés.</p>
+
+<p>Ce paramètre de symétrie central a été conçu pour les matériaux mono-atomiques. Dans un cristal cfc chaque atome a 12 voisins; dans un cristal cubique centré chaque atome en a 8. Dans un cristal parfait chaque voisin a un atome opposé, la symétrie centrale est parfaite et le paramètre est donc nul <em>c<sub>i</sub></em>=0. Lorsque la symétrie est brisée, par exemple sur les surfaces où il manque des voisins, dans les défauts d'empilement ou les dislocations où l'environnement est distordu, alors les atomes auront un paramètre <em>c<sub>i</sub></em>&gt;0.</p>
+
+<p>Atomsk peut aussi calculer ce paramètre dans d'autres types de matériaux, s'ils possèdent une forme de symétrie centrale. C'est le cas par exemple de certains matériaux binaires à structure NaCl (MgO, LiF...), ou de matériaux ternaires comme les perovskites (SrTiO<sub>3</sub>, BaTiO<sub>3</sub>...). Dans de tels réseaux Atomsk calcule le paramètre de symétrie centrale en utilisant uniquement les voisins de même espèce que le premier voisin. Par exemple dans NaCl, pour un atome central <em>i</em> de sodium (Na) seuls les atomes voisins de chlore (Cl) sont utilisés pour calculer <em>c<sub>i</sub></em>, et inversement. Dans la perovskite SrTiO<sub>3</sub>, les premiers voisins sont l'oxygène pour les ions Sr, l'oxygène pour les ions Ti, et aussi l'oxygène pour les ions oxygène.</p>
+
+<p>Notez que le paramètre de centro-symétrie n'a pas de sens dans les systèmes qui n'ont pas de symétrie centrale, comme les structures diamant, zincblende, ou hexagonales. Dans les perovskites non cubiques, la symétrie centrale peut être perdue, rendant ce critère moins pertinent.</p>
+
+<p>Si un atome possède 4 voisins, alors en plus du critère de centro-symétrie, Atomsk calcule également les angles formés par les atomes voisins. Pour un atome central <em>i</em> et ses voisins <em>j</em> et <em>k</em>, l'angle dièdre est défini comme l'angle entre les deux vecteurs joignant l'atome central, <em>&theta;<sub>jik</sub></em>&nbsp;=&nbsp;(<em><strong>r</strong><sub>j</sub></em> - <em><strong>r</strong><sub>i</sub></em> , <em><strong>r</strong><sub>k</sub></em> - <em><strong>r</strong><sub>i</sub></em>). La différence entre le cosinus de cet angle et le cosinus de l'angle attendu dans un tétraèdre parfait (<em>&theta;</em><sub>0</sub>&approx;109.471°) est calculée, mise au carré, et sommée sur tous les voisins&nbsp;:</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>&beta;<sub>i</sub></em> = &Sum; [cos(<em>&theta;<sub>jik</sub></em>) &minus; cos(<em>&theta;</em><sub>0</sub>) ]<sup>2</sup></p>
+
+<p>Ce paramètre supplémentaire vaut zéro lorsque l'atome est dans un environnement parfaitement tétraédrique (par exemple dans un réseau type diamant), et positif sinon. Il n'est calculé que pour les atomes qui possèdent exactement 4 voisins. Ensuite, si sa valeur est inférieure à celle du critère de centro-symétrie, alors il le remplace.</p>
+
+<p>Finalement, si un atome a 3 voisins, alors Atomsk calcule aussi les angles dièdres, et les compare à l'angle attendu dans un environnement sp2 (<em>&theta;</em><sub>0</sub>&nbsp;=&nbsp;120°)&nbsp;:</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>&gamma;<sub>i</sub></em> = &Sum; [ cos(<em>&theta;<sub>jik</sub></em>) &minus; cos(<em>&theta;</em><sub>0</sub>) ]<sup>2</sup></p>
+
+<p>Ce paramètre est nul pour les atomes dans un environnement sp2 parfait, comme dans un plan de graphène par exemple, et positif sinon. Si sa valeur est inférieure à celle du critère de centro-symétrie, alors il le remplace.</p>
+
+<p>Si ce mode est utilisé avec des <a href="./options.html">options</a> alors ces options seront appliquées <em>avant</em> que le paramètre de symétrie central ne soit calculé.</p>
+
+<p>Notez que ce mode suppose que tous les atomes se trouvent dans la boîte. Si ce n'est pas le cas alors le calcul peut donner de mauvais résultats. Les atomes peuvent être replacés dans la boîte grâce à l'<a href="./option_wrap.html">option <code>-wrap</code></a>.</p>
+
+
+
+
+<h4>Exemples</h4>
+
+<ul>
+<li><code class="command">atomsk --local-symmetry Al_dislocation.cfg Al_centrosymm.cfg -wrap</code>
+<p>Avec cette commande, Atomsk va lire le fichier <code>Al_dislocation.cfg</code>, et calculera le paramètre de symétrie centrale pour chaque atome. Le résultat final sera écrit dans <code>Al_centrosymm.cfg</code>.</p></li>
+
+<li><code class="command">atomsk --local-symmetry SrTiO3.xsf SrTiO3_centrosymm.cfg -wrap</code>
+<p>Ceci va lire le fichier <code>SrTiO3.xsf</code>, et calculera le paramètre de symétrie centrale pour chaque atome. Le résultat final sera écrit dans <code>SrTiO3_centrosymm.cfg</code>.</p></li>
+</ul>
+
+<p><a href="./index.html">Retour au menu principal</a></p>
+
+</body>
+
+</html>

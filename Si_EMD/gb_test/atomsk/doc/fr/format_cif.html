@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr" >
+<head>
+    <title>Atomsk - Format CIF - Pierre Hirel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" media="screen" type="text/css" title="Default" href="./default.css" />
+    <link rel="icon" href="../img/atomsk_logo.png" type="image/png" />
+</head>
+   
+<body>
+
+<p><a href="./index.html">Retour au menu principal</a></p>
+
+<h2>Format : CIF</h2>
+
+<p><strong>Nom :</strong> Crystallographic Information File</p>
+
+<p><strong>Extension :</strong> .cif</p>
+
+<p><strong>Spécification :</strong> <a href="http://www.iucr.org/resources/cif/">site Web de l'Union Internationale de Crystallography (IUCr)</a></p>
+
+<p><strong>Programmes de visualisation :</strong> <a href="http://jmol.sourceforge.net/">Jmol</a>, <a href="http://www.openrasmol.org/">RasMol</a>, <a href="http://jp-minerals.org/vesta/">VESTA</a>
+
+<h4>Restrictions</h4>
+
+<p>Le format CIF est un standard pour la description de structures crystallographiques. Il est donc conçu pour intégrer de nombreuses informations comme le nom du composé chimique, son groupe de symétrie, ainsi que les détails de l'expérience de diffraction comme la température, la longueur d'onde, etc. Un fichier CIF peut même contenir un article complet paru ou à paraître dans un journal international.</p>
+
+<p>Lorsqu'il lit un fichier CIF, Atomsk enregistre les vecteurs de boîte et les positions des atomes. Si des opérations de symétrie sont définies dans le fichier, alors elles sont appliquées immédiatement. Si le taux d'occupation des sites et les paramètres de déplacement (Biso ou Uiso) sont définis, alors ils sont enregistrés comme propriétés auxiliaires. Enfin, si des charges électriques sont définies dans le nom des espèces (par ex. "O2-"), alors elles sont aussi enregistrées comme propriétés auxiliaires. Toute autre information est ignorée.</p>
+
+<p>Notez que dans un fichier CIF, deux atomes peuvent partager exactement la même position, mais avec des taux d'occupation différents. Atomsk enregistre cette information telle quelle, autrement dit il enregistre les positions des atomes (même si elles sont identiques), et il enregistre leurs taux d'occupation comme propriétés auxiliaires. Ainsi, si ces données sont écrites dans un format de fichier qui supporte les occupations partielles, ces informations sont conservées. En revanche, si elles sont écrites dans un format de fichier qui ne supporte pas les occupations partielles, alors ces informations sont perdues, et le fichier de sortie contiendra deux atomes à la même position, ce qui n'est pas physique. Il appartient à l'utilisateur de vérifier la cohérence de ces données, et d'appliquer les corrections nécessaires après l'ouverture du fichier CIF. Par exemple, il est possible de supprimer les atomes qui se chevauchent grâce à l'<a href="./option_rmd.html">option <code>-remove-doubles</code></a>.</p>
+
+<p>Lorsqu'il écrit un fichier au format CIF, Atomsk écrit les paramètres de maille et les positions des atomes. Si des taux d'occupation sont définis, ils sont écrits. Si des paramètres de déplacement (Biso ou Uiso) sont définis, alors ils sont également écrits. Enfin, si les charges électriques sont définies, elles sont aussi écrites.</p>
+
+
+
+<h4>Exemples</h4>
+
+<ul>
+<li><code class="command">atomsk mon_systeme.cif vesta</code>
+<p>Atomsk va lire le fichier <code>mon_systeme.cif</code>, et le convertira en <code>mon_systeme.vesta</code> pour être visualisé avec VESTA.</p></li>
+
+<li><code class="command">atomsk input.cif lammps</code>
+<p>Ceci va lire le fichier <code>input.cif</code>, et le convertira en fichier de données pour LAMMPS nommé <code>input.lmp</code>. Notez que si le fichier CIF contient des atomes avec des occupations partielles, ils apparaîtront dans le fichier LAMMPS comme des atomes se trouvant à la même position, ce qui n'est peut-être pas souhaitable.</p></li>
+</ul>
+
+<p><a href="./index.html">Retour au menu principal</a></p>
+
+</body>
+
+</html>
