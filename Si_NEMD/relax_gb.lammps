@@ -1,0 +1,35 @@
+# === LAMMPS Input Script for Relaxing a Grain Boundary ===
+
+units           metal
+atom_style      atomic
+boundary        p p p
+
+read_data       Silicon_grain_boundary_50x15x15.data
+
+# === SW Potential for Silicon ===
+pair_style      sw
+pair_coeff      * * Si.sw Si
+
+# Define atomic mass of Silicon
+mass 1 28.0855  # Atomic mass of silicon
+
+# === Settings ===
+neighbor        2.0 bin
+neigh_modify    delay 0 every 1 check yes
+
+# === Energy Minimization ===
+reset_timestep  0
+min_style       cg
+minimize        1.0e-8 1.0e-10 10000 100000
+
+# === Output Settings ===
+
+# Dump only the final step as XYZ
+dump            finalxyz all xyz 1 relaxed_structure.xyz
+dump_modify     finalxyz sort id
+
+# Run 1 extra step to trigger dump output
+run             1
+
+# Write final data file
+write_data      relaxed_structure.data
